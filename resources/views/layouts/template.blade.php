@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <!-- META DATA -->
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Flow Clinic">
+    <meta name="author" content="Pongsakorn Laoniyomthai">
+
+    <!-- FAVICON -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/brand/favicon.ico')}}" />
+
+    <!-- TITLE -->
+    <title>Flow Clinic – @yield('title')</title>
+
+    <!-- BOOTSTRAP CSS -->
+    <link id="style" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" />
+
+    <!-- STYLE CSS -->
+    <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" />
+    <link href="{{asset('assets/css/dark-style.css')}}" rel="stylesheet" />
+    <link href="{{asset('assets/css/transparent-style.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/skin-modes.css')}}" rel="stylesheet" />
+
+    <!--- FONT-ICONS CSS -->
+    <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" />
+
+    <!-- COLOR SKIN CSS -->
+    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{asset('assets/colors/color1.css')}}" />
+
+</head>
+
+<body class="app sidebar-mini ltr light-mode">
+
+    <!-- GLOBAL-LOADER -->
+    <div id="global-loader">
+        <img src="{{asset('assets/images/loader-ripple.svg')}}" class="loader-img" alt="Loader">
+    </div>
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- PAGE -->
+    <div class="page">
+        <div class="page-main">
+
+            <!-- app-Header -->
+            <div class="app-header header sticky">
+                <div class="container-fluid main-container">
+                    <div class="d-flex">
+                        <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)"></a>
+                        <!-- sidebar-toggle-->
+                        <a class="logo-horizontal " href="{{ route('index') }}">
+                            <img src="{{asset('assets/images/brand/logo-flowclinic-white.png')}}" class="header-brand-img desktop-logo" alt="logo">
+                            <img src="{{asset('assets/images/brand/logo-flowclinic-color.png')}}" class="header-brand-img light-logo1"
+                                alt="logo">
+                        </a>
+                        <!-- LOGO -->
+                        <div class="d-flex order-lg-2 ms-auto header-right-icons">
+                            <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
+                                aria-controls="navbarSupportedContent-4" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon fe fe-more-vertical"></span>
+                            </button>
+                            <div class="navbar navbar-collapse responsive-navbar p-0">
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+                                    <div class="d-flex order-lg-2">
+                                        <div class="dropdown  d-flex">
+                                            <a class="nav-link icon theme-layout nav-link-bg layout-setting">
+                                                <span class="dark-layout"><i class="fe fe-moon"></i></span>
+                                                <span class="light-layout"><i class="fe fe-sun"></i></span>
+                                            </a>
+                                        </div>
+                                        <!-- Theme-Layout -->
+                                        <div class="dropdown d-flex">
+                                            <a class="nav-link icon full-screen-link nav-link-bg">
+                                                <i class="fe fe-minimize fullscreen-button"></i>
+                                            </a>
+                                        </div>
+                                        <!-- FULL-SCREEN -->
+                                        <div class="dropdown d-flex profile-1">
+                                            <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
+                                                <img src="{{asset('assets/images/users/pond.jpg')}}" alt="profile-user"
+                                                    class="avatar  profile-user brround cover-image">
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <div class="drop-heading">
+                                                    <div class="text-center">
+                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold">Pongsakorn Laoniyomthai</h5>
+                                                        <small class="text-muted">Doctor</small>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-divider m-0"></div>
+                                                <a class="dropdown-item" href="#">
+                                                    <i class="dropdown-icon fe fe-user"></i> ข้อมูลส่วนตัว
+                                                </a>
+                                                <a class="dropdown-item" href="{{ route('login') }}">
+                                                    <i class="dropdown-icon fe fe-alert-circle"></i> ออกจากระบบ
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /app-Header -->
+
+            <!--APP-SIDEBAR-->
+            <div class="sticky">
+                <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+                <div class="app-sidebar">
+                    <div class="side-header">
+                        <a class="header-brand1" href="{{ route('index') }}">
+                            <img src="{{asset('assets/images/brand/logo-flowclinic-color.png')}}" class="header-brand-img desktop-logo" alt="logo">
+                            <img src="{{asset('assets/images/brand/logo-flowclinic-color-sm.png')}}" class="header-brand-img toggle-logo"
+                                alt="logo">
+                            <img src="{{asset('assets/images/brand/logo-flowclinic-color-sm.png')}}" class="header-brand-img light-logo" alt="logo">
+                            <img src="{{asset('assets/images/brand/logo-flowclinic-color.png')}}" class="header-brand-img light-logo1"
+                                alt="logo">
+                        </a>
+                        <!-- LOGO -->
+                    </div>
+                    <div class="main-sidemenu">
+                        <div class="slide-left disabled" id="slide-left"><svg xmlns="http://www.w3.org/2000/svg"
+                                fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+                            </svg></div>
+                        <ul class="side-menu">
+                            <li class="sub-category">
+                                <h3>Main</h3>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item" data-bs-toggle="slide" href="{{ route('dashboard') }}"><i
+                                        class="side-menu__icon fe fe-home"></i><span
+                                        class="side-menu__label">Dashboard</span></a>
+                            </li>
+                            <li class="sub-category">
+                                <h3>Menu</h3>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i
+                                        class="side-menu__icon fe fe-database"></i><span
+                                        class="side-menu__label">จัดการข้อมูลพื้นฐาน</span><i
+                                        class="angle fe fe-chevron-right"></i></a>
+                                <ul class="slide-menu">
+                                    <li><a href="{{ route('index') }}" class="slide-item">ประเภทสินค้าและบริการ</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> รายการสินค้าและบริการ</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ประเภทพนักงาน</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> จัดการข้อมูลพนักงาน</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ประเภทวิธีการชำระเงิน</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ประเภทส่วนลด</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ประเภทลูกค้า</a></li>
+                                </ul>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i
+                                        class="side-menu__icon fe fe-slack"></i><span
+                                        class="side-menu__label">บันทึกรายการข้อมูล</span><i
+                                        class="angle fe fe-chevron-right"></i></a>
+                                <ul class="slide-menu">
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ซื้อสินค้าและบริการ</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ชำระเงิน</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> นัดใช้สินค้าและบริการ</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ใช้สินค้าและบริการ</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ประวัติการรักษา (OPD)</a></li>
+                                </ul>
+                            </li>
+                            <li class="sub-category">
+                                <h3>Reports</h3>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i
+                                        class="side-menu__icon fe fe-file-text"></i><span
+                                        class="side-menu__label">รายงาน</span><i
+                                        class="angle fe fe-chevron-right"></i></a>
+                                <ul class="slide-menu">
+                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานข้อมูลลูกค้า</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานข้อมูลการักษารายคน (OPD)</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานสินค้าและบริการ</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานยอดขายรายวัน<br>(ใบเสร็จ)</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานยอดขายรายวัน<br>(สินค้าและบริการ)</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
+                                width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z" />
+                            </svg></div>
+                    </div>
+                </div>
+                <!--/APP-SIDEBAR-->
+            </div>
+
+            <!--app-content open-->
+            <div class="main-content app-content mt-0">
+                <div class="side-app">
+
+                    @yield('content')
+
+                </div>
+            </div>
+            <!--app-content close-->
+
+        </div>
+
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-md-12 col-sm-12 text-center">
+                        Copyright © 2022 <a href="javascript:void(0)">Flow Clinic</a>. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- FOOTER END -->
+
+    </div>
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+    <!-- JQUERY JS -->
+    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="{{asset('assets/plugins/bootstrap/js/popper.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
+
+    <!-- SPARKLINE JS-->
+    <script src="{{asset('assets/js/jquery.sparkline.min.js')}}"></script>
+
+    <!-- Sticky js -->
+    <script src="{{asset('assets/js/sticky.js')}}"></script>
+
+    <!-- CHART-CIRCLE JS-->
+    <script src="{{asset('assets/js/circle-progress.min.js')}}"></script>
+
+    <!-- PIETY CHART JS-->
+    <script src="{{asset('assets/plugins/peitychart/jquery.peity.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/peitychart/peitychart.init.js')}}"></script>
+
+    <!-- SIDEBAR JS -->
+    <script src="{{asset('assets/plugins/sidebar/sidebar.js')}}"></script>
+
+    <!-- Perfect SCROLLBAR JS-->
+    {{-- <script src="{{asset('assets/plugins/p-scroll/perfect-scrollbar.js')}}"></script>
+    <script src="{{asset('assets/plugins/p-scroll/pscroll.js')}}"></script>
+    <script src="{{asset('assets/plugins/p-scroll/pscroll-1.js')}}"></script> --}}
+
+    <!-- INTERNAL CHARTJS CHART JS-->
+    <script src="{{asset('assets/plugins/chart/Chart.bundle.js')}}"></script>
+    <script src="{{asset('assets/plugins/chart/rounded-barchart.js')}}"></script>
+    <script src="{{asset('assets/plugins/chart/utils.js')}}"></script>
+
+    <!-- INTERNAL SELECT2 JS -->
+    <script src="{{asset('assets/plugins/select2/select2.full.min.js')}}"></script>
+
+    <!-- INTERNAL Data tables js-->
+    <script src="{{asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/datatable/js/dataTables.bootstrap5.js')}}"></script>
+    <script src="{{asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
+
+    <!-- INTERNAL APEXCHART JS -->
+    <script src="{{asset('assets/js/apexcharts.js')}}"></script>
+    <script src="{{asset('assets/plugins/apexchart/irregular-data-series.js')}}"></script>
+
+    <!-- C3 CHART JS -->
+    <script src="{{asset('assets/plugins/charts-c3/d3.v5.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/charts-c3/c3-chart.js')}}"></script>
+
+    <!-- CHART-DONUT JS -->
+    <script src="{{asset('assets/js/charts.js')}}"></script>
+
+    <!-- INTERNAL Flot JS -->
+    {{-- <script src="{{asset('assets/plugins/flot/jquery.flot.js')}}"></script> --}}
+    {{-- <script src="{{asset('assets/plugins/flot/jquery.flot.fillbetween.js')}}"></script> --}}
+    {{-- <script src="{{asset('assets/plugins/flot/chart.flot.sampledata.js')}}"></script> --}}
+    {{-- <script src="{{asset('assets/plugins/flot/dashboard.sampledata.js')}}"></script> --}}
+
+    <!-- INTERNAL Vector js -->
+    <script src="{{asset('assets/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
+
+    <!-- SIDE-MENU JS-->
+    <script src="{{asset('assets/plugins/sidemenu/sidemenu.js')}}"></script>
+
+    <!-- INTERNAL INDEX JS -->
+    {{-- <script src="{{asset('assets/js/index1.js')}}"></script> --}}
+
+    <!-- Color Theme js -->
+    <script src="{{asset('assets/js/themeColors.js')}}"></script>
+
+    <!-- CUSTOM JS -->
+    <script src="{{asset('assets/js/custom.js')}}"></script>
+
+    @yield('script')
+
+</body>
+
+</html>
