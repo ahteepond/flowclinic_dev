@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('title','ข้อมูลพนักงาน') {{-- Title --}}
+@section('title','รายการบริการ') {{-- Title --}}
 
 
 @section('content')
@@ -32,15 +32,6 @@
                                     <div class="col-12 text-start">
                                         <div class="row align-items-end">
                                             <div class="form-group col-auto">
-                                                <label class="form-label">ตำแหน่ง</label>
-                                                <select name="position" id="position" class="form-control form-select" data-bs-placeholder="Select Position">
-                                                        <option value="All" selected>All</option>
-                                                        @foreach($res_empposi as $psi)
-                                                            <option value="{{ $psi->emp_posi_id }}">{{ $psi->emp_posi_name }}</option>
-                                                        @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-auto">
                                                 <label class="form-label">สถานะ</label>
                                                 <select name="status" id="status" class="form-control form-select" data-bs-placeholder="Select Status">
                                                     <option value="1" selected>Active</option>
@@ -72,16 +63,38 @@
                         <div class="card">
                             <div class="card-header row">
                                 <div class="col-8 text-start">
-                                    <h3 class="card-title">รายชื่อพนักงาน</h3>
+                                    <h3 class="card-title">รายการประเภทบริการ</h3>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <a href="{{ route('employee.new') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus me-2"></i>New</a>
+                                    <a href="{{ route('service.new') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus me-2"></i>New</a>
                                 </div>
 
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="emp_datatable" class="table table-bordered w-100 border-bottom">
+                                    <table id="datatableinfo" class="table table-bordered w-100 border-bottom">
+
+                                        <thead>
+                                            <tr>
+                                                <th>NO.</th>
+                                                <th>ชื่อบริการหลัก</th>
+                                                <th>ชื่อย่อย</th>
+                                                <th>สถานะใช้งาน</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>เสริมหน้าอก (Breast Augmentation)</td>
+                                                <td>ซิลิโคน ซิลิเมต (Silicone Silimed) </td>
+                                                <td><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">Active</span></td>
+                                                <td>
+                                                    <a href="{{ route('service.view') }}" title="รายละเอียด" class="btn text-info btn-sm"><i class="ion-more"></i></a>
+                                                    <a href="{{ route('service.edit') }}" title="แก้ไข" class="btn text-primary btn-sm"><span class="fe fe-edit"></span></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
 
                                     </table>
                                 </div>
@@ -106,49 +119,16 @@
 
     <script>
     $( document ).ready(function() {
-
+        $('#datatableinfo').DataTable();
     });
-
-    var dataTable = $('#emp_datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            type: "GET",
-            url: "{{ route('employee.list') }}",
-            data: function( d ) {
-                d.active = $('#status :selected').val(),
-                d.position = $('#position :selected').val()
-            },
-        },
-        columns: [
-            { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            { title: "รหัสพนักงาน", data: 'empcode', name: 'empcode' },
-            { title: "ชื่อ-นามสกุล", data: 'empfullname', name: 'empfullname' },
-            { title: "ตำแหน่ง", data: 'empposition', name: 'empposition' },
-            // { title: "เบอร์โทรศัพท์", data: 'emptel', name: 'emptel' },
-            { title: "สถานะใช้งาน", data: 'active', name: 'active' },
-            { title: "Action", data: 'action', name: 'action', orderable: false, searchable: false },
-        ],
-        'columnDefs': [
-            { "className": "text-center", "targets": [0,4,5] },
-        ]
-    });
-    dataTable.columns.adjust().draw();
 
     function searchTable() {
-        dataTable.ajax.reload();
+        // dataTable.ajax.reload();
     }
 
-    function edit(empcode) {
-        var url = "{{ route('employee.edit', '')}}"+"/"+empcode;
-        location.href = url;
-    }
-
-    function view(empcode) {
-        var url = "{{ route('employee.view', '')}}"+"/"+empcode;
-        location.href = url;
-    }
-
+    // function edit(id) {
+    //     var url = "{{ route('service.edit', '')}}"+"/"+id;
+    // }
 
     </script>
 @endsection

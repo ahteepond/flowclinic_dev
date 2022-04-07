@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('title','ข้อมูลพนักงาน') {{-- Title --}}
+@section('title','ประเภทบริการ') {{-- Title --}}
 
 
 @section('content')
@@ -32,15 +32,6 @@
                                     <div class="col-12 text-start">
                                         <div class="row align-items-end">
                                             <div class="form-group col-auto">
-                                                <label class="form-label">ตำแหน่ง</label>
-                                                <select name="position" id="position" class="form-control form-select" data-bs-placeholder="Select Position">
-                                                        <option value="All" selected>All</option>
-                                                        @foreach($res_empposi as $psi)
-                                                            <option value="{{ $psi->emp_posi_id }}">{{ $psi->emp_posi_name }}</option>
-                                                        @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-auto">
                                                 <label class="form-label">สถานะ</label>
                                                 <select name="status" id="status" class="form-control form-select" data-bs-placeholder="Select Status">
                                                     <option value="1" selected>Active</option>
@@ -72,16 +63,16 @@
                         <div class="card">
                             <div class="card-header row">
                                 <div class="col-8 text-start">
-                                    <h3 class="card-title">รายชื่อพนักงาน</h3>
+                                    <h3 class="card-title">รายการประเภทบริการ</h3>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <a href="{{ route('employee.new') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus me-2"></i>New</a>
+                                    <a href="{{ route('servicetype.new') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus me-2"></i>New</a>
                                 </div>
 
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="emp_datatable" class="table table-bordered w-100 border-bottom">
+                                    <table id="datatableinfo" class="table table-bordered w-100 border-bottom">
 
                                     </table>
                                 </div>
@@ -109,28 +100,24 @@
 
     });
 
-    var dataTable = $('#emp_datatable').DataTable({
+    var dataTable = $('#datatableinfo').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             type: "GET",
-            url: "{{ route('employee.list') }}",
+            url: "{{ route('servicetype.list') }}",
             data: function( d ) {
-                d.active = $('#status :selected').val(),
-                d.position = $('#position :selected').val()
+                d.active = $('#status :selected').val()
             },
         },
         columns: [
             { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            { title: "รหัสพนักงาน", data: 'empcode', name: 'empcode' },
-            { title: "ชื่อ-นามสกุล", data: 'empfullname', name: 'empfullname' },
-            { title: "ตำแหน่ง", data: 'empposition', name: 'empposition' },
-            // { title: "เบอร์โทรศัพท์", data: 'emptel', name: 'emptel' },
+            { title: "ชื่อประเภทบริการ", data: 'servicetype', name: 'servicetype' },
             { title: "สถานะใช้งาน", data: 'active', name: 'active' },
             { title: "Action", data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         'columnDefs': [
-            { "className": "text-center", "targets": [0,4,5] },
+            { "className": "text-center", "targets": [0,2,3] },
         ]
     });
     dataTable.columns.adjust().draw();
@@ -139,16 +126,10 @@
         dataTable.ajax.reload();
     }
 
-    function edit(empcode) {
-        var url = "{{ route('employee.edit', '')}}"+"/"+empcode;
+    function edit(id) {
+        var url = "{{ route('servicetype.edit', '')}}"+"/"+id;
         location.href = url;
     }
-
-    function view(empcode) {
-        var url = "{{ route('employee.view', '')}}"+"/"+empcode;
-        location.href = url;
-    }
-
 
     </script>
 @endsection

@@ -75,7 +75,7 @@
         $('.minus').on('click', function () {
             var $qty = $(this).closest('div').find('.qty');
             var currentVal = parseInt($qty.val());
-            if (!isNaN(currentVal) && currentVal > 0) {
+            if (!isNaN(currentVal) && currentVal > 1) {
                 $qty.val(currentVal - 1);
             }
         });

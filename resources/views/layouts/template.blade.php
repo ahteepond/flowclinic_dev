@@ -68,12 +68,6 @@
                             <div class="navbar navbar-collapse responsive-navbar p-0">
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
                                     <div class="d-flex order-lg-2">
-                                        <div class="dropdown  d-flex">
-                                            <a class="nav-link icon theme-layout nav-link-bg layout-setting">
-                                                <span class="dark-layout"><i class="fe fe-moon"></i></span>
-                                                <span class="light-layout"><i class="fe fe-sun"></i></span>
-                                            </a>
-                                        </div>
                                         <!-- Theme-Layout -->
                                         <div class="dropdown d-flex">
                                             <a class="nav-link icon full-screen-link nav-link-bg">
@@ -149,13 +143,13 @@
                                         class="side-menu__label">จัดการข้อมูลพื้นฐาน</span><i
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
-                                    <li><a href="{{ route('index') }}" class="slide-item">ประเภทสินค้าและบริการ</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> รายการสินค้าและบริการ</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ประเภทพนักงาน</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> จัดการข้อมูลพนักงาน</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ประเภทวิธีการชำระเงิน</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ประเภทส่วนลด</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ประเภทลูกค้า</a></li>
+                                    <li><a href="{{ route('servicetype') }}" class="slide-item"> ประเภทบริการ</a></li>
+                                    <li><a href="{{ route('service') }}" class="slide-item"> รายการบริการ</a></li>
+                                    <li><a href="{{ route('employee') }}" class="slide-item"> ข้อมูลพนักงาน</a></li>
+                                    <li><a href="{{ route('paymenttype') }}" class="slide-item"> วิธีการชำระเงิน</a></li>
+                                    <li><a href="{{ route('discounttype') }}" class="slide-item"> ประเภทส่วนลด</a></li>
+                                    <li><a href="{{ route('customertype') }}" class="slide-item"> ประเภทลูกค้า</a></li>
+                                    {{-- <li><a href="{{ route('index') }}" class="slide-item"> ข้อมูลลูกค้า</a></li> --}}
                                 </ul>
                             </li>
                             <li class="slide">
@@ -164,11 +158,12 @@
                                         class="side-menu__label">บันทึกรายการข้อมูล</span><i
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ซื้อสินค้าและบริการ</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ชำระเงิน</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> นัดใช้สินค้าและบริการ</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ใช้สินค้าและบริการ</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ประวัติการรักษา (OPD)</a></li>
+                                    <li><a href="{{ route('order') }}" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
+                                    <li><a href="{{ route('order.new') }}" class="slide-item"> คำสั่งซื้อใหม่</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
+                                    <li><a href="{{ route('appointment') }}" class="slide-item"> ออกใบนัด</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> เข้ารับการรักษา</a></li>
+                                    <li><a href="{{ route('index') }}" class="slide-item"> บันทึกประวัติการรักษา (OPD)</a></li>
                                 </ul>
                             </li>
                             <li class="sub-category">
@@ -224,6 +219,8 @@
 
     </div>
 
+    @yield('other')
+
     <!-- BACK-TO-TOP -->
     <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
 
@@ -234,72 +231,52 @@
     <script src="{{asset('assets/plugins/bootstrap/js/popper.min.js')}}"></script>
     <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
 
+    <!-- DATEPICKER JS -->
+    <script src="{{asset('assets/plugins/date-picker/date-picker.js')}}"></script>
+    <script src="{{asset('assets/plugins/date-picker/jquery-ui.js')}}"></script>
+    <script src="{{asset('assets/plugins/input-mask/jquery.maskedinput.js')}}"></script>
+
+    <!-- INTERNAL Bootstrap-Datepicker js-->
+    <script src="{{asset('assets/plugins/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
+
+    <!-- TIMEPICKER JS -->
+    <script src="{{asset('assets/plugins/time-picker/jquery.timepicker.js')}}"></script>
+    <script src="{{asset('assets/plugins/time-picker/toggles.min.js')}}"></script>
+
+
+    <!-- INTERNAL multi js-->
+    <script src="{{asset('assets/plugins/multi/multi.min.js')}}"></script>
+
     <!-- SPARKLINE JS-->
     <script src="{{asset('assets/js/jquery.sparkline.min.js')}}"></script>
 
     <!-- Sticky js -->
     <script src="{{asset('assets/js/sticky.js')}}"></script>
 
-    <!-- CHART-CIRCLE JS-->
-    <script src="{{asset('assets/js/circle-progress.min.js')}}"></script>
-
-    <!-- PIETY CHART JS-->
-    <script src="{{asset('assets/plugins/peitychart/jquery.peity.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/peitychart/peitychart.init.js')}}"></script>
-
     <!-- SIDEBAR JS -->
     <script src="{{asset('assets/plugins/sidebar/sidebar.js')}}"></script>
-
-    <!-- Perfect SCROLLBAR JS-->
-    {{-- <script src="{{asset('assets/plugins/p-scroll/perfect-scrollbar.js')}}"></script>
-    <script src="{{asset('assets/plugins/p-scroll/pscroll.js')}}"></script>
-    <script src="{{asset('assets/plugins/p-scroll/pscroll-1.js')}}"></script> --}}
-
-    <!-- INTERNAL CHARTJS CHART JS-->
-    <script src="{{asset('assets/plugins/chart/Chart.bundle.js')}}"></script>
-    <script src="{{asset('assets/plugins/chart/rounded-barchart.js')}}"></script>
-    <script src="{{asset('assets/plugins/chart/utils.js')}}"></script>
-
-    <!-- INTERNAL SELECT2 JS -->
-    <script src="{{asset('assets/plugins/select2/select2.full.min.js')}}"></script>
 
     <!-- INTERNAL Data tables js-->
     <script src="{{asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/plugins/datatable/js/dataTables.bootstrap5.js')}}"></script>
     <script src="{{asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
 
-    <!-- INTERNAL APEXCHART JS -->
-    <script src="{{asset('assets/js/apexcharts.js')}}"></script>
-    <script src="{{asset('assets/plugins/apexchart/irregular-data-series.js')}}"></script>
-
-    <!-- C3 CHART JS -->
-    <script src="{{asset('assets/plugins/charts-c3/d3.v5.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/charts-c3/c3-chart.js')}}"></script>
-
-    <!-- CHART-DONUT JS -->
-    <script src="{{asset('assets/js/charts.js')}}"></script>
-
-    <!-- INTERNAL Flot JS -->
-    {{-- <script src="{{asset('assets/plugins/flot/jquery.flot.js')}}"></script> --}}
-    {{-- <script src="{{asset('assets/plugins/flot/jquery.flot.fillbetween.js')}}"></script> --}}
-    {{-- <script src="{{asset('assets/plugins/flot/chart.flot.sampledata.js')}}"></script> --}}
-    {{-- <script src="{{asset('assets/plugins/flot/dashboard.sampledata.js')}}"></script> --}}
-
-    <!-- INTERNAL Vector js -->
-    <script src="{{asset('assets/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
+    <!-- FORMELEMENTS JS -->
+    {{-- <script src="{{asset('assets/js/formelementadvnced.js')}}"></script> --}}
+    <script src="{{asset('assets/js/form-elements.js')}}"></script>
 
     <!-- SIDE-MENU JS-->
     <script src="{{asset('assets/plugins/sidemenu/sidemenu.js')}}"></script>
 
-    <!-- INTERNAL INDEX JS -->
-    {{-- <script src="{{asset('assets/js/index1.js')}}"></script> --}}
+    <!-- SWEET-ALERT JS -->
+    <script src="{{asset('assets/plugins/sweet-alert/sweetalert.min.js')}}"></script>
 
     <!-- Color Theme js -->
     <script src="{{asset('assets/js/themeColors.js')}}"></script>
 
     <!-- CUSTOM JS -->
     <script src="{{asset('assets/js/custom.js')}}"></script>
+
 
     @yield('script')
 
