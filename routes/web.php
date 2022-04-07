@@ -89,9 +89,15 @@ Route::get('/customertype/edit', 'CustomerTypeController@edit')->name('customert
 // Appointment -------------------------------
 Route::get('/appointment', 'AppointmentController@index')->name('appointment');
 Route::get('/appointment/new', 'AppointmentController@new')->name('appointment.new');
+Route::get('/appointment/history', 'AppointmentController@history')->name('appointment.history');
+
 
 
 // Orders -------------------------------
 Route::get('/order', 'OrderController@index')->name('order');
 Route::get('/order/new', 'OrderController@new')->name('order.new');
 Route::get('/order/detail', 'OrderController@detail')->name('order.detail');
+
+// Check Payment -------------------------------
+Route::get('/checkpayment', 'CheckPaymentController@index')->name('checkpayment');
+Route::get('/checkpayment/view', 'CheckPaymentController@view')->name('checkpayment.view');

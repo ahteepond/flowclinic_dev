@@ -57,6 +57,7 @@
                             <img src="{{asset('assets/images/brand/logo-flowclinic-color.png')}}" class="header-brand-img light-logo1"
                                 alt="logo">
                         </a>
+                        <span class="me-5">( DEV )</span>
                         <!-- LOGO -->
                         <div class="d-flex order-lg-2 ms-auto header-right-icons">
                             <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button"
@@ -160,7 +161,7 @@
                                 <ul class="slide-menu">
                                     <li><a href="{{ route('order') }}" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
                                     <li><a href="{{ route('order.new') }}" class="slide-item"> คำสั่งซื้อใหม่</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
+                                    <li><a href="{{ route('checkpayment') }}" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
                                     <li><a href="{{ route('appointment') }}" class="slide-item"> ออกใบนัด</a></li>
                                     <li><a href="{{ route('index') }}" class="slide-item"> เข้ารับการรักษา</a></li>
                                     <li><a href="{{ route('index') }}" class="slide-item"> บันทึกประวัติการรักษา (OPD)</a></li>

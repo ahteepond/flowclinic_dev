@@ -127,7 +127,7 @@
                                 <label class="form-label">ค้นหาด้วย</label>
                                 <select name="fillter_type" id="fillter_type" class="form-control form-select">
                                     <option value="1" selected>รหัสลูกค้า</option>
-                                    <option value="2">ชื่อ-นามสกุล</option>
+                                    <option value="2">เลขบัตรประชาชน</option>
                                     <option value="2">เบอร์โทรศัพท์</option>
                                 </select>
                             </div>

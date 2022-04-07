@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-lg-6 text-end">
                                 <p class="h4 fw-semibold">รายละเอียดการชำระเงิน:</p>
-                                <p class="mb-3">สถานะการชำระเงิน: <span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">During</span></p>
+                                <p class="mb-3">สถานะการชำระเงินของใบสั่งซื้อ: <span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">During</span></p>
                                 <p class="mb-1">ชำระแล้ว: <span class="h4">2,000.-</span></p>
                                 <p class="mb-1">ยอดคงค้าง: <span class="h4">106,600.-</span></p>
                             </div>
@@ -132,6 +132,12 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="form-group">
+                                                <label class="form-label">เลขที่ชำระเงิน</label>
+                                                <h4>PAY-0001</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
                                                 <label class="form-label">วันที่ชำระเงิน</label>
                                                 <h4>07-04-2022 09:00:00</h4>
                                             </div>
@@ -172,6 +178,12 @@
                                 </div>
                                 <div class="col-10">
                                     <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label class="form-label">เลขที่ชำระเงิน</label>
+                                                <h4>PAY-0002</h4>
+                                            </div>
+                                        </div>
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label class="form-label">วันที่ชำระเงิน</label>

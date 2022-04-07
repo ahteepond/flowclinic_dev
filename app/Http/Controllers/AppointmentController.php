@@ -13,4 +13,9 @@ class AppointmentController extends Controller
     public function new() {
         return view('appointment.new');
     }
+
+    public function history() {
+        return view('appointment.history');
+    }
+
 }
