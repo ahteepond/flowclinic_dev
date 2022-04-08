@@ -19,9 +19,15 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 })->name('index');
 
+
+// Login -----------------------------------
 Route::get('/login', 'LoginController@index')->name('login');
 
+
+
+// Dashboard -----------------------------------
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
 
 
 // Employee -----------------------------------
@@ -34,6 +40,7 @@ Route::get('/employee/edit/{empcode}', 'EmployeeController@edit')->name('employe
 Route::post('/employee/update', 'EmployeeController@update')->name('employee.update');
 
 
+
 // ServiceType -------------------------------
 Route::get('/servicetype', 'ServiceTypeController@index')->name('servicetype');
 Route::get('/servicetype/list', 'ServiceTypeController@list')->name('servicetype.list');
@@ -43,47 +50,34 @@ Route::get('/servicetype/edit/{id}', 'ServiceTypeController@edit')->name('servic
 Route::post('/servicetype/update', 'ServiceTypeController@update')->name('servicetype.update');
 
 
+
 // Service -------------------------------
 Route::get('/service', 'ServiceController@index')->name('service');
 Route::get('/service/new', 'ServiceController@new')->name('service.new');
 Route::get('/service/edit', 'ServiceController@edit')->name('service.edit');
 Route::get('/service/view', 'ServiceController@view')->name('service.view');
-// Route::get('/service/list', 'ServiceController@list')->name('service.list');
 
-// Route::post('/service/insert', 'ServiceController@insert')->name('service.insert');
-// Route::get('/service/edit/{id}', 'ServiceTypeController@edit')->name('servicetype.edit');
-
-// Route::post('/service/update', 'ServiceController@update')->name('service.update');
 
 
 // Payment Type -------------------------------
 Route::get('/paymenttype', 'PaymentTypeController@index')->name('paymenttype');
 Route::get('/paymenttype/new', 'PaymentTypeController@new')->name('paymenttype.new');
 Route::get('/paymenttype/edit', 'PaymentTypeController@edit')->name('paymenttype.edit');
-// Route::get('/service/list', 'ServiceController@list')->name('service.list');
-// Route::post('/service/insert', 'ServiceController@insert')->name('service.insert');
-// Route::get('/service/edit/{id}', 'ServiceTypeController@edit')->name('servicetype.edit');
-// Route::post('/service/update', 'ServiceController@update')->name('service.update');
+
 
 
 // Discount Type -------------------------------
 Route::get('/discounttype', 'DiscountTypeController@index')->name('discounttype');
 Route::get('/discounttype/new', 'DiscountTypeController@new')->name('discounttype.new');
 Route::get('/discounttype/edit', 'DiscountTypeController@edit')->name('discounttype.edit');
-// Route::get('/service/list', 'ServiceController@list')->name('service.list');
-// Route::post('/service/insert', 'ServiceController@insert')->name('service.insert');
-// Route::get('/service/edit/{id}', 'ServiceTypeController@edit')->name('servicetype.edit');
-// Route::post('/service/update', 'ServiceController@update')->name('service.update');
+
 
 
 // Customer Type -------------------------------
 Route::get('/customertype', 'CustomerTypeController@index')->name('customertype');
 Route::get('/customertype/new', 'CustomerTypeController@new')->name('customertype.new');
 Route::get('/customertype/edit', 'CustomerTypeController@edit')->name('customertype.edit');
-// Route::get('/service/list', 'ServiceController@list')->name('service.list');
-// Route::post('/service/insert', 'ServiceController@insert')->name('service.insert');
-// Route::get('/service/edit/{id}', 'ServiceTypeController@edit')->name('servicetype.edit');
-// Route::post('/service/update', 'ServiceController@update')->name('service.update');
+
 
 
 // Appointment -------------------------------
@@ -98,6 +92,20 @@ Route::get('/order', 'OrderController@index')->name('order');
 Route::get('/order/new', 'OrderController@new')->name('order.new');
 Route::get('/order/detail', 'OrderController@detail')->name('order.detail');
 
+
+
 // Check Payment -------------------------------
 Route::get('/checkpayment', 'CheckPaymentController@index')->name('checkpayment');
 Route::get('/checkpayment/view', 'CheckPaymentController@view')->name('checkpayment.view');
+
+
+// Admitted -------------------------------
+Route::get('/admitted', 'AdmittedController@index')->name('admitted');
+Route::get('/admitted/process', 'AdmittedController@process')->name('admitted.process');
+
+
+
+// OPD -------------------------------
+Route::get('/opd', 'OPDController@index')->name('opd');
+Route::get('/opd/process', 'OPDController@process')->name('opd.process');
+Route::get('/opd/history', 'OPDController@history')->name('opd.history');

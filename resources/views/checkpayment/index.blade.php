@@ -70,10 +70,6 @@
                                 <div class="col-8 text-start">
                                     <h3 class="card-title">รายการตรวจสอบการชำระเงิน</h3>
                                 </div>
-                                <div class="col-4 text-end">
-                                    <a href="{{ route('order.new') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus me-2"></i>New</a>
-                                </div>
-
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">

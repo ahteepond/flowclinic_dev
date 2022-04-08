@@ -163,8 +163,8 @@
                                     <li><a href="{{ route('order.new') }}" class="slide-item"> คำสั่งซื้อใหม่</a></li>
                                     <li><a href="{{ route('checkpayment') }}" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
                                     <li><a href="{{ route('appointment') }}" class="slide-item"> ออกใบนัด</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> เข้ารับการรักษา</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> บันทึกประวัติการรักษา (OPD)</a></li>
+                                    <li><a href="{{ route('admitted') }}" class="slide-item"> เข้ารับการรักษา</a></li>
+                                    <li><a href="{{ route('opd') }}" class="slide-item"> บันทึกประวัติ OPD</a></li>
                                 </ul>
                             </li>
                             <li class="sub-category">

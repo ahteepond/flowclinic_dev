@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('title','ออกใบนัด') {{-- Title --}}
+@section('title','บันทึกประวัติ OPD') {{-- Title --}}
 
 
 @section('content')
@@ -58,7 +58,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">
-                                    <i class="fa fa-file-text me-2"></i>รายการบริการสำหรับทำนัดหมาย
+                                    <i class="fa fa-file-text me-2"></i>รายการนัดหมาย
                                 </div>
                             </div>
                             <div class="card-body">
@@ -84,38 +84,50 @@
                                         <thead>
                                             <tr class=" ">
                                                 <th>No.</th>
+                                                <th class="text-center">เลขที่ใบนัด</th>
                                                 <th class="text-center">บริการ</th>
                                                 <th class="text-center">บริการย่อย</th>
-                                                <th class="text-center">จำนวนครั้งที่นัด</th>
+                                                <th class="text-center">นัดครั้งที่</th>
+                                                <th class="text-center">สถานะการรักษา</th>
+                                                <th class="text-center">วันที่นัดหมาย</th>
+                                                <th class="text-center">วันที่เข้ารักษา</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td class="text-center">1</td>
+                                                <td class="text-center">APT-0001</td>
                                                 <td><p class="font-w600 mb-1">เสริมหน้าอก (Breast Augmentation)</p></td>
                                                 <td class="text-start">ซิลิโคน ซิลิเมต (Silicone Silimed)</td>
-                                                <td class="text-center">0</td>
+                                                <td class="text-center">1</td>
+                                                <td class="text-center"><span class="badge bg-secondary-transparent rounded-pill text-secondary p-2 px-3">Admitted</span></td>
+                                                <td class="text-start">07-04-2022<br>09:00:00</td>
+                                                <td class="text-start">17-04-2022<br>09:00:00</td>
                                                 <td class="text-center">
-                                                    <a id="" href="{{ route('appointment.history') }}" class="btn btn-sm btn-info">
-                                                        ดูประวัติ
+                                                    <a id="" href="{{ route('opd.history') }}" class="btn btn-sm btn-info">
+                                                        ดูประวัติทั้งหมด
                                                     </a>
-                                                    <a id="" href="{{ route('appointment.new') }}" class="btn btn-sm btn-primary">
-                                                        ทำใบนัด
+                                                    <a id="" href="{{ route('opd.process') }}" class="btn btn-sm btn-primary">
+                                                        บันทึก OPD
                                                     </a>
-                                            </td>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td class="text-center">2</td>
+                                                <td class="text-center">APT-0002</td>
                                                 <td><p class="font-w600 mb-1">เสริมหน้าอก (Breast Augmentation)</p></td>
                                                 <td class="text-start">ซิลิโคน ยูโร (Silicone Euro)</td>
                                                 <td class="text-center">2</td>
+                                                <td class="text-center"><span class="badge bg-secondary-transparent rounded-pill text-secondary p-2 px-3">Admitted</span></td>
+                                                <td class="text-start">07-04-2022<br>09:00:00</td>
+                                                <td class="text-start">17-04-2022<br>09:00:00</td>
                                                 <td class="text-center">
-                                                    <a id="" href="{{ route('appointment.history') }}" class="btn btn-sm btn-info">
-                                                        ดูประวัติ
+                                                    <a id="" href="{{ route('opd.history') }}" class="btn btn-sm btn-info">
+                                                        ดูประวัติทั้งหมด
                                                     </a>
-                                                    <a id="" href="{{ route('appointment.new') }}" class="btn btn-sm btn-primary">
-                                                        ทำใบนัด
+                                                    <a id="" href="{{ route('opd.process') }}" class="btn btn-sm btn-primary">
+                                                        บันทึก OPD
                                                     </a>
                                                 </td>
                                             </tr>
