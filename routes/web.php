@@ -87,7 +87,6 @@ Route::post('/discounttype/insert', 'DiscountTypeController@insert')->name('disc
 // Customer Type -------------------------------
 Route::get('/customertype', 'CustomerTypeController@index')->name('customertype');
 Route::get('/customertype/new', 'CustomerTypeController@new')->name('customertype.new');
-Route::get('/customertype/edit', 'CustomerTypeController@edit')->name('customertype.edit');
 Route::get('/customertype/edit/{id}', 'CustomerTypeController@edit')->name('customertype.edit');
 Route::get('/customertype/list', 'CustomerTypeController@list')->name('customertype.list');
 Route::post('/customertype/update', 'CustomerTypeController@update')->name('customertype.update');
@@ -103,9 +102,12 @@ Route::get('/appointment/history', 'AppointmentController@history')->name('appoi
 
 
 // Orders -------------------------------
-Route::get('/order', 'OrderController@index')->name('order');
-Route::get('/order/new', 'OrderController@new')->name('order.new');
-Route::get('/order/detail', 'OrderController@detail')->name('order.detail');
+Route::get('/orders', 'OrdersController@index')->name('orders');
+Route::get('/orders/new', 'OrdersController@new')->name('orders.new');
+Route::get('/orders/list', 'OrdersController@list')->name('orders.list');
+Route::get('/orders/detail/{id}', 'OrdersController@detail')->name('orders.detail');
+Route::get('/orders/edit/{id}', 'OrdersController@edit')->name('orders.edit');
+// Route::get('/orders/view/{id}', 'OrdersController@view')->name('orders.view');
 
 
 

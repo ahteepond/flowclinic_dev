@@ -159,8 +159,8 @@
                                         class="side-menu__label">บันทึกรายการข้อมูล</span><i
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
-                                    <li><a href="{{ route('order') }}" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
-                                    <li><a href="{{ route('order.new') }}" class="slide-item"> คำสั่งซื้อใหม่</a></li>
+                                    <li><a href="{{ route('orders') }}" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
+                                    <li><a href="{{ route('orders.new') }}" class="slide-item"> คำสั่งซื้อใหม่</a></li>
                                     <li><a href="{{ route('checkpayment') }}" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
                                     <li><a href="{{ route('appointment') }}" class="slide-item"> ออกใบนัด</a></li>
                                     <li><a href="{{ route('admitted') }}" class="slide-item"> เข้ารับการรักษา</a></li>

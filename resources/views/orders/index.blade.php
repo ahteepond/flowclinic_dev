@@ -33,7 +33,7 @@
                                         <div class="row align-items-end">
                                             <div class="form-group col-auto">
                                                 <label class="form-label">เลขที่ใบสั่งซื้อ</label>
-                                                <input type="text" name="order_no" id="order_no" class="form-control">
+                                                <input type="text" name="orders_no" id="orders_no" class="form-control">
                                             </div>
                                             <div class="form-group col-auto">
                                                 <label class="form-label">วันที่ใบสั่งซื้อ</label>
@@ -41,7 +41,7 @@
                                                     <div class="input-group-text">
                                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
-                                                    <input class="form-control fc-datepicker" name="order_date" id="order_date" placeholder="กรุณาระบุวันที่ใบสั่งซื้อ..." type="text">
+                                                    <input class="form-control fc-datepicker" name="orders_date" id="orders_date" placeholder="กรุณาระบุวันที่ใบสั่งซื้อ..." type="text">
                                                 </div>
                                             </div>
                                             <div class="form-group col-auto">
@@ -56,7 +56,7 @@
                                             </div>
                                             <div class="form-group col-auto">
                                                 <label class="form-label">สถานะการสั่งซื้อ</label>
-                                                <select name="status_order" id="status_order" class="form-control form-select">
+                                                <select name="status_orders" id="status_orders" class="form-control form-select">
                                                     <option value="" selected>All</option>
                                                     <option value="1">Waiting</option>
                                                     <option value="2">Processing</option>
@@ -92,13 +92,13 @@
                                     <h3 class="card-title">รายการใบสั่งซื้อ</h3>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <a href="{{ route('order.new') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus me-2"></i>New</a>
+                                    <a href="{{ route('orders.new') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus me-2"></i>New</a>
                                 </div>
 
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="datatable" class="table table-bordered w-100 border-bottom">
+                                    {{-- <table id="datatable" class="table table-bordered w-100 border-bottom">
 
                                         <thead>
                                             <tr>
@@ -112,7 +112,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><a href="{{ route('order.detail') }}" title="" class="text-primary">ODR-0001</a></td>
+                                                <td><a href="{{ route('orders.detail') }}" title="" class="text-primary">ODR-0001</a></td>
                                                 <td class="text-end">108,600.-</td>
                                                 <td>พงศกร เหล่านิยมไทย</td>
                                                 <td class="text-center"><span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">อยู่ระหว่างการชำระเงิน</span></td>
@@ -120,6 +120,9 @@
                                                 <td>07-04-2022<br>09:00:00</td>
                                             </tr>
                                         </tbody>
+
+                                    </table> --}}
+                                    <table id="datatableinfo" class="table table-bordered w-100 border-bottom">
 
                                     </table>
                                 </div>
@@ -147,28 +150,53 @@
     });
 
     function clearFillter() {
-        $('#order_no').val('');
-        $('#order_date').val('');
+        $('#orders_no').val('');
+        $('#orders_date').val('');
         $('#status_payment').val('');
-        $('#status_order').val('');
+        $('#status_orders').val('');
     }
 
-    var dataTable = $('#datatable').DataTable({});
+    var dataTable = $('#datatableinfo').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: "GET",
+            url: "{{ route('orders.list') }}",
+            data: function( d ) {
+                // d.active = $('#status :selected').val()
+            },
+        },
+        columns: [
+            { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { title: "เลขที่ใบสั่งซื้อ", data: 'orderscode', name: 'orderscode' },
+            { title: "ยอดรวมทั้งหมด", data: 'pricenettotal', name: 'pricenettotal' },
+            { title: "ชื่อลูกค้า", data: 'custname', name: 'custname' },
+            { title: "สถานะการชำระเงินของใบสั่งซื้อ", data: 'statusorder', name: 'statusorder' },
+            { title: "สถานะการสั่งซื้อ", data: 'statusorderpayment', name: 'statusorderpayment' },
+            { title: "วันที่สั่งซื้อ", data: 'created', name: 'created' },
+        ],
+        'columnDefs': [
+            { "className": "text-center", "targets": [0,4,5] },
+            { "className": "text-right", "targets": [3] },
+        ]
+    });
     dataTable.columns.adjust().draw();
 
     function searchTable() {
         dataTable.ajax.reload();
     }
 
-    function edit(empcode) {
-        var url = "{{ route('employee.edit', '')}}"+"/"+empcode;
+    function edit(id) {
+        var url = "{{ route('orders.edit', '')}}"+"/"+id;
         location.href = url;
     }
 
-    function view(empcode) {
-        var url = "{{ route('employee.view', '')}}"+"/"+empcode;
+    function detail(id) {
+        var url = "{{ route('orders.detail', '')}}"+"/"+id;
         location.href = url;
     }
+
+
 
 
     </script>

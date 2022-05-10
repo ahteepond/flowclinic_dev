@@ -11,7 +11,7 @@
             <h1 class="page-title">@yield('title')</h1>
             <div>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('order') }}">จัดการใบสั่งซื้อ</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('orders') }}">จัดการใบสั่งซื้อ</a></li>
                     <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
                 </ol>
             </div>
@@ -27,28 +27,27 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-label">เลขที่ใบสั่งซื้อ</label>
-                                    <h2>ODR-0001</h2>
+                                    <h2>{{ $res->code }}</h2>
                                 </div>
                             </div>
                             <div class="col-lg-6 text-end border-bottom border-lg-0">
-                                <h5 class="mt-5">วันที่ใบสั่งซื้อ: 07-04-2022 09:00:00</h5>
+                                <h5 class="mt-5">วันที่ใบสั่งซื้อ: {{ $res->created_at }}</h5>
                             </div>
                         </div>
                         <div class="row pt-5">
                             <div class="col-lg-6">
                                 <p class="h3">ข้อมูลลูกค้า:</p>
-                                <p class="fs-18 fw-semibold mb-0"><a href="#">CUS-0001</a> พงศกร เหล่านิยมไทย</p>
+                                <p class="fs-18 fw-semibold mb-0"><a href="#">CUS-0001</a> {{ $res->fname }} {{ $res->lname }}</p>
                                 <address>
-                                    <span><b>081 234 5678</b></span><br>
-                                    เลขที่ 1/2 แขวงลาดพร้าว เขตลาดพร้าว
-                                    กรุงเทพมหานคร, 10230
+                                    <span><b>{{ $res->tel }}</b></span><br>
+                                    {{ $res->addr }}
                                 </address>
                             </div>
                             <div class="col-lg-6 text-end">
                                 <p class="h4 fw-semibold">รายละเอียดการชำระเงิน:</p>
                                 <p class="mb-3">สถานะการชำระเงินของใบสั่งซื้อ: <span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">อยู่ระหว่างการชำระเงิน</span></p>
-                                <p class="mb-1">ชำระแล้ว: <span class="h4">2,000.-</span></p>
-                                <p class="mb-1">ยอดคงค้าง: <span class="h4">106,600.-</span></p>
+                                <p class="mb-1">ชำระแล้ว: <span class="h4">@price($res->price_paid)</span></p>
+                                <p class="mb-1">ยอดคงค้าง: <span class="h4">@price($res->price_balance)</span></p>
                             </div>
                         </div>
                         <div class="table-responsive push">
@@ -100,7 +99,7 @@
                         <div class="row pt-5">
                             <div class="col-lg-12">
                                 <p class="h4">หมายเหตุ:</p>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique nostrum voluptates quod et veritatis dignissimos voluptatibus tempora commodi voluptatum? Tempore!</p>
+                                <p>{{ $res->remark }}</p>
                             </div>
                         </div>
                         <div class="row pt-5">
@@ -108,10 +107,10 @@
                                 <p class="h4">ผู้ขาย:</p>
                                 <div class="row">
                                     <div class="col-auto">
-                                        <h5 class="mt-0"><i class="mdi mdi-account-box me-2"></i>ผู้ขาย A</h5>
+                                        <h5 class="mt-0"><i class="mdi mdi-account-box me-2"></i>{{ $res->sale_1 }}</h5>
                                     </div>
                                     <div class="col-auto">
-                                        <h5 class="mt-0"><i class="mdi mdi-account-box me-2"></i>ผู้ขาย B</h5>
+                                        <h5 class="mt-0"><i class="mdi mdi-account-box me-2"></i>{{ $res->sale_2 }}</h5>
                                     </div>
                                 </div>
                             </div>

@@ -97,7 +97,6 @@
 
     <script>
     $( document ).ready(function() {
-        $('#datatableinfo').DataTable();
     });
 
     var dataTable = $('#datatableinfo').DataTable({
