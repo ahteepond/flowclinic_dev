@@ -112,7 +112,7 @@
         },
         columns: [
             { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            { title: "ชื่อประเภทบริการ", data: 'servicetype', name: 'servicetype' },
+            { title: "ประเภทบริการ", data: 'servicetype', name: 'servicetype' },
             { title: "สถานะใช้งาน", data: 'active', name: 'active' },
             { title: "Action", data: 'action', name: 'action', orderable: false, searchable: false },
         ],

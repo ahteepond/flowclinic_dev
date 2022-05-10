@@ -74,41 +74,6 @@
                                 <div class="table-responsive">
                                     <table id="datatableinfo" class="table table-bordered w-100 border-bottom">
 
-                                        <thead>
-                                            <tr>
-                                                <th>NO.</th>
-                                                <th>วิธีการชำระเงิน</th>
-                                                <th>สถานะใช้งาน</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>เงินสด</td>
-                                                <td><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">Active</span></td>
-                                                <td>
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>บัตรเครดิต</td>
-                                                <td><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">Active</span></td>
-                                                <td>
-                                                    <a href="{{ route('paymenttype.edit') }}" title="แก้ไข" class="btn text-primary btn-sm"><span class="fe fe-edit"></span></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>โอน</td>
-                                                <td><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">Active</span></td>
-                                                <td>
-                                                    <a href="{{ route('paymenttype.edit') }}" title="แก้ไข" class="btn text-primary btn-sm"><span class="fe fe-edit"></span></a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-
                                     </table>
                                 </div>
                             </div>
@@ -132,16 +97,38 @@
 
     <script>
     $( document ).ready(function() {
-        $('#datatableinfo').DataTable();
     });
 
+    var dataTable = $('#datatableinfo').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: "GET",
+            url: "{{ route('paymenttype.list') }}",
+            data: function( d ) {
+                d.active = $('#status :selected').val()
+            },
+        },
+        columns: [
+            { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { title: "วิธีการชำระเงิน", data: 'paymenttypename', name: 'paymenttypename' },
+            { title: "สถานะใช้งาน", data: 'active', name: 'active' },
+            { title: "Action", data: 'action', name: 'action', orderable: false, searchable: false },
+        ],
+        'columnDefs': [
+            { "className": "text-center", "targets": [0,2,3] },
+        ]
+    });
+    dataTable.columns.adjust().draw();
+
     function searchTable() {
-        // dataTable.ajax.reload();
+        dataTable.ajax.reload();
     }
 
-    // function edit(id) {
-    //     var url = "{{ route('paymenttype.edit', '')}}"+"/"+id;
-    // }
+    function edit(id) {
+        var url = "{{ route('paymenttype.edit', '')}}"+"/"+id;
+        location.href = url;
+    }
 
     </script>
 @endsection

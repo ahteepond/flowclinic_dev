@@ -32,7 +32,7 @@
                                     <div class="col-sm-12 col-md-3">
                                         <div class="form-group">
                                             <label class="form-label">ชื่อประเภทบริการ <span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อประเภทบริการ" id="name" value="{{ $res->servicetype_name_th }}">
+                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อประเภทบริการ" id="name" value="{{ $res->name_th }}">
                                         </div>
                                     </div>
                                     <div class="col-md-9"></div>
@@ -50,7 +50,7 @@
                                     <div class="col-12 text-end">
                                         <hr>
                                         <a href="{{ route('servicetype') }}" class="btn btn-outline-primary me-2">Back</a>
-                                        <a href="javascript:void(0)" onclick="update({{ $res->servicetype_id }})" class="btn btn-primary">Save</a>
+                                        <a href="javascript:void(0)" onclick="update({{ $res->id }})" class="btn btn-primary">Save</a>
                                     </div>
 
                                 </div>
@@ -71,7 +71,10 @@
 
     <script>
     $( document ).ready(function() {
-        // alert( "ready!" );
+        $('#active').select2({
+            minimumResultsForSearch: Infinity,
+            width: '100%'
+        });
     });
 
     function update(id) {

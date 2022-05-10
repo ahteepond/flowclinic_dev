@@ -31,8 +31,8 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-5">
                                         <div class="form-group">
-                                            <label class="form-label">ชื่อประเภทส่วนลด <span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อประเภทส่วนลด" id="" value="Vocher">
+                                            <label class="form-label">วิธีการชำระเงิน <span class="text-red">*</span></label>
+                                            <input type="text" class="form-control" placeholder="กรุณากรอกวิธีการชำระเงิน" id="name" value="{{ $res->name }}">
                                         </div>
                                     </div>
                                     <div class="col-md-7"></div>
@@ -40,15 +40,15 @@
                                     <div class="col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <label class="form-label">คำอธิบาย</label>
-                                            <textarea class="form-control" name="" id="" rows="5" placeholder="กรุณากรอกรายละเอียด">Vocher</textarea>
+                                            <textarea class="form-control" id="description" rows="5" placeholder="กรุณากรอกรายละเอียด">{{ $res->description }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="form-label">สถานะใช้งาน <span class="text-red">*</span></label>
                                             <select class="form-select" id="active">
-                                                <option value="1" selected>Active</option>
-                                                <option value="0" >Inactive</option>
+                                                <option value="1" {{ $res->active === 1 ? "Selected" : "" }}>Active</option>
+                                                <option value="0" {{ $res->active === 0 ? "Selected" : "" }}>Inactive</option>
                                             </select>
                                         </div>
                                     </div>
@@ -57,7 +57,7 @@
                                     <div class="col-12 text-end">
                                         <hr>
                                         <a href="{{ route('discounttype') }}" class="btn btn-outline-primary me-2">Back</a>
-                                        <a href="javascript:void(0)" onclick="insert()" class="btn btn-primary">Save</a>
+                                        <a href="javascript:void(0)" onclick="update({{ $res->id }})" class="btn btn-primary">Save</a>
                                     </div>
 
                                 </div>
@@ -78,11 +78,44 @@
 
     <script>
     $( document ).ready(function() {
-        // alert( "ready!" );
+        $('#active').select2({
+            minimumResultsForSearch: Infinity,
+            width: '100%'
+        });
     });
 
-    function insert() {
-        console.log('Insert Function');
+    function update(id) {
+        $.ajax({
+            url: '{{ route('discounttype.update') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                name: $('#name').val(),
+                evidence: $('#evidence').val(),
+                description: $('#description').val(),
+                active: $('#active :selected').val(),
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    swal({
+                        title: "Updated!",
+                        text: "Your infomation has been succesfully update.",
+                        type: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonClass: "btn-success",
+                        closeOnConfirm: false,
+                        },
+                        function(isConfirm) {
+                        if (isConfirm) {
+                            location.href = '{{ route('discounttype') }}';
+                        }
+                    });
+                }
+            },
+            complete: function () {
+            }
+        });
     }
 
     </script>

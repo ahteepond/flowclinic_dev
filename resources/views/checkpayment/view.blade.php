@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <p>สถานะการชำระเงิน: <span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3 ms-2">Waiting for approve</span></p>
+                                <p>สถานะการชำระเงิน: <span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3 ms-2">รออนุมัติ</span></p>
                                 <div class="form-group mt-5">
                                     <label class="form-label">เลขที่ชำระเงิน</label>
                                     <h2>PAY-0001</h2>
@@ -80,7 +80,7 @@
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                         <label class="form-label">หลักฐานการชำระเงิน</label>
-                                                        <a href="#" class="btn btn-sm btn-outline-dark">View</a>
+                                                        <a href="#" class="btn btn-sm btn-outline-dark">ดูหลักฐานการชำระเงิน</a>
                                                     </div>
                                                 </div>
                                             </div>

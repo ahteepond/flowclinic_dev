@@ -22,7 +22,7 @@ class ServiceTypeController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                  ->addColumn('servicetype', function($row){
-                    $servicetype = $row->servicetype_name_th;
+                    $servicetype = $row->name_th;
                     return $servicetype;
                 })
                 ->addColumn('active', function($row){
@@ -32,7 +32,7 @@ class ServiceTypeController extends Controller
                     return $active;
                 })
                 ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" title="แก้ไข" onclick="edit('.$row->servicetype_id.')" class="btn text-primary btn-sm"><span class="fe fe-edit"></span></a>';
+                    $btn = '<a href="javascript:void(0)" title="แก้ไข" onclick="edit('.$row->id.')" class="btn text-primary btn-sm"><span class="fe fe-edit"></span></a>';
                     return $btn;
                 })
                 ->rawColumns(['action', 'active'])
@@ -46,7 +46,7 @@ class ServiceTypeController extends Controller
 
     public function insert(Request $request) {
         $arr_data = array(
-            "servicetype_name_th" => $request->name,
+            "name_th" => $request->name,
             "active" => $request->active,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
@@ -59,19 +59,19 @@ class ServiceTypeController extends Controller
     public function edit($id) {
         $res = DB::table('service_type')
             ->select('service_type.*')
-            ->where('servicetype_id', $id)
+            ->where('id', $id)
             ->first();
         return view('servicetype.edit', compact('res') );
     }
 
     public function update(Request $request) {
         $arr_data = array(
-            "servicetype_name_th" => $request->name,
+            "name_th" => $request->name,
             "active" => $request->active,
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         );
         $update = DB::table('service_type')
-            ->where('servicetype_id', $request->id)
+            ->where('id', $request->id)
             ->update($arr_data);
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $update ]);
     }

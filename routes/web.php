@@ -54,22 +54,33 @@ Route::post('/servicetype/update', 'ServiceTypeController@update')->name('servic
 // Service -------------------------------
 Route::get('/service', 'ServiceController@index')->name('service');
 Route::get('/service/new', 'ServiceController@new')->name('service.new');
-Route::get('/service/edit', 'ServiceController@edit')->name('service.edit');
-Route::get('/service/view', 'ServiceController@view')->name('service.view');
+Route::get('/service/edit/{id}', 'ServiceController@edit')->name('service.edit');
+Route::get('/service/view/{id}', 'ServiceController@view')->name('service.view');
+Route::get('/service/list', 'ServiceController@list')->name('service.list');
+Route::post('/service/getdata', 'ServiceController@getdata')->name('service.getdata');
+Route::post('/service/update', 'ServiceController@update')->name('service.update');
+Route::post('/service/insert', 'ServiceController@insert')->name('service.insert');
+
 
 
 
 // Payment Type -------------------------------
 Route::get('/paymenttype', 'PaymentTypeController@index')->name('paymenttype');
 Route::get('/paymenttype/new', 'PaymentTypeController@new')->name('paymenttype.new');
-Route::get('/paymenttype/edit', 'PaymentTypeController@edit')->name('paymenttype.edit');
+Route::get('/paymenttype/edit/{id}', 'PaymentTypeController@edit')->name('paymenttype.edit');
+Route::get('/paymenttype/list', 'PaymentTypeController@list')->name('paymenttype.list');
+Route::post('/paymenttype/update', 'PaymentTypeController@update')->name('paymenttype.update');
+Route::post('/paymenttype/insert', 'PaymentTypeController@insert')->name('paymenttype.insert');
 
 
 
 // Discount Type -------------------------------
 Route::get('/discounttype', 'DiscountTypeController@index')->name('discounttype');
 Route::get('/discounttype/new', 'DiscountTypeController@new')->name('discounttype.new');
-Route::get('/discounttype/edit', 'DiscountTypeController@edit')->name('discounttype.edit');
+Route::get('/discounttype/edit/{id}', 'DiscountTypeController@edit')->name('discounttype.edit');
+Route::get('/discounttype/list', 'DiscountTypeController@list')->name('discounttype.list');
+Route::post('/discounttype/update', 'DiscountTypeController@update')->name('discounttype.update');
+Route::post('/discounttype/insert', 'DiscountTypeController@insert')->name('discounttype.insert');
 
 
 
@@ -77,6 +88,10 @@ Route::get('/discounttype/edit', 'DiscountTypeController@edit')->name('discountt
 Route::get('/customertype', 'CustomerTypeController@index')->name('customertype');
 Route::get('/customertype/new', 'CustomerTypeController@new')->name('customertype.new');
 Route::get('/customertype/edit', 'CustomerTypeController@edit')->name('customertype.edit');
+Route::get('/customertype/edit/{id}', 'CustomerTypeController@edit')->name('customertype.edit');
+Route::get('/customertype/list', 'CustomerTypeController@list')->name('customertype.list');
+Route::post('/customertype/update', 'CustomerTypeController@update')->name('customertype.update');
+Route::post('/customertype/insert', 'CustomerTypeController@insert')->name('customertype.insert');
 
 
 

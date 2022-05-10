@@ -32,19 +32,19 @@
                                     <div class="col-12 text-start">
                                         <div class="row align-items-end">
                                             <div class="form-group col-auto">
+                                                <label class="form-label">สถานะ</label>
+                                                <select name="status" id="status" class="form-control form-select" data-bs-placeholder="Select Status">
+                                                    <option value="1" selected>Active</option>
+                                                    <option value="0">Inactive</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-auto">
                                                 <label class="form-label">ตำแหน่ง</label>
                                                 <select name="position" id="position" class="form-control form-select" data-bs-placeholder="Select Position">
                                                         <option value="All" selected>All</option>
                                                         @foreach($res_empposi as $psi)
                                                             <option value="{{ $psi->emp_posi_id }}">{{ $psi->emp_posi_name }}</option>
                                                         @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-auto">
-                                                <label class="form-label">สถานะ</label>
-                                                <select name="status" id="status" class="form-control form-select" data-bs-placeholder="Select Status">
-                                                    <option value="1" selected>Active</option>
-                                                    <option value="0">Inactive</option>
                                                 </select>
                                             </div>
                                             <div class="col-auto">
@@ -125,12 +125,12 @@
             { title: "รหัสพนักงาน", data: 'empcode', name: 'empcode' },
             { title: "ชื่อ-นามสกุล", data: 'empfullname', name: 'empfullname' },
             { title: "ตำแหน่ง", data: 'empposition', name: 'empposition' },
-            // { title: "เบอร์โทรศัพท์", data: 'emptel', name: 'emptel' },
+            { title: "เบอร์โทรศัพท์", data: 'emptel', name: 'emptel' },
             { title: "สถานะใช้งาน", data: 'active', name: 'active' },
             { title: "Action", data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         'columnDefs': [
-            { "className": "text-center", "targets": [0,4,5] },
+            { "className": "text-center", "targets": [0,5,6] },
         ]
     });
     dataTable.columns.adjust().draw();

@@ -146,7 +146,7 @@
                                 <div class="row">
                                     <div class="col-12"><hr></div>
                                     <div class="col-12 text-center">
-                                        <a href="javascript:void(0)" onclick="confirmAdmitted()" class="btn btn-primary btn-rounded waves-effect waves-light">บันทึกเข้ารับการรักษา</a>
+                                        <a href="javascript:void(0)" onclick="confirmAdmitted()" class="btn btn-primary btn-rounded waves-effect waves-light">ยืนยันและส่งการเข้ารับการรักษา (OR)</a>
                                     </div>
                                 </div>
                             </div>

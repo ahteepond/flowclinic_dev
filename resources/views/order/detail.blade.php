@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-lg-6 text-end">
                                 <p class="h4 fw-semibold">รายละเอียดการชำระเงิน:</p>
-                                <p class="mb-3">สถานะการชำระเงินของใบสั่งซื้อ: <span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">During</span></p>
+                                <p class="mb-3">สถานะการชำระเงินของใบสั่งซื้อ: <span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">อยู่ระหว่างการชำระเงิน</span></p>
                                 <p class="mb-1">ชำระแล้ว: <span class="h4">2,000.-</span></p>
                                 <p class="mb-1">ยอดคงค้าง: <span class="h4">106,600.-</span></p>
                             </div>
@@ -101,6 +101,19 @@
                             <div class="col-lg-12">
                                 <p class="h4">หมายเหตุ:</p>
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique nostrum voluptates quod et veritatis dignissimos voluptatibus tempora commodi voluptatum? Tempore!</p>
+                            </div>
+                        </div>
+                        <div class="row pt-5">
+                            <div class="col-lg-12">
+                                <p class="h4">ผู้ขาย:</p>
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <h5 class="mt-0"><i class="mdi mdi-account-box me-2"></i>ผู้ขาย A</h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <h5 class="mt-0"><i class="mdi mdi-account-box me-2"></i>ผู้ขาย B</h5>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -163,7 +176,7 @@
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label class="form-label">สถานะการชำระเงิน</label>
-                                                <span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">Success</span>
+                                                <span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">สำเร็จ</span>
                                             </div>
                                         </div>
                                     </div>
@@ -211,13 +224,13 @@
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label class="form-label">สถานะการชำระเงิน</label>
-                                                <span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">Waiting for approve</span>
+                                                <span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รออนุมัติ</span>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label class="form-label">หลักฐานการชำระเงิน</label>
-                                                <a href="#" class="btn btn-sm btn-outline-dark">View</a>
+                                                <a href="#" class="btn btn-sm btn-outline-dark">ดูหลักฐานการชำระเงิน</a>
                                             </div>
                                         </div>
                                     </div>
@@ -339,7 +352,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">สถานะการชำระเงิน</label>
-                            <span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">Waiting for approve</span>
+                            <span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รออนุมัติ</span>
                         </div>
                     </div>
                     <div class="col-md-12">

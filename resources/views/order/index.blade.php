@@ -115,8 +115,8 @@
                                                 <td><a href="{{ route('order.detail') }}" title="" class="text-primary">ODR-0001</a></td>
                                                 <td class="text-end">108,600.-</td>
                                                 <td>พงศกร เหล่านิยมไทย</td>
-                                                <td class="text-center"><span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">During</span></td>
-                                                <td class="text-center"><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">Success</span></td>
+                                                <td class="text-center"><span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">อยู่ระหว่างการชำระเงิน</span></td>
+                                                <td class="text-center"><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">สำเร็จ</span></td>
                                                 <td>07-04-2022<br>09:00:00</td>
                                             </tr>
                                         </tbody>

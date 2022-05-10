@@ -102,6 +102,7 @@
                             </div> --}}
                             <div class="col-12 text-center">
                                 <hr>
+                                <a href="javascript:void(0)" onclick="backtoEmpType(1)" class="btn btn-outline-dark btn-rounded waves-effect waves-light me-2"><i class="fa fa-chevron-left me-2"></i> ย้อนกลับ</a>
                                 <a href="javascript:void(0)" onclick="confirmAddNewEmp()" class="btn btn-primary btn-rounded waves-effect waves-light"><i class="fa fa-chevron-right me-2"></i> ต่อไป</a>
                             </div>
                         </div>
@@ -183,6 +184,7 @@
                             </div>
                             <div class="col-12 text-center">
                                 <hr>
+                                <a href="javascript:void(0)" onclick="backtoEmpType(2)" class="btn btn-outline-dark btn-rounded waves-effect waves-light me-2"><i class="fa fa-chevron-left me-2"></i> ย้อนกลับ</a>
                                 <a href="javascript:void(0)" onclick="confirmSelectEmp()" class="btn btn-primary btn-rounded waves-effect waves-light"><i class="fa fa-chevron-right me-2"></i> ต่อไป</a>
                             </div>
                         </div>
@@ -202,7 +204,7 @@
                             คำสั่งซื้อใหม่
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body row">
                         <div class="col-12 mb-3">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -375,7 +377,36 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 text-center">
+                        <div class="col-md-12">
+                            <hr>
+                            <h4 class="fw-bold mt-3">ผู้ขาย</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label"> ผู้ขายคนที่ 1</label>
+                                <select class="form-control select2-show-search form-select" data-placeholder="กรุณาเลือกผู้ขายคนที่ 1...">
+                                        <option label="กรุณาเลือกผู้ขายคนที่ 1..."></option>
+                                        <option value="A">ผู้ขาย A</option>
+                                        <option value="B">ผู้ขาย B</option>
+                                        <option value="C">ผู้ขาย C</option>
+                                        <option value="D">ผู้ขาย D</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label"> ผู้ขายคนที่ 2</label>
+                                <select class="form-control select2-show-search form-select" data-placeholder="กรุณาเลือกผู้ขายคนที่ 2...">
+                                        <option label="กรุณาเลือกผู้ขายคนที่ 2..."></option>
+                                        <option value="0">ไม่ระบุ</option>
+                                        <option value="A">ผู้ขาย A</option>
+                                        <option value="B">ผู้ขาย B</option>
+                                        <option value="C">ผู้ขาย C</option>
+                                        <option value="S">ผู้ขาย D</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center my-5">
                             <hr>
                             <a href="javascript:void(0)" onclick="confirmOrder()" class="btn btn-primary btn-rounded waves-effect waves-light"><i class="fa fa-chevron-right me-2"></i> บันทึกคำสั่งซื้อ</a>
                         </div>
@@ -471,7 +502,8 @@
                         </div> --}}
                         <div class="col-12 text-center">
                             <hr>
-                            <a href="javascript:void(0)" onclick="gotoThisOrder()" class="btn btn-primary btn-rounded waves-effect waves-light"><i class="fa fa-chevron-right me-2"></i>ไปยังหน้าของใบสั่งซื้อ</a>
+                            <a href="javascript:void(0)" onclick="gotoThisOrder()" class="btn btn-primary btn-rounded waves-effect waves-light mr-2"><i class="fa fa-chevron-right me-2"></i>ไปยังหน้าของใบสั่งซื้อ</a>
+                            <a href="javascript:void(0)" onclick="gotoThisOrder()" class="btn btn-info btn-rounded waves-effect waves-light"><i class="fa fa-chevron-right me-2"></i>ทำใบนัด</a>
                         </div>
                     </div>
                 </div>
@@ -546,12 +578,20 @@
 @section('script')
 
     <!-- FILE UPLOADES JS -->
-    <script src="../assets/plugins/fileuploads/js/fileupload.js"></script>
-    <script src="../assets/plugins/fileuploads/js/file-upload.js"></script>
+    <script src="{{ asset('assets/plugins/fileuploads/js/fileupload.js') }}"></script>
+    <script src="{{ asset('assets/plugins/fileuploads/js/file-upload.js') }}"></script>
+
+    <!-- SELECT2 JS -->
+    <script src="{{ asset('assets/plugins/select2/select2.full.min.js') }}"></script>
 
     <script>
     $( document ).ready(function() {
         setViewDefault();
+    });
+
+    $('.select2-show-search').select2({
+        minimumResultsForSearch: '',
+        width: '100%'
     });
 
     function setViewDefault() {
@@ -575,6 +615,18 @@
         }
     }
 
+    function backtoEmpType(v) {
+        switch (v) {
+            case 1:
+                $('#space_newemp').hide();
+                $('#space_emptype').fadeIn();
+                break;
+            case 2:
+                $('#space_oldemp').hide();
+                $('#space_emptype').fadeIn();
+                break;
+        }
+    }
 
     function confirmAddNewEmp() {
         swal({

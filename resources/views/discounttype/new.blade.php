@@ -31,8 +31,8 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-5">
                                         <div class="form-group">
-                                            <label class="form-label">ชื่อประเภทส่วนลด <span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อประเภทส่วนลด" id="">
+                                            <label class="form-label">วิธีการชำระเงิน <span class="text-red">*</span></label>
+                                            <input type="text" class="form-control" placeholder="กรุณากรอกวิธีการชำระเงิน" id="name" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-7"></div>
@@ -40,7 +40,7 @@
                                     <div class="col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <label class="form-label">คำอธิบาย</label>
-                                            <textarea class="form-control" name="" id="" rows="5" placeholder="กรุณากรอกรายละเอียด"></textarea>
+                                            <textarea class="form-control" id="description" rows="5" placeholder="กรุณากรอกรายละเอียด"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -48,7 +48,7 @@
                                             <label class="form-label">สถานะใช้งาน <span class="text-red">*</span></label>
                                             <select class="form-select" id="active">
                                                 <option value="1" selected>Active</option>
-                                                <option value="0" >Inactive</option>
+                                                <option value="0">Inactive</option>
                                             </select>
                                         </div>
                                     </div>
@@ -78,11 +78,43 @@
 
     <script>
     $( document ).ready(function() {
-        // alert( "ready!" );
+        $('#active').select2({
+            minimumResultsForSearch: Infinity,
+            width: '100%'
+        });
     });
 
     function insert() {
-        console.log('Insert Function');
+        $.ajax({
+            url: '{{ route('discounttype.insert') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                name: $('#name').val(),
+                evidence: $('#evidence').val(),
+                description: $('#description').val(),
+                active: $('#active :selected').val(),
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    swal({
+                        title: "Saved!",
+                        text: "Your infomation has been succesfully save.",
+                        type: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonClass: "btn-success",
+                        closeOnConfirm: false,
+                        },
+                        function(isConfirm) {
+                        if (isConfirm) {
+                            location.href = '{{ route('discounttype') }}';
+                        }
+                    });
+                }
+            },
+            complete: function () {
+            }
+        });
     }
 
     </script>

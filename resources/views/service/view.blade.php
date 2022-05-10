@@ -31,40 +31,51 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-5">
                                         <div class="form-group">
-                                            <label class="form-label">ชื่อบริการ <span class="text-red">*</span></label>
-                                            <p>เสริมหน้าอก (Breast Augmentation)</p>
+                                            <label class="form-label">ประเภทบริการ</label>
+                                            <p>{{ $res->servicetype_nameth }}</p>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-5">
                                         <div class="form-group">
-                                            <label class="form-label">ชื่อบริการย่อย <span class="text-red">*</span></label>
-                                            <p>ซิลิโคน ซิลิเมต (Silicone Silimed)</p>
+                                            <label class="form-label">บริการหลัก</label>
+                                            <p>{{ $res->servicemaster_nameth }} ({{ $res->servicemaster_nameen }})</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="form-group">
+                                            <label class="form-label">บริการย่อย</label>
+                                            <p>{{ $res->service_nameth }} ({{ $res->service_nameen }})</p>
                                         </div>
                                     </div>
                                     <div class="col-md-6"></div>
                                     <div class="col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <label class="form-label">รายละเอียด </label>
-                                            <p>ไม่เกิน 400cc เกิน 3,000</p>
+                                            <p>{{ $res->description }}</p>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label">ราคา <span class="text-red">*</span></label>
-                                            <p>45,000 บาท</p>
+                                            <p>@price($res->price) บาท</p>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-4">
                                         <div class="form-group">
-                                            <label class="form-label">ราคาโปรโมชั่น <span class="text-red">*</span></label>
-                                            <p>26,900 บาท</p>
+                                            <label class="form-label">ราคาโปรโมชั่น</label>
+                                            <p>@price($res->price_promo) บาท</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4"></div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">สถานะใช้งาน <span class="text-red">*</span></label>
-                                            <p>Active</p>
+                                            <label class="form-label">สถานะใช้งาน</label>
+                                            @if ($res->active === 1)
+                                                <p><span class="badge rounded-pill bg-success-gradient badge-sm me-1 mb-1 mt-1 py-2 px-3">Active</span></p>
+                                            @endif
+                                            @if ($res->active === 0)
+                                                <p><span class="badge rounded-pill bg-default-gradient badge-sm me-1 mb-1 mt-1 py-2 px-3">Inactive</span></p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-9"></div>
@@ -72,7 +83,7 @@
                                     <div class="col-12 text-end">
                                         <hr>
                                         <a href="{{ route('service') }}" class="btn btn-outline-primary me-2">Back</a>
-                                        <a href="{{ route('service.edit') }}" onclick="edit()" class="btn btn-primary">Edit</a>
+                                        <a href="{{ route('service.edit', '')}}{{ '/'.$res->id }}" class="btn btn-primary">Edit</a>
                                     </div>
 
                                 </div>
@@ -96,9 +107,6 @@
         // alert( "ready!" );
     });
 
-    function edit() {
-        console.log('edit Function');
-    }
 
     </script>
 @endsection

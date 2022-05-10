@@ -38,6 +38,15 @@
                                                     <option value="0">Inactive</option>
                                                 </select>
                                             </div>
+                                            <div class="form-group col-auto">
+                                                <label class="form-label">ประเภทบริการ</label>
+                                                <select name="servicetype" id="servicetype" class="form-control form-select" data-bs-placeholder="เลือกประเภทบริการ">
+                                                    <option value="A" selected>ทั้งหมด</option>
+                                                    @foreach($service_type as $st)
+                                                    <option value="{{ $st->id }}">{{ $st->name_th }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             <div class="col-auto">
                                                 <button type="button"onclick="searchTable()" class="btn btn-outline-primary mb-4 btn-block"><i class="fa fa-search me-2"></i>ค้นหา</button>
                                             </div>
@@ -74,28 +83,6 @@
                                 <div class="table-responsive">
                                     <table id="datatableinfo" class="table table-bordered w-100 border-bottom">
 
-                                        <thead>
-                                            <tr>
-                                                <th>NO.</th>
-                                                <th>ชื่อบริการหลัก</th>
-                                                <th>ชื่อย่อย</th>
-                                                <th>สถานะใช้งาน</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>เสริมหน้าอก (Breast Augmentation)</td>
-                                                <td>ซิลิโคน ซิลิเมต (Silicone Silimed) </td>
-                                                <td><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">Active</span></td>
-                                                <td>
-                                                    <a href="{{ route('service.view') }}" title="รายละเอียด" class="btn text-info btn-sm"><i class="ion-more"></i></a>
-                                                    <a href="{{ route('service.edit') }}" title="แก้ไข" class="btn text-primary btn-sm"><span class="fe fe-edit"></span></a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-
                                     </table>
                                 </div>
                             </div>
@@ -119,16 +106,46 @@
 
     <script>
     $( document ).ready(function() {
-        $('#datatableinfo').DataTable();
     });
 
+    var dataTable = $('#datatableinfo').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: "GET",
+            url: "{{ route('service.list') }}",
+            data: function( d ) {
+                d.active = $('#status :selected').val(),
+                d.servicetype = $('#servicetype :selected').val()
+            },
+        },
+        columns: [
+            { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { title: "ประเภทบริการ", data: 'servicetypename', name: 'servicetypename' },
+            { title: "บริการหลัก", data: 'servicemastername', name: 'servicemastername' },
+            { title: "บริการย่อย", data: 'servicename', name: 'servicename' },
+            { title: "สถานะใช้งาน", data: 'active', name: 'active' },
+            { title: "Action", data: 'action', name: 'action', orderable: false, searchable: false },
+        ],
+        'columnDefs': [
+            { "className": "text-center", "targets": [0,4,5] },
+        ]
+    });
+    dataTable.columns.adjust().draw();
+
     function searchTable() {
-        // dataTable.ajax.reload();
+        dataTable.ajax.reload();
     }
 
-    // function edit(id) {
-    //     var url = "{{ route('service.edit', '')}}"+"/"+id;
-    // }
+    function edit(id) {
+        var url = "{{ route('service.edit', '')}}"+"/"+id;
+        location.href = url;
+    }
+
+    function view(id) {
+        var url = "{{ route('service.view', '')}}"+"/"+id;
+        location.href = url;
+    }
 
     </script>
 @endsection

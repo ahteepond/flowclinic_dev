@@ -107,7 +107,14 @@
 
     <script>
     $( document ).ready(function() {
-        // alert( "ready!" );
+        $('#position').select2({
+            minimumResultsForSearch: '',
+            width: '100%'
+        });
+        $('#active').select2({
+            minimumResultsForSearch: Infinity,
+            width: '100%'
+        });
     });
 
     function updateEmp(id, empcode) {

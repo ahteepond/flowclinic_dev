@@ -31,33 +31,48 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-5">
                                         <div class="form-group">
-                                            <label class="form-label">ชื่อบริการ <span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อบริการ" id="service">
+                                            <label class="form-label"> ประเภทบริการ <span class="text-red">*</span></label>
+                                            <select class="form-control form-select" data-placeholder="กรุณาเลือกประเภทบริการ" id="servicetype" onchange="selectServiceType()">
+
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-5">
                                         <div class="form-group">
-                                            <label class="form-label">ชื่อบริการย่อย <span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อบริการย่อย" id="">
+                                            <label class="form-label">บริการหลัก <span class="text-red">*</span></label>
+                                            <select class="form-control form-select" data-placeholder="กรุณาเลือกประเภทบริการ" id="servicemaster" onchange="">
+
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"></div>
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="form-group">
+                                            <label class="form-label">บริการย่อย (TH) <span class="text-red">*</span></label>
+                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อบริการย่อย" id="service_nameth" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="form-group">
+                                            <label class="form-label">บริการย่อย (EN) <span class="text-red">*</span></label>
+                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อบริการย่อย" id="service_nameen" value="">
+                                        </div>
+                                    </div>
                                     <div class="col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <label class="form-label">รายละเอียด </label>
-                                            <textarea class="form-control" name="" id="" rows="5" placeholder="กรุณากรอกรายละเอียด"></textarea>
+                                            <textarea class="form-control" rows="5" placeholder="กรุณากรอกรายละเอียด" id="description"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label">ราคา <span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" placeholder="กรุณากรอกราคา" id="">
+                                            <input type="number" min="1" step="any" class="form-control price" placeholder="กรุณากรอกราคา" id="price" value="" onclick="$(this).select();">
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label">ราคาโปรโมชั่น <span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" placeholder="กรุณากรอกราคาโปรโมชั่น" id="">
+                                            <input type="number" min="1" step="any" class="form-control price" placeholder="กรุณากรอกราคาโปรโมชั่น" id="price_promo" value="" onclick="$(this).select();">
                                         </div>
                                     </div>
                                     <div class="col-md-4"></div>
@@ -65,8 +80,8 @@
                                         <div class="form-group">
                                             <label class="form-label">สถานะใช้งาน <span class="text-red">*</span></label>
                                             <select class="form-select" id="active">
-                                                <option value="1" selected>Active</option>
-                                                <option value="0" >Inactive</option>
+                                                <option value="1">Active</option>
+                                                <option value="0">Inactive</option>
                                             </select>
                                         </div>
                                     </div>
@@ -96,11 +111,109 @@
 
     <script>
     $( document ).ready(function() {
-        // alert( "ready!" );
+        $('#servicetype').select2({
+            minimumResultsForSearch: '',
+            width: '100%'
+        });
+        $('#servicemaster').select2({
+            minimumResultsForSearch: '',
+            width: '100%'
+        });
+        $('#active').select2({
+            minimumResultsForSearch: Infinity,
+            width: '100%'
+        });
+        getdataServicetype();
     });
 
+    function selectServiceType() {
+        var id = $('#servicetype :selected').val();
+        getdataServicetype(id);
+    }
+
+    function getdataServicetype(id, fload) {
+        $.ajax({
+            url: '{{ route('service.getdata') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                val: "servicetype"
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    var html = '<option label="กรุณาเลือกประเภทบริการ"></option>';
+                    for (var i = 0; i < response.data.length; i++) {
+                        html += '<option value="'+response.data[i].id+'" '+(response.data[i].id == id ? 'selected' : '')+' >'+response.data[i].name_th+'</option>';
+                    }
+                    $('#servicetype').html(html);
+                }
+            },
+            complete: function () {
+                getdataServiceMaster(id, fload);
+            }
+        });
+    }
+
+    function getdataServiceMaster(id, fload) {
+        $.ajax({
+            url: '{{ route('service.getdata') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                val: "servicemaster",
+                id: id
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    var html = '<option label="กรุณาเลือกบริการหลัก"></option>';
+                    for (var i = 0; i < response.data.length; i++) {
+                        html += '<option value="'+response.data[i].id+'" '+(response.data[i].id == fload ? 'selected' : '')+' >'+response.data[i].name_th+' ('+response.data[i].name_en+')'+'</option>';
+                    }
+                    $('#servicemaster').html(html);
+                    console.log(response);
+                }
+            },
+            complete: function () {
+
+            }
+        });
+    }
+
     function insert() {
-        console.log('Insert Function');
+        $.ajax({
+            url: '{{ route('service.insert') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                servicetypeid: $('#servicetype :selected').val(),
+                servicemasterid: $('#servicemaster :selected').val(),
+                service_nameth: $('#service_nameth').val(),
+                service_nameen: $('#service_nameen').val(),
+                description: $('#description').val(),
+                price: $('#price').val(),
+                price_promo: $('#price_promo').val(),
+                active: $('#active :selected').val(),
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    swal({
+                        title: "Updated!",
+                        text: "Your infomation has been succesfully update.",
+                        type: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonClass: "btn-success",
+                        closeOnConfirm: false,
+                        },
+                        function(isConfirm) {
+                        if (isConfirm) {
+                            location.href = '{{ route('service') }}';
+                        }
+                    });
+                }
+            },
+            complete: function () {
+            }
+        });
     }
 
     </script>

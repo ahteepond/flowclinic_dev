@@ -92,8 +92,30 @@
                                                 <td><a href="{{ route('checkpayment.view') }}" title="" class="text-primary">PAY-0002</a></td>
                                                 <td>พงศกร เหล่านิยมไทย</td>
                                                 <td>บัญชี ทำดี</td>
-                                                <td class="text-center"><span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">Waiting for approve</span></td>
+                                                <td class="text-center"><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">อนุมัติแล้ว</span></td>
                                                 <td>07-04-2022<br>09:00:00</td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('checkpayment.view') }}" title="ตรวจสอบการชำระเงิน">ตรวจสอบการชำระเงิน</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="{{ route('order.detail') }}" title="" class="text-primary">ODR-0001</a></td>
+                                                <td><a href="{{ route('checkpayment.view') }}" title="" class="text-primary">PAY-0003</a></td>
+                                                <td>พงศกร เหล่านิยมไทย</td>
+                                                <td>บัญชี ทำดี</td>
+                                                <td class="text-center"><span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอแก้ไข</span></td>
+                                                <td>-</td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('checkpayment.view') }}" title="ตรวจสอบการชำระเงิน">ตรวจสอบการชำระเงิน</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="{{ route('order.detail') }}" title="" class="text-primary">ODR-0001</a></td>
+                                                <td><a href="{{ route('checkpayment.view') }}" title="" class="text-primary">PAY-0004</a></td>
+                                                <td>พงศกร เหล่านิยมไทย</td>
+                                                <td>บัญชี ทำดี</td>
+                                                <td class="text-center"><span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รออนุมัติ</span></td>
+                                                <td>-</td>
                                                 <td class="text-center">
                                                     <a href="{{ route('checkpayment.view') }}" title="ตรวจสอบการชำระเงิน">ตรวจสอบการชำระเงิน</a>
                                                 </td>
