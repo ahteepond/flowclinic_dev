@@ -9,6 +9,11 @@ use Carbon\Carbon;
 
 class CustomerTypeController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('checksession');
+    }
+    
     public function index() {
         return view('customertype.index');
     }

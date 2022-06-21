@@ -37,7 +37,7 @@
                         <div class="row pt-5">
                             <div class="col-lg-6">
                                 <p class="h3">ข้อมูลลูกค้า:</p>
-                                <p class="fs-18 fw-semibold mb-0"><a href="#">CUS-0001</a> {{ $res->fname }} {{ $res->lname }}</p>
+                                <p class="fs-18 fw-semibold mb-0"><a href="#">{{ $res->cust_code }}</a> {{ $res->fname }} {{ $res->lname }}</p>
                                 <address>
                                     <span><b>{{ $res->tel }}</b></span><br>
                                     {{ $res->addr }}

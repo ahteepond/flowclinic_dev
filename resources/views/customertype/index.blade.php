@@ -111,7 +111,7 @@
         },
         columns: [
             { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            { title: "วิธีการชำระเงิน", data: 'customertypename', name: 'customertypename' },
+            { title: "ประเภท", data: 'customertypename', name: 'customertypename' },
             { title: "สถานะใช้งาน", data: 'active', name: 'active' },
             { title: "Action", data: 'action', name: 'action', orderable: false, searchable: false },
         ],

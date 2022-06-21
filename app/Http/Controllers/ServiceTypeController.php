@@ -9,6 +9,11 @@ use Carbon\Carbon;
 
 class ServiceTypeController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('checksession');
+    }
+
     public function index() {
         return view('servicetype.index');
     }

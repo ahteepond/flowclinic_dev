@@ -31,8 +31,8 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-5">
                                         <div class="form-group">
-                                            <label class="form-label">วิธีการชำระเงิน <span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" placeholder="กรุณากรอกวิธีการชำระเงิน" id="name" value="{{ $res->name }}">
+                                            <label class="form-label">ชื่อประเภทลูกค้า <span class="text-red">*</span></label>
+                                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อประเภทลูกค้า" id="name" value="{{ $res->name }}">
                                         </div>
                                     </div>
                                     <div class="col-md-7"></div>

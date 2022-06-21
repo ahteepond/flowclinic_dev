@@ -9,6 +9,11 @@ use Carbon\Carbon;
 
 class PaymentTypeController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('checksession');
+    }
+
     public function index() {
         return view('paymenttype.index');
     }

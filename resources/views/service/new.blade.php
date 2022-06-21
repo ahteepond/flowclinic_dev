@@ -197,8 +197,8 @@
             success: function (response) {
                 if(response.status == "success") {
                     swal({
-                        title: "Updated!",
-                        text: "Your infomation has been succesfully update.",
+                        title: "Save!",
+                        text: "Your infomation has been succesfully save.",
                         type: "success",
                         confirmButtonText: "OK",
                         confirmButtonClass: "btn-success",

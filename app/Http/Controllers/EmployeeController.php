@@ -7,9 +7,15 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('checksession');
+    }
+
     public function index() {
         $res_empposi = DB::table('employee_position')
             ->get();
@@ -71,20 +77,45 @@ class EmployeeController extends Controller
     }
 
     public function insert(Request $request) {
-        $arr_data = array(
+        $arr_data_emp = array(
             "emp_code" => $request->empcode,
             "emp_fname_th" => $request->empfname,
             "emp_lname_th" => $request->emplname,
             "emp_posi_id" => $request->empposi,
             "emp_tel" => $request->emptel,
             "emp_email" => $request->empemail,
+            "emp_birthdate" => $request->empbirthdate,
+            "emp_img" => $request->empimg,
             "active" => $request->active,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         );
-        $res = DB::table('employee')
-        ->insertOrIgnore($arr_data);
-        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+        $res_emp = DB::table('employee')
+        ->insertOrIgnore($arr_data_emp);
+
+        switch ($request->empposi) {
+            case '1': $role = "sa"; break;
+            case '2': $role = "ac"; break;
+            case '3': $role = "or"; break;
+            case '4': $role = "do"; break;
+            case '5': $role = "ad"; break;
+            case '6': $role = "su"; break;
+        }
+        $arr_data_user = array(
+            "emp_code" => $request->empcode,
+            "username" => $request->empcode,
+            "password" => Hash::make("flowclinic1234"),
+            "password_exp" => "2999-01-01 00:00:00",
+            "role" => $role,
+            "resetpassword" => 1,
+            "active" => 1,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        $res_user = DB::table('user')
+        ->insertOrIgnore($arr_data_user);
+
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res_emp ]);
     }
 
     public function view($empcode) {
@@ -116,6 +147,8 @@ class EmployeeController extends Controller
             "emp_posi_id" => $request->empposi,
             "emp_tel" => $request->emptel,
             "emp_email" => $request->empemail,
+            "emp_img" => $request->empimg,
+            "emp_birthdate" => $request->empbirthdate,
             "active" => $request->active,
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         );
@@ -123,6 +156,18 @@ class EmployeeController extends Controller
             ->where('emp_id', $request->id)
             ->where('emp_code', $request->empcode)
             ->update($arr_data);
+
+        if (session()->get('session_empcode') == $request->empcode) {
+            session(['session_empimg' => $request->empimg]);
+        }
+
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $update ]);
+    }
+
+    public function generateEmpcode() {
+        $res = DB::table('employee')
+        ->orderBy('emp_code', 'DESC')
+        ->first();
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res->emp_code+1 ]);
     }
 }

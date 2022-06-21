@@ -32,6 +32,9 @@
     <!-- COLOR SKIN CSS -->
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{asset('assets/colors/color1.css')}}" />
 
+    <!-- P Style --->
+    <link href="{{asset('assets/css/pstyle.css')}}" rel="stylesheet" />
+
 </head>
 
 <body class="app sidebar-mini ltr light-mode">
@@ -78,21 +81,21 @@
                                         <!-- FULL-SCREEN -->
                                         <div class="dropdown d-flex profile-1">
                                             <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
-                                                <img src="{{asset('assets/images/users/pond.jpg')}}" alt="profile-user"
-                                                    class="avatar  profile-user brround cover-image">
+                                                <img src="{{ empty(session()->get('session_empimg')) ? asset('assets/images/prv_img.jpg') : session()->get('session_empimg') }}" alt="profile-user"
+                                                    class="avatar  profile-user brround cover-image" style="object-fit: cover;">
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                 <div class="drop-heading">
                                                     <div class="text-center">
-                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold">Pongsakorn Laoniyomthai</h5>
-                                                        <small class="text-muted">Doctor</small>
+                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold">{{ session()->get('session_fullname') }}</h5>
+                                                        <small class="text-muted">{{ session()->get('session_empposition') }}</small>
                                                     </div>
                                                 </div>
                                                 <div class="dropdown-divider m-0"></div>
-                                                <a class="dropdown-item" href="#">
+                                                <a class="dropdown-item" href="{{ route('user.info') }}">
                                                     <i class="dropdown-icon fe fe-user"></i> ข้อมูลส่วนตัว
                                                 </a>
-                                                <a class="dropdown-item" href="{{ route('login') }}">
+                                                <a class="dropdown-item" href="{{ route('logout') }}">
                                                     <i class="dropdown-icon fe fe-alert-circle"></i> ออกจากระบบ
                                                 </a>
                                             </div>
@@ -131,7 +134,7 @@
                                 <h3>Main</h3>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item" data-bs-toggle="slide" href="{{ route('dashboard') }}"><i
+                                <a class="side-menu__item" data-bs-toggle="slide" href="/dashboard"><i
                                         class="side-menu__icon fe fe-home"></i><span
                                         class="side-menu__label">Dashboard</span></a>
                             </li>
@@ -144,12 +147,12 @@
                                         class="side-menu__label">จัดการข้อมูลพื้นฐาน</span><i
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
-                                    <li><a href="{{ route('servicetype') }}" class="slide-item"> ประเภทบริการ</a></li>
-                                    <li><a href="{{ route('service') }}" class="slide-item"> รายการบริการ</a></li>
-                                    <li><a href="{{ route('employee') }}" class="slide-item"> ข้อมูลพนักงาน</a></li>
-                                    <li><a href="{{ route('paymenttype') }}" class="slide-item"> วิธีการชำระเงิน</a></li>
-                                    <li><a href="{{ route('discounttype') }}" class="slide-item"> ประเภทส่วนลด</a></li>
-                                    <li><a href="{{ route('customertype') }}" class="slide-item"> ประเภทลูกค้า</a></li>
+                                    <li><a href="/servicetype" class="slide-item"> ประเภทบริการ</a></li>
+                                    <li><a href="/service" class="slide-item"> รายการบริการ</a></li>
+                                    <li><a href="/employee" class="slide-item"> ข้อมูลพนักงาน</a></li>
+                                    <li><a href="/paymenttype" class="slide-item"> วิธีการชำระเงิน</a></li>
+                                    <li><a href="/discounttype" class="slide-item"> ประเภทส่วนลด</a></li>
+                                    <li><a href="/customertype" class="slide-item"> ประเภทลูกค้า</a></li>
                                     {{-- <li><a href="{{ route('index') }}" class="slide-item"> ข้อมูลลูกค้า</a></li> --}}
                                 </ul>
                             </li>
@@ -159,12 +162,14 @@
                                         class="side-menu__label">บันทึกรายการข้อมูล</span><i
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
-                                    <li><a href="{{ route('orders') }}" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
-                                    <li><a href="{{ route('orders.new') }}" class="slide-item"> คำสั่งซื้อใหม่</a></li>
-                                    <li><a href="{{ route('checkpayment') }}" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
-                                    <li><a href="{{ route('appointment') }}" class="slide-item"> ออกใบนัด</a></li>
-                                    <li><a href="{{ route('admitted') }}" class="slide-item"> เข้ารับการรักษา</a></li>
-                                    <li><a href="{{ route('opd') }}" class="slide-item"> บันทึกประวัติ OPD</a></li>
+                                    <li><a href="/orders" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
+                                    <li><a href="/orders/new" class="slide-item"> คำสั่งซื้อใหม่</a></li>
+                                    <li><a href="/checkpayment" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
+                                    <li><a href="/appointment" class="slide-item"> ออกใบนัด</a></li>
+                                    <li><a href="/appointment" class="slide-item"> ตรวจสอบการนัดหมาย</a></li>
+                                    <li><a href="/appointment" class="slide-item"> รอรับการรักษา</a></li>
+                                    <li><a href="/admitted" class="slide-item"> เข้ารับการรักษา</a></li>
+                                    <li><a href="/opd" class="slide-item"> บันทึกประวัติ OPD</a></li>
                                 </ul>
                             </li>
                             <li class="sub-category">
@@ -176,11 +181,11 @@
                                         class="side-menu__label">รายงาน</span><i
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
-                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานข้อมูลลูกค้า</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานข้อมูลการักษารายคน (OPD)</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานสินค้าและบริการ</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานยอดขายรายวัน<br>(ใบเสร็จ)</a></li>
-                                    <li><a href="{{ route('index') }}" class="slide-item"> รายงานยอดขายรายวัน<br>(สินค้าและบริการ)</a></li>
+                                    <li><a href="/dashboard" class="slide-item"> รายงานข้อมูลลูกค้า</a></li>
+                                    <li><a href="/dashboard" class="slide-item"> รายงานข้อมูลการักษารายคน (OPD)</a></li>
+                                    <li><a href="/dashboard" class="slide-item"> รายงานสินค้าและบริการ</a></li>
+                                    <li><a href="/dashboard" class="slide-item"> รายงานยอดขายรายวัน<br>(ใบเสร็จ)</a></li>
+                                    <li><a href="/dashboard" class="slide-item"> รายงานยอดขายรายวัน<br>(สินค้าและบริการ)</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -281,6 +286,32 @@
     <!-- CUSTOM JS -->
     <script src="{{asset('assets/js/custom.js')}}"></script>
 
+    <script>
+        function commaSeparateNumber(val) {
+            // remove sign if negative
+            var sign = 1;
+            if (val < 0) {
+                sign = -1;
+                val = -val;
+            }
+
+            // trim the number decimal point if it exists
+            let num = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
+
+            while (/(\d+)(\d{3})/.test(num.toString())) {
+                // insert comma to 4th last position to the match number
+                num = num.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
+            }
+
+            // add number after decimal point
+            if (val.toString().includes('.')) {
+                num = num + '.' + val.toString().split('.')[1];
+            }
+
+            // return result with - sign if negative
+            return sign < 0 ? '-' + num : num;
+        }
+    </script>
 
     @yield('script')
 

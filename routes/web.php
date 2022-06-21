@@ -22,12 +22,14 @@ Route::get('/', function () {
 
 // Login -----------------------------------
 Route::get('/login', 'LoginController@index')->name('login');
-
+Route::post('/checklogin', 'LoginController@checklogin')->name('checklogin');
+Route::get('/changepassword', 'LoginController@changePassword')->name('changepassword');
+Route::post('/updatepassword', 'LoginController@updatePassword')->name('updatepassword');
+Route::get('/logout', 'LoginController@logout')->name('logout');
 
 
 // Dashboard -----------------------------------
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-
 
 
 // Employee -----------------------------------
@@ -35,10 +37,16 @@ Route::get('/employee', 'EmployeeController@index')->name('employee');
 Route::get('/employee/list', 'EmployeeController@list')->name('employee.list');
 Route::get('/employee/new', 'EmployeeController@new')->name('employee.new');
 Route::post('/employee/insert', 'EmployeeController@insert')->name('employee.insert');
+Route::post('/employee/generate/empcode', 'EmployeeController@generateEmpcode')->name('employee.generate.empcode');
 Route::get('/employee/view/{empcode}', 'EmployeeController@view')->name('employee.view');
 Route::get('/employee/edit/{empcode}', 'EmployeeController@edit')->name('employee.edit');
 Route::post('/employee/update', 'EmployeeController@update')->name('employee.update');
 
+
+// User -----------------------------------
+Route::post('/user/resetpassword', 'UserController@resetpassword')->name('user.resetpassword');
+Route::get('/user/info', 'UserController@info')->name('user.info');
+Route::post('/user/updateimgprofile', 'UserController@updateimgprofile')->name('user.updateimgprofile');
 
 
 // ServiceType -------------------------------
@@ -83,6 +91,12 @@ Route::post('/discounttype/update', 'DiscountTypeController@update')->name('disc
 Route::post('/discounttype/insert', 'DiscountTypeController@insert')->name('discounttype.insert');
 
 
+// Customer -------------------------------
+Route::post('/customer/insert', 'CustomerController@insert')->name('customer.insert');
+Route::post('/customer/getdatacusttype', 'CustomerController@getdatacusttype')->name('customer.getdatacusttype');
+
+
+
 
 // Customer Type -------------------------------
 Route::get('/customertype', 'CustomerTypeController@index')->name('customertype');
@@ -105,8 +119,13 @@ Route::get('/appointment/history', 'AppointmentController@history')->name('appoi
 Route::get('/orders', 'OrdersController@index')->name('orders');
 Route::get('/orders/new', 'OrdersController@new')->name('orders.new');
 Route::get('/orders/list', 'OrdersController@list')->name('orders.list');
-Route::get('/orders/detail/{id}', 'OrdersController@detail')->name('orders.detail');
-Route::get('/orders/edit/{id}', 'OrdersController@edit')->name('orders.edit');
+Route::get('/orders/detail/{ordercode}', 'OrdersController@detail')->name('orders.detail');
+// Route::get('/orders/edit/{ordercode}', 'OrdersController@edit')->name('orders.edit');
+Route::post('/orders/selectcustomer', 'OrdersController@selectcustomer')->name('orders.selectcustomer');
+Route::post('/orders/searchcustomer', 'OrdersController@searchcustomer')->name('orders.searchcustomer');
+Route::post('/orders/getdiscountlist', 'OrdersController@getdiscountlist')->name('orders.getdiscountlist');
+Route::post('/orders/getempsale', 'OrdersController@getempsale')->name('orders.getempsale');
+Route::post('/orders/insert', 'OrdersController@insert')->name('orders.insert');
 // Route::get('/orders/view/{id}', 'OrdersController@view')->name('orders.view');
 
 

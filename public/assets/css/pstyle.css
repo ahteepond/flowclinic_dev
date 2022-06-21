@@ -1,0 +1,12 @@
+.trash-profile-btn {
+    position: absolute;
+    bottom: 60px;
+    right: 40px;
+    background: #ef1a9b;
+    width: 25px;
+    border-radius: 50%;
+    height: 25px;
+    padding: 6.5px;
+    color: #fff;
+    cursor: pointer;
+}

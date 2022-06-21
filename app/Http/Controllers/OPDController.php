@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class OPDController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('checksession');
+    }
+    
     public function index() {
         return view('opd.index');
     }

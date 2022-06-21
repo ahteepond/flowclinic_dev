@@ -49,7 +49,9 @@ $(function(e) {
     // Datepicker
     $('.fc-datepicker').datepicker({
         showOtherMonths: true,
-        selectOtherMonths: true
+        selectOtherMonths: true,
+        dateFormat: 'yy-mm-dd'
+        // dateFormat: 'dd-mm-yy'
     });
 
     $('#datepickerNoOfMonths').datepicker({

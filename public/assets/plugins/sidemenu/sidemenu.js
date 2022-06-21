@@ -16,18 +16,49 @@
         var pageUrl = $this.attr("href");
 
         if (pageUrl) {
-            if (position[position.length - 1] == pageUrl) {
-                $(this).addClass("active");
-                $(this).parent().addClass("is-expanded");
-                $(this).parent().parent().prev().addClass("active");
-                $(this).parent().parent().addClass("open");
-                $(this).parent().parent().prev().addClass("is-expanded");
-                $(this).parent().parent().parent().addClass("is-expanded");
-                $(this).parent().parent().parent().parent().addClass("open");
-                $(this).parent().parent().parent().parent().prev().addClass("active");
-                $(this).parent().parent().parent().parent().parent().addClass("is-expanded");
-                return false;
+
+            // if (position[position.length - 1] == pageUrl) {
+            //     $(this).addClass("active");
+            //     $(this).parent().addClass("is-expanded");
+            //     $(this).parent().parent().prev().addClass("active");
+            //     $(this).parent().parent().addClass("open");
+            //     $(this).parent().parent().prev().addClass("is-expanded");
+            //     $(this).parent().parent().parent().addClass("is-expanded");
+            //     $(this).parent().parent().parent().parent().addClass("open");
+            //     $(this).parent().parent().parent().parent().prev().addClass("active");
+            //     $(this).parent().parent().parent().parent().parent().addClass("is-expanded");
+            //     return false;
+            // }
+
+            const arrUrl = pageUrl.split("/");
+            if (position.length == 2) {
+                if(position[1] == arrUrl[1] && position[2] == arrUrl[2]) {
+                    $(this).addClass("active");
+                    $(this).parent().addClass("is-expanded");
+                    $(this).parent().parent().prev().addClass("active");
+                    $(this).parent().parent().addClass("open");
+                    $(this).parent().parent().prev().addClass("is-expanded");
+                    $(this).parent().parent().parent().addClass("is-expanded");
+                    $(this).parent().parent().parent().parent().addClass("open");
+                    $(this).parent().parent().parent().parent().prev().addClass("active");
+                    $(this).parent().parent().parent().parent().parent().addClass("is-expanded");
+                    return false;
+                }
+            } else {
+                if (position[1] == arrUrl[1]) {
+                    $(this).addClass("active");
+                    $(this).parent().addClass("is-expanded");
+                    $(this).parent().parent().prev().addClass("active");
+                    $(this).parent().parent().addClass("open");
+                    $(this).parent().parent().prev().addClass("is-expanded");
+                    $(this).parent().parent().parent().addClass("is-expanded");
+                    $(this).parent().parent().parent().parent().addClass("open");
+                    $(this).parent().parent().parent().parent().prev().addClass("active");
+                    $(this).parent().parent().parent().parent().parent().addClass("is-expanded");
+                    return false;
+                }
             }
+
         }
     });
     if ($('.slide-item').hasClass('active')) {
@@ -394,7 +425,7 @@ function HorizontalHovermenu() {
 HorizontalHovermenu();
 
 // for Icon-text Menu
-//icontext(); 
+//icontext();
 
 // default layout
 hovermenu();
@@ -428,7 +459,7 @@ function icontext() {
         $('body').removeClass('sidenav-toggled-open');
     });
 
-    //Mobile menu 
+    //Mobile menu
     jQuery(document).ready(function ($) {
         var alterClass = function () {
             var ww = document.body.clientWidth;
@@ -503,7 +534,7 @@ $(window).resize(
                 })
             }
 
-            // 
+            //
             if( menuWidth?.offsetWidth > menuItems.scrollWidth){
                 $("#slide-left").addClass("d-none");
                 $("#slide-right").addClass("d-none");
@@ -532,7 +563,7 @@ $(window).resize(
                     duration: 400
                 })
             }
-            // 
+            //
             if( menuWidth?.offsetWidth > menuItems.scrollWidth){
                 $("#slide-left").addClass("d-none");
                 $("#slide-right").addClass("d-none");
@@ -546,7 +577,7 @@ $(window).resize(
                 $("#slide-left").removeClass("d-none");
             }
         }
-		
+
     }
 )
 
@@ -583,7 +614,7 @@ $(document).on("click", ".ltr #slide-left", function() {
 	let marginLeftValue = Math.ceil(window.getComputedStyle(menuItems).marginLeft.split('px')[0]);
 	let check = menuItems.getBoundingClientRect().width + (0 -  menuWidth?.offsetWidth);
 
-	
+
 	 if(marginLeftValue < 0){
 		sideMenu.stop(false, true).animate({
             // marginRight : 0,
@@ -596,7 +627,7 @@ $(document).on("click", ".ltr #slide-left", function() {
 	// else{
 	// 	$("#slide-left").addClass("d-none");
 	// }
-	
+
 	if(marginLeftValue >= 0){
 		$("#slide-left").addClass("d-none");
 		sideMenu.stop(false, true).animate({
@@ -653,7 +684,7 @@ $(document).on("click", ".rtl #slide-left", function() {
     let marginRightValue = Math.ceil(window.getComputedStyle(menuItems).marginRight.split('px')[0]);
 	let check = menuItems.getBoundingClientRect().width + (0 -  menuWidth?.offsetWidth);
 
-	
+
 	 if(marginRightValue < 0){
 		sideMenu.stop(false, true).animate({
             // marginRight : 0,
@@ -667,7 +698,7 @@ $(document).on("click", ".rtl #slide-left", function() {
 	else{
 		$("#slide-left").addClass("d-none");
 	}
-	
+
 	if(marginRightValue >= 0){
 		$("#slide-left").addClass("d-none");
 		sideMenu.stop(false, true).animate({
@@ -700,10 +731,10 @@ $(document).on("click", ".rtl #slide-right", function() {
 		}, {
 			duration: 400
 		})
-		
+
 	}
 	else{
-		
+
 		$("#slide-right").addClass("d-none");
 	}
 
@@ -719,7 +750,7 @@ $(document).on("click", ".rtl #slide-right", function() {
 	subNav.forEach((e) => {
 		e.style.display = '';
 	})
-	
+
 	//
 
 

@@ -136,11 +136,40 @@ class ServiceController extends Controller
                 ->get();
                 return response()->json([ 'status' => 'success', 'data' => $data, 'param' => $request->val ]);
                 break;
+            case 'servicesub' :
+                $data = DB::table('service')
+                ->where('servicemaster_id', $request->id)
+                ->where('active', 1)
+                ->get();
+                return response()->json([ 'status' => 'success', 'data' => $data, 'param' => $request->val ]);
+                break;
+            case 'service' :
+                $data = DB::table('service')
+                ->where('code', $request->code)
+                ->where('active', 1)
+                ->get();
+                return response()->json([ 'status' => 'success', 'data' => $data, 'param' => $request->val ]);
+                break;
         }
     }
 
     public function insert(Request $request) {
+
+        // Gen Code -------
+        $rescode = DB::table('service')
+            ->orderBy('code', 'DESC')
+            ->first();
+        $prefix = "PRD-";
+        if ($rescode) {
+            $code_current = explode('-',$rescode->code)[1];
+            $code_new = sprintf("%05d", (int)$code_current + 1);
+            $gencode = $prefix . $code_new;
+        } else {
+            $gencode = $prefix . "00001";
+        }
+
         $arr_data = array(
+            "code" => $gencode,
             "servicemaster_id" => $request->servicemasterid,
             "name_th" => $request->service_nameth,
             "name_en" => $request->service_nameen,

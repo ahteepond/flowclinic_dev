@@ -186,13 +186,8 @@
         dataTable.ajax.reload();
     }
 
-    function edit(id) {
-        var url = "{{ route('orders.edit', '')}}"+"/"+id;
-        location.href = url;
-    }
-
-    function detail(id) {
-        var url = "{{ route('orders.detail', '')}}"+"/"+id;
+    function detail(ordercode) {
+        var url = "{{ route('orders.detail', '')}}"+"/"+ordercode;
         location.href = url;
     }
 

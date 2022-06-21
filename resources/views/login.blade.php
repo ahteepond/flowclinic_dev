@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Flow Clinic">
     <meta name="author" content="Pongsakorn Laoniyomthai">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/brand/favicon.ico')}}" />
@@ -31,6 +32,9 @@
     <!-- COLOR SKIN CSS -->
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{asset('assets/colors/color1.css')}}" />
 
+    <!-- P Style --->
+    <link href="{{asset('assets/css/pstyle.css')}}" rel="stylesheet" />
+
 </head>
 
 <body class="app sidebar-mini ltr overflow-auto">
@@ -49,41 +53,40 @@
             <div class="">
 
                 <!-- CONTAINER OPEN -->
-                <div class="col col-login mx-auto mt-7">
+                <div class="col col-login mx-auto">
                     <div class="text-center">
                         <img src="{{asset('assets/images/brand/logo-flowclinic-white.png')}}" class="header-brand-img" alt="">
                     </div>
                 </div>
 
-                <div class="container-login100">
+                <div class="container-login100 mb-5">
                     <div class="wrap-login100 p-6">
-                        <form class="login100-form validate-form">
+                        <form class="login100-form validate-form" action="javascript:void(0)" id="loginform" method="POST">
                             <span class="login100-form-title pb-5">
                                 Login
                             </span>
                             <div class="panel panel-primary">
 
-                                <div class="panel-body tabs-menu-body p-0 pt-5">
+                                <div class="panel-body tabs-menu-body p-0">
                                     <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid employee">
                                         <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
                                             <i class="zmdi zmdi-account text-muted" aria-hidden="true"></i>
                                         </a>
-                                        <input class="input100 border-start-0 form-control ms-0" type="text" placeholder="รหัสพนักงาน">
+                                        <input class="input100 border-start-0 form-control ms-0" type="text" id="username" name="username" placeholder="รหัสพนักงาน" value="100001">
                                     </div>
                                     <div class="wrap-input100 validate-input input-group" id="Password-toggle">
                                         <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
                                             <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
                                         </a>
-                                        <input class="input100 border-start-0 form-control ms-0" type="password" placeholder="รหัสผ่าน">
+                                        <input class="input100 border-start-0 form-control ms-0" type="password" id="password" name="password" placeholder="รหัสผ่าน" value="1234">
                                     </div>
-                                    <div class="text-end pt-4">
+                                    {{-- <div class="text-end pt-4">
                                         <p class="mb-0"><a href="forgot-password.html" class="text-primary ms-1">ลืมรหัสผ่าน?</a></p>
+                                    </div> --}}
+                                    <div class="container-login100-form-btn mb-2">
+                                        <button class="login100-form-btn btn-primary" type="submit" id="btn_loginform"><i class="mdi mdi-key me-2"></i> เข้าสู่ระบบ</button>
                                     </div>
-                                    <div class="container-login100-form-btn">
-                                        <a href="{{ route('dashboard') }}" class="login100-form-btn btn-primary">
-                                                <i class="mdi mdi-key me-2"></i> เข้าสู่ระบบ
-                                        </a>
-                                    </div>
+                                    <small id="text-alert" class="text-danger mb-0" style="display: none;"></small>
                                 </div>
                             </div>
 
@@ -119,6 +122,38 @@
 
     <!-- CUSTOM JS -->
     <script src="{{asset('assets/js/custom.js')}}"></script>
+
+    <script>
+        $('#btn_loginform').click(function(e){
+            $('#text-alert').slideUp('fast');
+            $('#text-alert').html("");
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+            $.ajax({
+                url: "{{ route('checklogin') }}",
+                method: 'post',
+                data: $('#loginform').serialize(),
+                success: function(response){
+
+                    if (response.param == true) {
+                        location.href = "{{ route('dashboard') }}";
+                    }
+                    if (response.param == false) {
+                        $('#btn_loginform').html('Sign in');
+                        $('#text-alert').html('ไม่พบชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง');
+                        $('#text-alert').slideDown();
+                    }
+                    if (response.param == "expired") {
+                        var u = response.value;
+                        location.href = "{{ route('changepassword')}}?username="+u;
+                    }
+                    if (response.param == "reset") {
+                        var u = response.value;
+                        location.href = "{{ route('changepassword')}}?username="+u;
+                    }
+                }
+            });
+        });
+    </script>
 
 </body>
 

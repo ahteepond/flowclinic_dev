@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 class AppointmentController extends Controller
 {
 
+    public function __construct() {
+        $this->middleware('checksession');
+    }
+    
     public function index() {
         return view('appointment.index');
     }
