@@ -39,7 +39,7 @@ class OrdersController extends Controller
                 })
                 ->addColumn('pricenettotal', function($row){
                     $pricenettotal = $row->price_nettotal;
-                    return $pricenettotal;
+                    return number_format($pricenettotal, 2);
                 })
                 ->addColumn('custname', function($row){
                     $sty = ' ';
@@ -47,14 +47,14 @@ class OrdersController extends Controller
                 })
                 ->addColumn('statusorder', function($row){
                     $status_o = $row->status_order;
-                    if ($status_o == 0) { $res_o = '<span class="badge bg-secondary-transparent rounded-pill text-secondary p-2 px-3">ยกเลิก</span>'; }
+                    if ($status_o == 0) { $res_o = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
                     if ($status_o == 1) { $res_o = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอชำระเงิน</span>'; }
                     if ($status_o == 3) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">สำเร็จ</span>'; }
                     return $res_o;
                 })
                 ->addColumn('statusorderpayment', function($row){
                     $status_op = $row->status_orderpayment;
-                    if ($status_op == 0) { $res_op = '<span class="badge bg-secondary-transparent rounded-pill text-secondary p-2 px-3">ยกเลิก</span>'; }
+                    if ($status_op == 0) { $res_op = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
                     if ($status_op == 1) { $res_op = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอชำระเงิน</span>'; }
                     if ($status_op == 2) { $res_op = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">อยู่ระหว่างการชำระเงิน</span>'; }
                     if ($status_op == 3) { $res_op = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">สำเร็จ</span>'; }
@@ -70,18 +70,31 @@ class OrdersController extends Controller
     }
 
     public function detail($ordercode) {
-        $res = DB::table('orders')
-            ->join('customer', 'customer.code', '=', 'orders.cust_code')
-            ->select(
-                'customer.fname',
-                'customer.lname',
-                'customer.tel',
-                'customer.addr',
-                'orders.*'
-             )
-             ->where('orders.code', $ordercode)
+        $res = DB::table('orders as o')
+            ->join('customer as c', 'c.code', '=', 'o.cust_code')
+            ->select(DB::raw('o.*, c.fname, c.lname, c.tel, c.addr, (SELECT CONCAT(emp_fname_th, " ", emp_lname_th) FROM employee e WHERE e.emp_code=o.sale_1) AS n_sale_1, (SELECT CONCAT(emp_fname_th, " ", emp_lname_th) FROM employee e WHERE e.emp_code=o.sale_2) AS n_sale_2'))
+            ->where('o.code', $ordercode)
             ->first();
-        return view('orders.detail', compact('res'));
+
+        $list = DB::table('orders_detail as od')
+        ->join('service as s', 's.code', '=', 'od.service_code')
+        ->join('service_master as sm', 'sm.id', '=', 's.servicemaster_id')
+        ->select(
+            's.name_th as service_name_th',
+            's.name_en as service_name_en',
+            'sm.name_th as servicemaster_name_th',
+            'sm.name_en as servicemaster_name_en',
+            'od.*'
+        )
+        ->where('od.order_code', $ordercode)
+        ->get();
+
+        $paymenttype = DB::table('payment_type')
+        ->where('active', 1)
+        ->get();
+        // dd($paymenttype);
+
+        return view('orders.detail', compact('res', 'list', 'paymenttype'));
     }
 
     public function selectcustomer(Request $request) {
@@ -186,6 +199,14 @@ class OrdersController extends Controller
             }
         }
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res_order, 'ordercode' => $gencode ]);
+    }
+
+    public function getevidence(Request $request) {
+        $res = DB::table('payment_type')
+            ->where('id', $request->id)
+            ->first();
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res->evidence ]);
+            // dd($res);
     }
 
 }

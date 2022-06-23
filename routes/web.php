@@ -70,7 +70,9 @@ Route::post('/service/update', 'ServiceController@update')->name('service.update
 Route::post('/service/insert', 'ServiceController@insert')->name('service.insert');
 
 
-
+// Payment -------------------------------
+Route::post('/payment/insert', 'PaymentController@insert')->name('payment.insert');
+Route::post('/payment/list', 'PaymentController@list')->name('payment.list');
 
 // Payment Type -------------------------------
 Route::get('/paymenttype', 'PaymentTypeController@index')->name('paymenttype');
@@ -126,6 +128,7 @@ Route::post('/orders/searchcustomer', 'OrdersController@searchcustomer')->name('
 Route::post('/orders/getdiscountlist', 'OrdersController@getdiscountlist')->name('orders.getdiscountlist');
 Route::post('/orders/getempsale', 'OrdersController@getempsale')->name('orders.getempsale');
 Route::post('/orders/insert', 'OrdersController@insert')->name('orders.insert');
+Route::post('/orders/getevidence', 'OrdersController@getevidence')->name('orders.getevidence');
 // Route::get('/orders/view/{id}', 'OrdersController@view')->name('orders.view');
 
 

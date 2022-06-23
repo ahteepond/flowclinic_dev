@@ -171,8 +171,8 @@
             { title: "เลขที่ใบสั่งซื้อ", data: 'orderscode', name: 'orderscode' },
             { title: "ยอดรวมทั้งหมด", data: 'pricenettotal', name: 'pricenettotal' },
             { title: "ชื่อลูกค้า", data: 'custname', name: 'custname' },
-            { title: "สถานะการชำระเงินของใบสั่งซื้อ", data: 'statusorder', name: 'statusorder' },
-            { title: "สถานะการสั่งซื้อ", data: 'statusorderpayment', name: 'statusorderpayment' },
+            { title: "สถานะใบสั่งซื้อ", data: 'statusorder', name: 'statusorder' },
+            { title: "สถานะการชำระเงินของใบสั่งซื้อ", data: 'statusorderpayment', name: 'statusorderpayment' },
             { title: "วันที่สั่งซื้อ", data: 'created', name: 'created' },
         ],
         'columnDefs': [
