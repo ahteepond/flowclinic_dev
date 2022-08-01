@@ -75,7 +75,7 @@
                                 <input type="text" class="form-control required numbers-only" id="n_idcard" maxlength="13" placeholder="กรุณากรอกเลขบัตรประชาชน...">
                             </div>
                             <div class="control-group form-group col-md-6">
-                                <label class="form-label">กรุ๊ปเลือด <span class="text-red">*</span></label>
+                                <label class="form-label">กรุ๊ปเลือด</label>
                                 <input type="text" class="form-control required" id="n_bloodtype" placeholder="กรุณากรอกกรุ๊ปเลือด...">
                             </div>
                             <div class="control-group form-group col-md-6">
@@ -1081,8 +1081,6 @@
                                 confirmButtonText: "ตกลง",
                             },
                             function(isConfirm) {
-                                // $('#space_selectservice').hide();
-                                // $('#space_addpayment').fadeIn();
                                 gotoThisOrder(response.ordercode);
                             });
 

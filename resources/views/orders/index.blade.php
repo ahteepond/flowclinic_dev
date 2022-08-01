@@ -45,23 +45,13 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-auto">
-                                                <label class="form-label">สถานะการชำระเงินของใบสั่งซื้อ</label>
-                                                <select name="status_payment" id="status_payment" class="form-control form-select">
-                                                    <option value="" selected>All</option>
-                                                    <option value="1">Waiting</option>
-                                                    <option value="2">During</option>
-                                                    <option value="3">Success</option>
-                                                    <option value="0">Failed</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-auto">
-                                                <label class="form-label">สถานะการสั่งซื้อ</label>
+                                                <label class="form-label">สถานะใบสั่งซื้อ</label>
                                                 <select name="status_orders" id="status_orders" class="form-control form-select">
-                                                    <option value="" selected>All</option>
-                                                    <option value="1">Waiting</option>
-                                                    <option value="2">Processing</option>
-                                                    <option value="3">Success</option>
-                                                    <option value="0">Void</option>
+                                                    <option value="1">รอชำระเงิน</option>
+                                                    <option value="2">อยู่ระหว่างการชำระเงิน</option>
+                                                    <option value="3">สำเร็จ</option>
+                                                    <option value="0">ยกเลิก</option>
+                                                    <option value="" selected>ทั้งหมด</option>
                                                 </select>
                                             </div>
                                             <div class="col-auto">
@@ -152,7 +142,6 @@
     function clearFillter() {
         $('#orders_no').val('');
         $('#orders_date').val('');
-        $('#status_payment').val('');
         $('#status_orders').val('');
     }
 
@@ -163,7 +152,9 @@
             type: "GET",
             url: "{{ route('orders.list') }}",
             data: function( d ) {
-                // d.active = $('#status :selected').val()
+                d.f_orderno = $('#orders_no').val(),
+                d.f_orderdate = $('#orders_date').val(),
+                d.f_statusorders = $('#status_orders :selected').val()
             },
         },
         columns: [
@@ -172,7 +163,6 @@
             { title: "ยอดรวมทั้งหมด", data: 'pricenettotal', name: 'pricenettotal' },
             { title: "ชื่อลูกค้า", data: 'custname', name: 'custname' },
             { title: "สถานะใบสั่งซื้อ", data: 'statusorder', name: 'statusorder' },
-            { title: "สถานะการชำระเงินของใบสั่งซื้อ", data: 'statusorderpayment', name: 'statusorderpayment' },
             { title: "วันที่สั่งซื้อ", data: 'created', name: 'created' },
         ],
         'columnDefs': [

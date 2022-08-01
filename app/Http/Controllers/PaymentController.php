@@ -19,7 +19,7 @@ class PaymentController extends Controller
             ->first();
         $prefix = "PAY".Carbon::now()->format('ym')."-";
         if ($rescode) {
-            if (Carbon::parse($rescode->paymentdate)->format('Y-m-d') != Carbon::now()->format('Y-m-d')) {
+            if (Carbon::parse($rescode->paymentdate)->format('Y-m') != Carbon::now()->format('Y-m')) {
                 $gencode = $prefix . "00001";
             } else {
                 $code_current = explode('-',$rescode->code)[1];
@@ -50,6 +50,7 @@ class PaymentController extends Controller
             "paymentdate" => Carbon::now()->format('Y-m-d H:i:s'),
             "payment_status" => 1,
             "creator" => $request->creator,
+            "operator" => $request->operator,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         );
@@ -69,7 +70,137 @@ class PaymentController extends Controller
             ->where('op.order_code', $request->order_code)
             ->orderBy('op.round', 'ASC')
             ->get();
-            // dd($res);
         return response()->json([ 'status' => 'success', 'result' => true, 'data' => $res ]);
     }
+
+    public function getdata(Request $request) {
+        $res = DB::table('orders_payment as op')
+            ->join('payment_type as pt', 'pt.id', '=', 'op.paymenttype_id')
+            ->select(
+                'pt.name as paymenttype_name',
+                'pt.evidence',
+                'op.*'
+            )
+            ->where('op.code', $request->paymentcode)
+            ->first();
+
+        $paymenttype = DB::table('payment_type')
+            ->where('active', 1)
+            ->get();
+        return response()->json([ 'status' => 'success', 'result' => true, 'data' => $res, 'paymenttype' => $paymenttype ]);
+    }
+
+    public function update(Request $request) {
+        $arr_data = array(
+            "paymenttype_id" => $request->paymenttype_id,
+            "price_paid" => $request->price_paid,
+            "evidence_file" => '',
+            "remark" => $request->remark,
+            "operator" => $request->operator,
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        $res = DB::table('orders_payment')
+        ->where('code', $request->payment_code)
+        ->update($arr_data);
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+    }
+
+    public function cancle(Request $request) {
+        $arr_data = array(
+            "payment_status" => 0,
+            "operator" => $request->operator,
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        $res = DB::table('orders_payment')
+        ->where('code', $request->payment_code)
+        ->update($arr_data);
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+    }
+
+    public function resend(Request $request) {
+        $arr_data = array(
+            "payment_status" => 1,
+            "operator" => $request->operator,
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        $res = DB::table('orders_payment')
+        ->where('code', $request->payment_code)
+        ->update($arr_data);
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+    }
+
+    public function disapprove(Request $request) {
+        $arr_data = array(
+            "payment_status" => 2,
+            "operator" => $request->operator,
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        $res = DB::table('orders_payment')
+        ->where('code', $request->payment_code)
+        ->update($arr_data);
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+    }
+
+    public function approve(Request $request) {
+        $res = DB::table('orders_payment as op')
+        ->join('orders as o', 'o.code', '=', 'op.order_code')
+        ->select(
+            'o.status_order',
+            'o.price_paid as orders_price_paid',
+            'o.price_balance as orders_price_balance',
+            'op.*'
+        )
+        ->where('op.code', $request->payment_code)
+        ->first();
+
+        $newpricebalance = $res->orders_price_balance - $res->price_paid;
+        $newpricepaid = $res->price_paid + $res->orders_price_paid;
+        if($newpricebalance <= 0) {
+            $arr_data_orders = array(
+                "status_order" => 3,
+                "price_paid" => $newpricepaid,
+                "price_balance" => $newpricebalance,
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            );
+            DB::table('orders')
+            ->where('code', $res->order_code)
+            ->update($arr_data_orders);
+        }
+        if($newpricepaid != 0 && $newpricebalance > 0) {
+            $arr_data_orders = array(
+                "status_order" => 2,
+                "price_paid" => $newpricepaid,
+                "price_balance" => $newpricebalance,
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            );
+            DB::table('orders')
+            ->where('code', $res->order_code)
+            ->update($arr_data_orders);
+        }
+
+        $arr_data = array(
+            "payment_status" => 3,
+            "approver" => $request->approver,
+            "approvedate" => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        $update = DB::table('orders_payment')
+        ->where('code', $request->payment_code)
+        ->update($arr_data);
+        return response()->json([ 'status' => 'success', 'result' => true ]);
+    }
+
+    public function upload(Request $request) {
+        // if ($request->hasFile('file')) {
+        //     $file = $request->file('file');
+        //     $destinationPath = public_path('/kiosk_video/dashboard/');
+        //     $profileImage = date('YmdHis') . "." . $file->getClientOriginalExtension();
+        //     $file->move($destinationPath, $profileImage);
+        //     return response()->json(['status' => 'success', 'filename' => $profileImage]);
+        // } else {
+        //     return response()->json(['status' => 'error']);
+        // }
+    }
+
+
 }

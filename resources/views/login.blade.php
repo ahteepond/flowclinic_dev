@@ -72,13 +72,13 @@
                                         <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
                                             <i class="zmdi zmdi-account text-muted" aria-hidden="true"></i>
                                         </a>
-                                        <input class="input100 border-start-0 form-control ms-0" type="text" id="username" name="username" placeholder="รหัสพนักงาน" value="100001">
+                                        <input class="input100 border-start-0 form-control ms-0" type="text" id="username" name="username" placeholder="รหัสพนักงาน" value="SU00001">
                                     </div>
                                     <div class="wrap-input100 validate-input input-group" id="Password-toggle">
                                         <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
                                             <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
                                         </a>
-                                        <input class="input100 border-start-0 form-control ms-0" type="password" id="password" name="password" placeholder="รหัสผ่าน" value="1234">
+                                        <input class="input100 border-start-0 form-control ms-0" type="password" id="password" name="password" placeholder="รหัสผ่าน" value="Flowclinic1234">
                                     </div>
                                     {{-- <div class="text-end pt-4">
                                         <p class="mb-0"><a href="forgot-password.html" class="text-primary ms-1">ลืมรหัสผ่าน?</a></p>

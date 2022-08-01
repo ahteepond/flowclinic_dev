@@ -45,8 +45,8 @@
                             </div>
                             <div class="col-lg-6 text-end">
                                 <p class="h4 fw-semibold">รายละเอียดการชำระเงิน:</p>
-                                <p class="mb-3">สถานะการชำระเงินของใบสั่งซื้อ:
-                                    @switch($res->status_orderpayment)
+                                <p class="mb-3">สถานะใบสั่งซื้อ:
+                                    @switch($res->status_order)
                                         @case(0)
                                             <span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>
                                             @break
@@ -157,30 +157,6 @@
                     </div>
                     <div class="card-body" id="payment_space">
 
-                        {{-- <div class="expanel expanel-default" id="nonepayment"><div class="expanel-body row">
-                                <div class="col-12"><h4 class="text-gray text-center mb-0 my-5">ยังไม่มีรายการชำระเงิน</h4></div>
-                        </div></div>
-
-                        <div class="expanel expanel-default">
-                            <div class="expanel-body row">
-                                <div class="col-2"><h1 class="text-gray mb-2">#2</h1></div>
-                                <div class="col-10"><div class="row">
-                                        <div class="col-md-5"><div class="form-group"><label class="form-label">เลขที่ชำระเงิน</label><h4>PAY-0002</h4></div></div>
-                                        <div class="col-md-5"><div class="form-group"><label class="form-label">วันที่ชำระเงิน</label><h4>08-04-2022 09:00:00</h4></div></div>
-                                        <div class="col-md-5"><div class="form-group"><label class="form-label">รูปแบบการชำระ</label><h2>ปกติ</h2></div></div>
-                                        <div class="col-md-5"><div class="form-group"><label class="form-label">วิธีการชำระเงิน</label><h2>บัตรเครดิต</h2></div></div>
-                                        <div class="col-md-5"><div class="form-group"><label class="form-label">จำนวนเงินที่ชำระ</label><h2 class="text-primary">10,000.-</h2></div></div>
-                                        <div class="col-md-5"><div class="form-group"><label class="form-label">สถานะการชำระเงิน</label><span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รออนุมัติ</span></div></div>
-                                        <div class="col-md-5"><div class="form-group"><label class="form-label">หลักฐานการชำระเงิน</label><a href="#" class="btn btn-sm btn-outline-dark">ดูหลักฐานการชำระเงิน</a></div></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="expanel-footer text-end">
-                                <a class="btn btn-sm btn-dark my-2 ms-2" data-bs-effect="effect-scale" data-bs-toggle="modal" href="#modal_payment_edit" onclick="openModalPaymentEdit()">แก้ไข</a>
-                                <button class="btn btn-sm btn-danger my-2 ms-2">ยกเลิกบันทึกชำระเงิน</button>
-                            </div>
-                        </div> --}}
-
                     </div>
                 </div>
             </div>
@@ -230,9 +206,10 @@
                     <div class="col-md-12">
                         <div class="form-group" id="evidencespace_new" style="display: none;">
                             <label class="form-label">หลักฐานการชำระเงิน</label>
+                            <input type="text" id="valevidence_new" style="display: none;">
                             <div class="control-group form-group  row">
                                 <div class="col-lg-12 col-sm-12">
-                                    <input type="file" class="dropify" onchange="readURL(this);" data-height="180" id="evidence_new"/>
+                                    <input type="file" class="dropify" onchange="" data-height="180" id="evidence_new" data-allowed-file-extensions="jpg png" data-max-file-size="5M"/>
                                 </div>
                             </div>
                         </div>
@@ -255,40 +232,61 @@
             </div>
             <div class="modal-body p-5">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">วันที่ชำระเงิน</label>
-                            <h4>08-04-2022 09:00:00</h4>
+                            <label class="form-label">เลขที่ชำระเงิน</label>
+                            <h3 class="text-primary" id="paymentcode_edit"></h3>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" >เลขที่ใบสั่งซื้อ</label>
+                            <h4 id="ordercode_edit"></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" >วันที่ชำระเงิน</label>
+                            <h4 id="paymentdate_edit"></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">สถานะการชำระเงิน</label>
+                            <p class="mb-0" id="paymentstatus_edit"></p>
+
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">ประเภทการชำระเงิน</label>
                             <select name="paymenttype_edit" id="paymenttype_edit" class="form-control form-select" onchange="checkEvidenceDisplay(this.value, 'edit')">
-                                @foreach ($paymenttype as $pt)
-                                <option value="{{ $pt->id }}">{{ $pt->name }}</option>
-                                @endforeach
+
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">จำนวนเงินที่ชำระ</label>
-                            <input type="text" class="form-control" value="10000">
+                            <input type="number" class="form-control form-control-lg numbers-only" value="0" min="0" id="paymentprice_edit">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-label">สถานะการชำระเงิน</label>
-                            <span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รออนุมัติ</span>
+                            <label class="form-label">บันทึก</label>
+                            <div class="form-floating floating-label1">
+                                <textarea class="form-control" placeholder="Note" style="height: 100px" id="remark_edit"></textarea>
+                                <label for="remark">กรอกบันทึก</label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group"  id="evidencespace_edit" style="display: none;">
                             <label class="form-label">หลักฐานการชำระเงิน</label>
+                            <input type="text" id="valevidence_edit" style="display: none;">
                             <div class="control-group form-group row">
                                 <div class="col-lg-12 col-sm-12">
-                                    <input type="file" class="dropify" onchange="readURL(this);" data-height="180" id="evidence_edit" />
+                                    <input type="file" class="dropify" onchange="" data-height="180" id="evidence_edit" data-allowed-file-extensions="jpg png" data-max-file-size="5M"/>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +294,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary">บันทึก</button>
+                <button class="btn btn-primary" onclick="updatePayment()">บันทึก</button>
                 <button class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
             </div>
         </div>
@@ -310,26 +308,71 @@
 
     <!-- FILE UPLOADES JS -->
     <script src="{{asset('assets/plugins/fileuploads/js/fileupload.js')}}"></script>
-    <script src="{{asset('assets/plugins/fileuploads/js/file-upload.js')}}"></script>
 
     <script>
     $( document ).ready(function() {
         setPaymentList();
     });
 
+    $('#evidence_new').dropify();
+    $('#evidence_edit').dropify();
+
+    // $("#evidence_new").on("change", function() {
+
+    //     });
+
+
     function openModalPaymentAdd() {
         document.getElementById("paymenttype_new").options.selectedIndex = 0;
         $('#paymentprice_new').val(0);
         $('#remark_new').val('');
-        // $('#evidence_new').val('');
         var id = $('#paymenttype_new :selected').val();
         checkEvidenceDisplay(id, 'new');
     }
 
-    function openModalPaymentEdit() {
-        var id = $('#paymenttype_edit :selected').val();
-        checkEvidenceDisplay(id, 'edit');
+
+    function openModalPaymentEdit(paymentcode) {
+        $.ajax({
+            url: '{{ route('payment.getdata') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                paymentcode: paymentcode,
+            },
+            success: function (response) {
+                if (response.status == 'success') {
+                    $("#modal_payment_edit").on('show.bs.modal', function(){
+                        $('#paymentcode_edit').html(response.data.code);
+                        $('#ordercode_edit').html(response.data.order_code);
+                        $('#paymentdate_edit').html(response.data.paymentdate);
+                        var paymenttype_edit = '';
+                        for (var i = 0; i < response.paymenttype.length; i++) {
+                            paymenttype_edit += '<option value="'+response.paymenttype[i].id+'" '+(response.data.paymenttype_id == response.paymenttype[i].id ? 'selected' : '')+'>'+response.paymenttype[i].name+'</option>';
+                        }
+                        $('#paymenttype_edit').html(paymenttype_edit);
+                        $('#paymentprice_edit').val(response.data.price_paid);
+                        switch (response.data.payment_status) {
+                            case 0: var status_text = 'ยกเลิก'; var status_color = 'danger'; break;
+                            case 1: var status_text = 'รออนุมัติ'; var status_color = 'info'; break;
+                            case 2: var status_text = 'ไม่อนุมัติ/รอแก้ไข'; var status_color = 'primary'; break;
+                            case 3: var status_text = 'อนุมัติแล้ว'; var status_color = 'success'; break;
+                        }
+                        var paymentprice_edit = '<span class="badge bg-'+status_color+'-transparent rounded-pill text-'+status_color+' p-2 px-3">'+status_text+'</span>';
+                        $('#paymentstatus_edit').html(paymentprice_edit);
+                        $('#remark_edit').val(response.data.remark);
+                        // $('#evidence_edit').html('');
+                    });
+                    var id = response.data.id;
+                    checkEvidenceDisplay(id, 'edit');
+                }
+            },
+            complete: function () {
+                $("#modal_payment_edit").modal("show");
+            }
+        });
     }
+
+
 
     function checkEvidenceDisplay(id, space) {
         $.ajax({
@@ -341,9 +384,11 @@
             },
             success: function (response) {
                 if(response.status == "success") {
+                    $('#valevidence_'+space).val(response.param);
                     switch (response.param) {
                         case 0:
                             $('#evidencespace_'+space).slideUp();
+                            $(".dropify-clear").trigger("click");
                             break;
                         case 1:
                             $('#evidencespace_'+space).slideDown();
@@ -356,6 +401,7 @@
             }
         });
     }
+
 
     function setPaymentList() {
         $.ajax({
@@ -383,21 +429,28 @@
                         switch (response.data[i].payment_status) {
                             case 0: var status_text = 'ยกเลิก'; var status_color = 'danger'; break;
                             case 1: var status_text = 'รออนุมัติ'; var status_color = 'info'; break;
-                            case 2: var status_text = 'ไม่อนุมัติ'; var status_color = 'primary'; break;
+                            case 2: var status_text = 'ไม่อนุมัติ/รอแก้ไข'; var status_color = 'primary'; break;
                             case 3: var status_text = 'อนุมัติแล้ว'; var status_color = 'success'; break;
 
                         }
                         html += '<div class="col-md-5"><div class="form-group"><label class="form-label">สถานะการชำระเงิน</label><span class="badge bg-'+status_color+'-transparent rounded-pill text-'+status_color+' p-2 px-3">'+status_text+'</span></div></div>';
+                        html += '<div class="col-md-5"><div class="form-group"><label class="form-label">หมายเหตุ/บันทึก</label><p>'+(response.data[i].remark ? response.data[i].remark : "-")+'</p></div></div>';
                         if(response.data[i].evidence == 1) {
                             html += '<div class="col-md-5"><div class="form-group"><label class="form-label">หลักฐานการชำระเงิน</label><a href="#" class="btn btn-sm btn-outline-dark">ดูหลักฐานการชำระเงิน</a></div></div>';
                         }
-
                         html += '</div></div>';
                         html += '</div>';
                         if(response.data[i].payment_status == 1) {
                             html += '<div class="expanel-footer text-end">';
-                            html += '<a class="btn btn-sm btn-dark my-2 ms-2" data-bs-effect="effect-scale" data-bs-toggle="modal" href="#modal_payment_edit" onclick="openModalPaymentEdit()">แก้ไข</a>';
-                            html += '<button class="btn btn-sm btn-danger my-2 ms-2">ยกเลิกบันทึกชำระเงิน</button>';
+                            html += '<a class="btn btn-sm btn-dark my-2 ms-2" data-bs-effect="effect-scale" href="javascript:void(0)" onclick="openModalPaymentEdit('+`'`+response.data[i].code+`'`+')">แก้ไข</a>';
+                            html += '<button class="btn btn-sm btn-danger my-2 ms-2" onclick="canclePayment('+`'`+response.data[i].code+`'`+')">ยกเลิกบันทึกชำระเงิน</button>';
+                            html += '</div>';
+                        }
+                        if(response.data[i].payment_status == 2) {
+                            html += '<div class="expanel-footer text-end">';
+                            html += '<button class="btn btn-sm btn-success my-2 ms-2" onclick="resendPayment('+`'`+response.data[i].code+`'`+')"><i class="fa fa-rotate-right"></i> ส่งตรวจสอบอีกครั้ง</button>';
+                            html += '<a class="btn btn-sm btn-dark my-2 ms-2" data-bs-effect="effect-scale" href="javascript:void(0)" onclick="openModalPaymentEdit('+`'`+response.data[i].code+`'`+')">แก้ไข</a>';
+                            html += '<button class="btn btn-sm btn-danger my-2 ms-2" onclick="canclePayment('+`'`+response.data[i].code+`'`+')">ยกเลิกบันทึกชำระเงิน</button>';
                             html += '</div>';
                         }
                         html += '</div>';
@@ -411,37 +464,221 @@
         });
     }
 
+
     function savePayment() {
         var order_code = "{{ $res->code }}";
         var paymenttype_id = $('#paymenttype_new :selected').val();
+        var valevidence = $('#valevidence_new').val();
         var price_paid = $('#paymentprice_new').val();
         var remark = $('#remark_new').val();
         var creator = "{{ session()->get('session_empcode') }}";
+        var operator = "{{ session()->get('session_empcode') }}";
+
+        if (checkSavePayment(price_paid, valevidence) == true) {
+            swal({
+                title: "ยืนยันบันทึกข้อมูลการชำระเงิน",
+                text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
+                type: "warning",
+                confirmButtonText: "ยืนยันบันทึกข้อมูลการชำระเงิน",
+                cancelButtonText: 'แก้ไขข้อมูล',
+                showCancelButton: true,
+                },
+                function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '{{ route('payment.insert') }}',
+                        method: 'post',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            order_code: order_code,
+                            paymenttype_id: paymenttype_id,
+                            price_paid: price_paid,
+                            remark: remark,
+                            creator: creator,
+                            operator: operator,
+                        },
+                        success: function (response) {
+                            if(response.status == "success") {
+// --------------------------------------------------
+                            // uploadSaveEvidenceFile();
+                                swal({
+                                    title: "บันทึกข้อมูลการชำระเงินเรียบร้อย",
+                                    type: "success",
+                                    confirmButtonText: "ตกลง",
+                                },
+                                function(isConfirm) {
+                                    setPaymentList();
+                                });
+// --------------------------------------------------
+
+                            }
+                        },
+                        complete: function () {
+                            $("#modal_payment_add").modal("hide");
+                            $("#payment_space").focus();
+
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function uploadSaveEvidenceFile() {
+        var files = document.getElementById("evidence_new");
+        var file = files.files[0];
+        var fd = new FormData();
+        fd.append('file',file);
+        $.ajax({
+            type: "POST",
+            url: "{{ route('payment.upload') }}",
+            data: fd,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            cache:false,
+            success: function(response){
+                console.log(response.filename);
+
+            }
+        });
+    }
+
+
+    function checkSavePayment(price_paid, valevidence) {
+        if(price_paid == 0 || price_paid == "") {
+            swal({
+                title: "กรุณาระบุจำนวนเงินที่ชำระ",
+                type: "error",
+                confirmButtonText: "ตกลง",
+            },
+            function(isConfirm) { setTimeout(() => { $('#paymentprice_new').focus(); }, 300) });
+            return false;
+        } else if ($('#evidence_new').val() == "") {
+            if(valevidence == 1) {
+                swal({
+                    title: "กรุณาระบุหลักฐานการชำระเงิน",
+                    type: "error",
+                    confirmButtonText: "ตกลง",
+                },
+                function(isConfirm) { setTimeout(() => { $('#paymenttype_new').focus(); }, 300) });
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+
+    function updatePayment() {
+        var order_code = $('#paymentcode_edit').html();
+        var paymenttype_id = $('#paymenttype_edit :selected').val();
+        var valevidence = $('#valevidence_edit').val();
+        var price_paid = $('#paymentprice_edit').val();
+        var remark = $('#remark_edit').val();
+        var operator = "{{ session()->get('session_empcode') }}";
+
+
+        if (checkUpdatePayment(price_paid, valevidence) == true) {
+            swal({
+                title: "ยืนยันบันทึกข้อมูลการชำระเงิน",
+                text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
+                type: "warning",
+                confirmButtonText: "ยืนยันบันทึกข้อมูลการชำระเงิน",
+                cancelButtonText: 'แก้ไขข้อมูล',
+                showCancelButton: true,
+                },
+                function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '{{ route('payment.update') }}',
+                        method: 'post',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            payment_code: $('#paymentcode_edit').html(),
+                            paymenttype_id: paymenttype_id,
+                            price_paid: price_paid,
+                            remark: remark,
+                            operator: operator,
+                        },
+                        success: function (response) {
+                            if(response.status == "success") {
+                                swal({
+                                    title: "อัพเดทข้อมูลการชำระเงินเรียบร้อย",
+                                    type: "success",
+                                    confirmButtonText: "ตกลง",
+                                },
+                                function(isConfirm) {
+                                    setPaymentList();
+                                });
+                            }
+                        },
+                        complete: function () {
+                            $("#modal_payment_edit").modal("hide");
+                            $("#payment_space").focus();
+
+                        }
+                    });
+                }
+            });
+        }
+
+    }
+
+
+    function checkUpdatePayment(price_paid, valevidence) {
+        if(price_paid == 0 || price_paid == "") {
+            swal({
+                title: "กรุณาระบุจำนวนเงินที่ชำระ",
+                type: "error",
+                confirmButtonText: "ตกลง",
+            },
+            function(isConfirm) { setTimeout(() => { $('#paymentprice_edit').focus(); }, 300) });
+            return false;
+        } else if ($('#evidence_edit').val() == "") {
+            if(valevidence == 1) {
+                swal({
+                    title: "กรุณาระบุหลักฐานการชำระเงิน",
+                    type: "error",
+                    confirmButtonText: "ตกลง",
+                },
+                function(isConfirm) { setTimeout(() => { $('#paymenttype_edit').focus(); }, 300) });
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+
+    function canclePayment(paymentcode) {
+        var operator = "{{ session()->get('session_empcode') }}";
         swal({
-            title: "ยืนยันบันทึกข้อมูลการชำระเงิน",
+            title: "ยืนยันยกเลิกการชำระเงิน ("+paymentcode+")",
             text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
             type: "warning",
-            confirmButtonText: "ยืนยันบันทึกข้อมูลการชำระเงิน",
-            cancelButtonText: 'แก้ไขข้อมูล',
+            confirmButtonText: "ยืนยันยกเลิกการชำระเงิน",
+            cancelButtonText: 'ยกเลิก',
             showCancelButton: true,
             },
             function(isConfirm) {
             if (isConfirm) {
                 $.ajax({
-                    url: '{{ route('payment.insert') }}',
+                    url: '{{ route('payment.cancle') }}',
                     method: 'post',
                     data: {
                         _token: "{{ csrf_token() }}",
-                        order_code: order_code,
-                        paymenttype_id: paymenttype_id,
-                        price_paid: price_paid,
-                        remark: remark,
-                        creator: creator,
+                        payment_code: paymentcode,
+                        operator: operator,
                     },
                     success: function (response) {
                         if(response.status == "success") {
                             swal({
-                                title: "บันทึกข้อมูลการชำระเงินเรียบร้อย",
+                                title: "ยกเลิกการชำระเงินเรียบร้อย ("+paymentcode+")",
                                 type: "success",
                                 confirmButtonText: "ตกลง",
                             },
@@ -451,9 +688,45 @@
                         }
                     },
                     complete: function () {
-                        $("#modal_payment_add").modal("hide");
-                        $("#payment_space").focus();
+                    }
+                });
+            }
+        });
+    }
 
+    function resendPayment(paymentcode) {
+        var operator = "{{ session()->get('session_empcode') }}";
+        swal({
+            title: "ยืนยันส่งอนุมัติอีกครั้ง ("+paymentcode+")",
+            text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการส่งข้อมูล",
+            type: "warning",
+            confirmButtonText: "ยืนยันส่งอนุมัติ",
+            cancelButtonText: 'ยกเลิก',
+            showCancelButton: true,
+            },
+            function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: '{{ route('payment.resend') }}',
+                    method: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        payment_code: paymentcode,
+                        operator: operator,
+                    },
+                    success: function (response) {
+                        if(response.status == "success") {
+                            swal({
+                                title: "ส่งอนุมัติการชำระเงินเรียบร้อย ("+paymentcode+")",
+                                type: "success",
+                                confirmButtonText: "ตกลง",
+                            },
+                            function(isConfirm) {
+                                setPaymentList();
+                            });
+                        }
+                    },
+                    complete: function () {
                     }
                 });
             }
@@ -462,4 +735,3 @@
 
     </script>
 @endsection
-

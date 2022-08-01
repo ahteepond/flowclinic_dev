@@ -63,7 +63,7 @@
                                     <div class="col-sm-6 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label">ตำแหน่ง <span class="text-red">*</span></label>
-                                            <select name="position" id="position" class="form-control form-select" data-bs-placeholder="Select Position">
+                                            <select name="position" id="position" class="form-control form-select" data-bs-placeholder="Select Position" onchange="generateEmpCode()">
                                                 @foreach($res_empposi as $psi)
                                                     <option value="{{ $psi->emp_posi_id }}">{{ $psi->emp_posi_name }}</option>
                                                 @endforeach
@@ -259,7 +259,10 @@
         $.ajax({
             url: '{{ route('employee.generate.empcode') }}',
             method: 'post',
-            data: { _token: "{{ csrf_token() }}" },
+            data: {
+                _token: "{{ csrf_token() }}",
+                empposi: $('#position :selected').val(),
+            },
             success: function (response) {
                 $('#empcode').val(response.param);
             },

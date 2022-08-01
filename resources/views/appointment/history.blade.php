@@ -11,7 +11,7 @@
             <h1 class="page-title">@yield('title')</h1>
             <div>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('customertype') }}">ออกใบนัด</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('appointment') }}">ออกใบนัด</a></li>
                     <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
                 </ol>
             </div>
@@ -67,7 +67,7 @@
                                         <p class="fs-16 fw-semibold mb-0">จำนวนครั้งที่นัดแล้ว: <span class="fs-20">2 ครั้ง</span></p>
                                     </div>
                                     <div class="col-md-6 text-end">
-                                        <p class="pt-5">สินค้าจากใบสั่งซื้อ <a href="{{ route('order.detail') }}"><b>ORD-0001</b></a></p>
+                                        <p class="pt-5">สินค้าจากใบสั่งซื้อ <a href="#"><b>ORD-0001</b></a></p>
                                     </div>
                                 </div>
                                 <div class="row">

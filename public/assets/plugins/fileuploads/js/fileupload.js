@@ -231,7 +231,7 @@ Dropify.prototype.onFileReady = function(event, previewable, src)
     if (this.errorsEvent.errors.length === 0) {
         this.setPreview(previewable, src);
     } else {
-        this.input.trigger(this.errorsEvent,Â [this]);
+        this.input.trigger(this.errorsEvent, [this]);
         for (var i = this.errorsEvent.errors.length - 1; i >= 0; i--) {
             var errorNamespace = this.errorsEvent.errors[i].namespace;
             var errorKey = errorNamespace.split('.').pop();
@@ -344,14 +344,14 @@ Dropify.prototype.clearElement = function()
 {
     if (this.errorsEvent.errors.length === 0) {
         var eventBefore = $.Event("dropify.beforeClear");
-        this.input.trigger(eventBefore,Â [this]);
+        this.input.trigger(eventBefore, [this]);
 
         if (eventBefore.result !== false) {
             this.resetFile();
             this.input.val('');
             this.resetPreview();
 
-            this.input.trigger($.Event("dropify.afterClear"),Â [this]);
+            this.input.trigger($.Event("dropify.afterClear"), [this]);
         }
     } else {
         this.resetFile();

@@ -46,7 +46,7 @@
 
                             </div>
                             <div class="card-footer text-center">
-                                <a href="javascript:void(0)" onclick="updateImgProfile({{ $res->emp_code }})" class="btn btn-primary">อัพเดทรูปโปรไฟล์</a>
+                                <a href="javascript:void(0)" onclick="updateImgProfile('{{ $res->emp_code }}')" class="btn btn-primary">อัพเดทรูปโปรไฟล์</a>
                             </div>
                         </div>
                     </div>

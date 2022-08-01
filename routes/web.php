@@ -73,6 +73,14 @@ Route::post('/service/insert', 'ServiceController@insert')->name('service.insert
 // Payment -------------------------------
 Route::post('/payment/insert', 'PaymentController@insert')->name('payment.insert');
 Route::post('/payment/list', 'PaymentController@list')->name('payment.list');
+Route::post('/payment/getdata', 'PaymentController@getdata')->name('payment.getdata');
+Route::post('/payment/update', 'PaymentController@update')->name('payment.update');
+Route::post('/payment/cancle', 'PaymentController@cancle')->name('payment.cancle');
+Route::post('/payment/upload', 'PaymentController@upload')->name('payment.upload');
+Route::post('/payment/resend', 'PaymentController@resend')->name('payment.resend');
+Route::post('/payment/disapprove', 'PaymentController@disapprove')->name('payment.disapprove');
+Route::post('/payment/approve', 'PaymentController@approve')->name('payment.approve');
+
 
 // Payment Type -------------------------------
 Route::get('/paymenttype', 'PaymentTypeController@index')->name('paymenttype');
@@ -114,6 +122,7 @@ Route::post('/customertype/insert', 'CustomerTypeController@insert')->name('cust
 Route::get('/appointment', 'AppointmentController@index')->name('appointment');
 Route::get('/appointment/new', 'AppointmentController@new')->name('appointment.new');
 Route::get('/appointment/history', 'AppointmentController@history')->name('appointment.history');
+Route::post('/appointment/searchorders', 'AppointmentController@searchorders')->name('appointment.searchorders');
 
 
 
@@ -135,7 +144,9 @@ Route::post('/orders/getevidence', 'OrdersController@getevidence')->name('orders
 
 // Check Payment -------------------------------
 Route::get('/checkpayment', 'CheckPaymentController@index')->name('checkpayment');
-Route::get('/checkpayment/view', 'CheckPaymentController@view')->name('checkpayment.view');
+Route::get('/checkpayment/list', 'CheckPaymentController@checkpayment')->name('checkpayment.list');
+Route::get('/checkpayment/list', 'CheckPaymentController@list')->name('checkpayment.list');
+Route::get('/checkpayment/view/{paymentcode}', 'CheckPaymentController@view')->name('checkpayment.view');
 
 
 // Admitted -------------------------------

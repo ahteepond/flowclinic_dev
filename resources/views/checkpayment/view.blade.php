@@ -25,29 +25,43 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <p>สถานะการชำระเงิน: <span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3 ms-2">รออนุมัติ</span></p>
+                                <p>สถานะการชำระเงิน:
+                                    @switch($res->payment_status)
+                                        @case(0)
+                                        <span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3 ms-2">ยกเลิก</span>
+                                            @break
+                                        @case(1)
+                                            <span class="badge bg-info-transparent rounded-pill text-info p-2 px-3 ms-2">รออนุมัติ</span>
+                                            @break
+                                        @case(2)
+                                        <span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3 ms-2">ไม่อนุมัติ/รอแก้ไข</span>
+                                            @break
+                                        @case(3)
+                                            <span class="badge bg-success-transparent rounded-pill text-success p-2 px-3 ms-2">อนุมัติแล้ว</span>
+                                            @break
+                                    @endswitch
+                                </p>
                                 <div class="form-group mt-5">
                                     <label class="form-label">เลขที่ชำระเงิน</label>
-                                    <h2>PAY-0001</h2>
+                                    <h2>{{ $res->code }}</h2>
                                 </div>
                             </div>
                             <div class="col-lg-6 text-end border-bottom border-lg-0">
-                                <h5 class="mt-5">วันที่ชำระเงิน: 07-04-2022 09:00:00</h5>
-                                <h5 class="mt-2">ผู้รับเงิน: บัญชี ทำดี</h5>
+                                <h5 class="mt-5">วันที่ชำระเงิน: {{ $res->paymentdate }}</h5>
+                                <h5 class="mt-2">ผู้รับเงิน: {{ $res->employeefname }} {{ $res->employeelname }}</h5>
                             </div>
                         </div>
                         <div class="row pt-5">
                             <div class="col-lg-6">
                                 <p class="h3">ข้อมูลลูกค้า:</p>
-                                <p class="fs-18 fw-semibold mb-0"><a href="#">CUS-0001</a> พงศกร เหล่านิยมไทย</p>
+                                <p class="fs-18 fw-semibold mb-0"><span class="text-primary">{{ $res->customercode }}</span> {{ $res->customerfname }} {{ $res->customerlname }}</p>
                                 <address>
-                                    <span><b>081 234 5678</b></span><br>
-                                    เลขที่ 1/2 แขวงลาดพร้าว เขตลาดพร้าว
-                                    กรุงเทพมหานคร, 10230
+                                    <span><b>{{ $res->tel }}</b></span><br>
+                                    {{ $res->addr }}
                                 </address>
                             </div>
                             <div class="col-lg-6 text-end">
-                                <p class="mb-3 fs-18 fw-semibold">เลขที่ใบสั่งซื้อ: <a class="text-primary" href="{{ route('order.detail') }}" >ODR-0001</a></p>
+                                <p class="mb-3 fs-18 fw-semibold">เลขที่ใบสั่งซื้อ: <a class="text-primary" href="javascript:void(0)" onclick="gotoOrderCode('{{ $res->order_code }}')">{{ $res->order_code }}</a></p>
                             </div>
                         </div>
                         <div class="row pt-5">
@@ -55,34 +69,42 @@
                                 <div class="expanel expanel-default">
                                     <div class="expanel-body row">
                                         <div class="col-2">
-                                            <h1 class="text-gray mb-2">#2</h1>
+                                            <h1 class="text-gray mb-2">#{{ $res->round }}</h1>
                                         </div>
                                         <div class="col-10">
                                             <div class="row">
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <label class="form-label">รูปแบบการชำระ</label>
-                                                        <h2>ปกติ</h2>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label class="form-label">วิธีการชำระเงิน</label>
-                                                        <h2>บัตรเครดิต</h2>
+                                                        <label class="form-label">ประเภทการชำระเงิน</label>
+                                                        <h2>{{ $res->paymenttypename }}</h2>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                         <label class="form-label">จำนวนเงินที่ชำระ</label>
-                                                        <h2 class="text-primary">10,000.-</h2>
+                                                        <h2 class="text-primary">@price($res->price_paid)</h2>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <label class="form-label">หลักฐานการชำระเงิน</label>
-                                                        <a href="#" class="btn btn-sm btn-outline-dark">ดูหลักฐานการชำระเงิน</a>
+                                                        <label class="form-label">หมายเหตุ/บันทึก</label>
+                                                        <p>{{ ($res->remark == "" ? "-" : $res->remark) }}</p>
                                                     </div>
                                                 </div>
+
+                                                @switch($res->evidence)
+                                                    @case(0)
+                                                        @break
+                                                    @case(1)
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <label class="form-label">หลักฐานการชำระเงิน</label>
+                                                                <a href="#" class="btn btn-sm btn-outline-dark">ดูหลักฐานการชำระเงิน</a>
+                                                            </div>
+                                                        </div>
+                                                        @break
+                                                @endswitch
+
                                             </div>
                                         </div>
                                     </div>
@@ -91,8 +113,20 @@
                         </div>
                         <div class="row pt-5">
                             <div class="col-12 text-center">
-                                <button class="btn btn-primary my-2 ms-2" onclick="disapprovePayment()">ไม่อนุมัติ</button>
-                                <button class="btn btn-primary my-2 ms-2"  onclick="approvePayment()">อนุมัติ</button>
+                                @switch($res->payment_status)
+                                    @case(0)
+                                        @break
+                                    @case(1)
+                                        <button class="btn btn-dark my-2 ms-2" onclick="canclePayment('{{ $res->code }}')">ยกเลิก</button>
+                                        <button class="btn btn-primary my-2 ms-2" onclick="disapprovePayment('{{ $res->code }}')">ไม่อนุมัติ</button>
+                                        <button class="btn btn-primary my-2 ms-2"  onclick="approvePayment('{{ $res->code }}')">อนุมัติ</button>
+                                        @break
+                                    @case(2)
+                                        <button class="btn btn-danger my-2 ms-2" onclick="canclePayment('{{ $res->code }}')">ยกเลิก</button>
+                                        @break
+                                    @case(3)
+                                        @break
+                                @endswitch
                             </div>
                         </div>
                     </div>
@@ -115,34 +149,127 @@
     $( document ).ready(function() {
     });
 
-    function disapprovePayment() {
+    function disapprovePayment(paymentcode) {
+        var operator = "{{ session()->get('session_empcode') }}";
         swal({
             title: "ยืนยันไม่อนุมัติการชำระเงิน",
+            text: "หลังจากกดยืนยันแล้ว ระบบจะส่งข้อมูลการชำระเงินนี้กลับไปแก้ไข",
             type: "warning",
-            confirmButtonText: "ไม่อนุมัติ",
+            confirmButtonText: "ยืนยันไม่อนุมัติการชำระเงิน",
             cancelButtonText: 'ยกเลิก',
             showCancelButton: true,
             },
             function(isConfirm) {
             if (isConfirm) {
-                location.href = '{{ route('checkpayment') }}';
+                $.ajax({
+                    url: '{{ route('payment.disapprove') }}',
+                    method: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        payment_code: paymentcode,
+                        operator: operator,
+                    },
+                    success: function (response) {
+                        if(response.status == "success") {
+                            swal({
+                                title: "ไม่อนุมัติการชำระเงินเรียบร้อย ("+paymentcode+")",
+                                type: "success",
+                                confirmButtonText: "ตกลง",
+                            },
+                            function(isConfirm) {
+                                location.href = "{{ route('checkpayment.view', '')}}"+"/"+paymentcode;
+                            });
+                        }
+                    },
+                    complete: function () {
+                    }
+                });
             }
         });
     }
 
-    function approvePayment() {
+    function approvePayment(paymentcode) {
+        var approver = "{{ session()->get('session_empcode') }}";
         swal({
             title: "ยืนยันอนุมัติการชำระเงิน",
+            text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
             type: "warning",
-            confirmButtonText: "ยืนยัน",
+            confirmButtonText: "ยืนยันอนุมัติการชำระเงิน",
             cancelButtonText: 'ยกเลิก',
             showCancelButton: true,
             },
             function(isConfirm) {
             if (isConfirm) {
-                location.href = '{{ route('checkpayment') }}';
+                $.ajax({
+                    url: '{{ route('payment.approve') }}',
+                    method: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        payment_code: paymentcode,
+                        approver: approver,
+                    },
+                    success: function (response) {
+                        if(response.status == "success") {
+                            swal({
+                                title: "อนุมัติการชำระเงินเรียบร้อย ("+paymentcode+")",
+                                type: "success",
+                                confirmButtonText: "ตกลง",
+                            },
+                            function(isConfirm) {
+                                location.href = "{{ route('checkpayment.view', '')}}"+"/"+paymentcode;
+                            });
+                        }
+                    },
+                    complete: function () {
+                    }
+                });
             }
         });
+    }
+
+
+    function canclePayment(paymentcode) {
+        var operator = "{{ session()->get('session_empcode') }}";
+        swal({
+            title: "ยืนยันยกเลิกการชำระเงิน ("+paymentcode+")",
+            text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
+            type: "warning",
+            confirmButtonText: "ยืนยันยกเลิกการชำระเงิน",
+            cancelButtonText: 'ยกเลิก',
+            showCancelButton: true,
+            },
+            function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: '{{ route('payment.cancle') }}',
+                    method: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        payment_code: paymentcode,
+                        operator: operator,
+                    },
+                    success: function (response) {
+                        if(response.status == "success") {
+                            swal({
+                                title: "ยกเลิกการชำระเงินเรียบร้อย ("+paymentcode+")",
+                                type: "success",
+                                confirmButtonText: "ตกลง",
+                            },
+                            function(isConfirm) {
+                                location.href = "{{ route('checkpayment.view', '')}}"+"/"+paymentcode;
+                            });
+                        }
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+        });
+    }
+
+    function gotoOrderCode(ordercode) {
+        var url = "{{ route('orders.detail', '')}}"+"/"+ordercode;
+        window.open(url, "_blank");
     }
 
 

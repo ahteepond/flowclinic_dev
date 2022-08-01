@@ -32,11 +32,13 @@
                                     <div class="col-12 text-start">
                                         <div class="row align-items-end">
                                             <div class="form-group col-auto">
-                                                <label class="form-label">สถานะการชำระเงิน</label>
-                                                <select name="status_payment" id="status_payment" class="form-control form-select">
-                                                    <option value="1" selected>Waiting for approve</option>
-                                                    <option value="3">Success</option>
-                                                    <option value="0">Void</option>
+                                                <label class="form-label">สถานะการอนุมัติ</label>
+                                                <select name="status_approve" id="status_approve" class="form-control form-select">
+                                                    <option value="1" selected>รออนุมัติ</option>
+                                                    <option value="2">ไม่อนุมัติ/รอแก้ไข</option>
+                                                    <option value="3">อนุมัติแล้ว</option>
+                                                    <option value="0">ยกเลิก</option>
+                                                    <option value="">ทั้งหมด</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-auto">
@@ -73,54 +75,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="datatable" class="table table-bordered w-100 border-bottom">
-
-                                        <thead>
-                                            <tr>
-                                                <th>เลขที่ใบสั่งซื้อ</th>
-                                                <th>เลขที่ชำระเงิน</th>
-                                                <th>ชื่อลูกค้า</th>
-                                                <th>ผู้รับเงิน</th>
-                                                <th>สถานะการชำระเงิน</th>
-                                                <th>วันที่รับเงิน</th>
-                                                <th class="text-center">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><a href="{{ route('order.detail') }}" title="" class="text-primary">ODR-0001</a></td>
-                                                <td><a href="{{ route('checkpayment.view') }}" title="" class="text-primary">PAY-0002</a></td>
-                                                <td>พงศกร เหล่านิยมไทย</td>
-                                                <td>บัญชี ทำดี</td>
-                                                <td class="text-center"><span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">อนุมัติแล้ว</span></td>
-                                                <td>07-04-2022<br>09:00:00</td>
-                                                <td class="text-center">
-                                                    <a href="{{ route('checkpayment.view') }}" title="ตรวจสอบการชำระเงิน">ตรวจสอบการชำระเงิน</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="{{ route('order.detail') }}" title="" class="text-primary">ODR-0001</a></td>
-                                                <td><a href="{{ route('checkpayment.view') }}" title="" class="text-primary">PAY-0003</a></td>
-                                                <td>พงศกร เหล่านิยมไทย</td>
-                                                <td>บัญชี ทำดี</td>
-                                                <td class="text-center"><span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอแก้ไข</span></td>
-                                                <td>-</td>
-                                                <td class="text-center">
-                                                    <a href="{{ route('checkpayment.view') }}" title="ตรวจสอบการชำระเงิน">ตรวจสอบการชำระเงิน</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="{{ route('order.detail') }}" title="" class="text-primary">ODR-0001</a></td>
-                                                <td><a href="{{ route('checkpayment.view') }}" title="" class="text-primary">PAY-0004</a></td>
-                                                <td>พงศกร เหล่านิยมไทย</td>
-                                                <td>บัญชี ทำดี</td>
-                                                <td class="text-center"><span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รออนุมัติ</span></td>
-                                                <td>-</td>
-                                                <td class="text-center">
-                                                    <a href="{{ route('checkpayment.view') }}" title="ตรวจสอบการชำระเงิน">ตรวจสอบการชำระเงิน</a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                    <table id="datatableinfo" class="table table-bordered w-100 border-bottom">
 
                                     </table>
                                 </div>
@@ -147,18 +102,51 @@
     $( document ).ready(function() {
     });
 
-    function clearFillter() {
-        $('#order_no').val('');
-        $('#order_date').val('');
-        $('#status_payment').val('');
-        $('#status_order').val('');
-    }
-
-    var dataTable = $('#datatable').DataTable({});
+    var dataTable = $('#datatableinfo').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: "GET",
+            url: "{{ route('checkpayment.list') }}",
+            data: function( d ) {
+                d.status =  $('#status_approve :selected').val(),
+                d.searchorderno = $('#order_no').val()
+            },
+        },
+        columns: [
+            { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { title: "เลขที่ใบสั่งซื้อ", data: 'paymentscode', name: 'paymentscode' },
+            { title: "เลขที่ชำระเงิน", data: 'orderscode', name: 'orderscode' },
+            { title: "ชื่อลูกค้า", data: 'customerfullname', name: 'customerfullname' },
+            { title: "ผู้รับเงิน", data: 'empfullname', name: 'empfullname' },
+            { title: "จำนวนเงินที่ชำระ", data: 'pricepaid', name: 'pricepaid' },
+            { title: "สถานะการชำระเงิน", data: 'paymentstatus', name: 'paymentstatus' },
+            { title: "วันที่รับเงิน", data: 'paymentdate', name: 'paymentdate' },
+            { title: "Action", data: 'action', name: 'action' },
+        ],
+        'columnDefs': [
+            { "className": "text-center", "targets": [0,6,7,8] },
+        ]
+    });
     dataTable.columns.adjust().draw();
 
     function searchTable() {
         dataTable.ajax.reload();
+    }
+
+    function clearFillter() {
+        $('#order_no').val('');
+        $('#status_approve').val('');
+    }
+
+    function detail(paymentcode) {
+        var url = "{{ route('checkpayment.view', '')}}"+"/"+paymentcode;
+        location.href = url;
+    }
+
+    function gotoOrderCode(ordercode) {
+        var url = "{{ route('orders.detail', '')}}"+"/"+ordercode;
+        window.open(url, "_blank");
     }
 
 

@@ -64,7 +64,7 @@
                                     <div class="col-sm-6 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label">ตำแหน่ง <span class="text-red">*</span></label>
-                                            <select name="position" id="position" class="form-control form-select" data-bs-placeholder="Select Position">
+                                            <select name="position" id="position" class="form-control form-select" data-bs-placeholder="Select Position" disabled>
                                                 @foreach($res_empposi as $psi)
                                                     <option value="{{ $psi->emp_posi_id }}" {{ $psi->emp_posi_id === $res->emp_posi_id ? "Selected" : "" }}>{{ $psi->emp_posi_name }}</option>
                                                 @endforeach
@@ -116,7 +116,7 @@
                                     <div class="col-12 text-end">
                                         <hr>
                                         <a href="{{ route('employee') }}" class="btn btn-outline-primary me-2">Back</a>
-                                        <a href="javascript:void(0)" onclick="updateEmp({{ $res->emp_id }}, {{ $res->emp_code }})" class="btn btn-primary">Save</a>
+                                        <a href="javascript:void(0)" onclick="updateEmp({{ $res->emp_id }}, '{{ $res->emp_code }}')" class="btn btn-primary">Save</a>
                                     </div>
 
                                 </div>

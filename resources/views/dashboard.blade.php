@@ -21,11 +21,19 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
                 <div class="row">
-
-
-                    <p>My Note : เมนู จัดการคำสั่งซื้อ /1.แก้ไขการชำระเงิน /2.เช็คสถานะ order & payment</p>
-                    <p>เว้น : เมนู จัดการคำสั่งซื้อ /1.Upload หลักฐานการชำระเงิน (Evidence)</p>
-
+                    <h3>My Note</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item p-5">
+                            <h4>เมนู จัดการคำสั่งซื้อ</h4>
+                            <p class="m-0">- fillter หน้าจัดการรายการ (Success : order_status) (Error : order_date, order_no)</p>
+                            <p class="m-0">- Upload หลักฐานการชำระเงิน (Evidence) (Save/Edit)</p>
+                        </li>
+                        <li class="list-group-item p-5">
+                            <h4>เมนู ออกใบนัด</h4>
+                            <p class="m-0">- แสดงรายการ order->service ให้เลือก (+Modal)</p>
+                            <p class="m-0">- insert ข้อมูล</p>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

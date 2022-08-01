@@ -61,8 +61,8 @@ class EmployeeController extends Controller
                     return $active;
                 })
                 ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" title="รายละเอียด" onclick="view('.$row->emp_code.')" class="btn text-info btn-sm"><i class="ion-more"></i></a>';
-                    $btn .= '<a href="javascript:void(0)" title="แก้ไข" onclick="edit('.$row->emp_code.')" class="btn text-primary btn-sm"><span class="fe fe-edit"></span></a>';
+                    $btn = '<a href="javascript:void(0)" title="รายละเอียด" onclick="view('."'".$row->emp_code."'".')" class="btn text-info btn-sm"><i class="ion-more"></i></a>';
+                    $btn .= '<a href="javascript:void(0)" title="แก้ไข" onclick="edit('."'".$row->emp_code."'".')" class="btn text-primary btn-sm"><span class="fe fe-edit"></span></a>';
                     return $btn;
                 })
                 ->rawColumns(['action', 'active'])
@@ -164,10 +164,20 @@ class EmployeeController extends Controller
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $update ]);
     }
 
-    public function generateEmpcode() {
-        $res = DB::table('employee')
-        ->orderBy('emp_code', 'DESC')
+    public function generateEmpcode(Request $request) {
+        $resprefix = DB::table('employee_position')
+        ->where('emp_posi_id', $request->empposi)
         ->first();
-        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res->emp_code+1 ]);
+        $rescode = DB::table('employee')
+        ->orderBy(DB::raw('RIGHT(emp_code, 5)'), 'DESC')
+        ->first();
+        $prefix = $resprefix->prefix;
+        if ($rescode) {
+            $code_new = $code_new = sprintf("%05d", preg_replace('/[^0-9]/', '', $rescode->emp_code)+1);
+            $gencode = $prefix . $code_new;
+        } else {
+            $gencode = $prefix . "00001";
+        }
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $gencode ]);
     }
 }

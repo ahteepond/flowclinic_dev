@@ -31,6 +31,10 @@ class OrdersController extends Controller
                 'customer.lname',
                 'orders.*'
             );
+            if($request->f_orderno != '') { $data = $data->where('code', $request->f_orderno); }
+
+            if($request->f_orderdate != '') { $data = $data->where('orderdate', $request->f_orderdate); }
+            if($request->f_statusorders != '') { $data = $data->where('status_order', $request->f_statusorders); }
             $data = $data->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -49,22 +53,15 @@ class OrdersController extends Controller
                     $status_o = $row->status_order;
                     if ($status_o == 0) { $res_o = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
                     if ($status_o == 1) { $res_o = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอชำระเงิน</span>'; }
+                    if ($status_o == 2) { $res_o = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">อยู่ระหว่างการชำระเงิน</span>'; }
                     if ($status_o == 3) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">สำเร็จ</span>'; }
                     return $res_o;
-                })
-                ->addColumn('statusorderpayment', function($row){
-                    $status_op = $row->status_orderpayment;
-                    if ($status_op == 0) { $res_op = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
-                    if ($status_op == 1) { $res_op = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอชำระเงิน</span>'; }
-                    if ($status_op == 2) { $res_op = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">อยู่ระหว่างการชำระเงิน</span>'; }
-                    if ($status_op == 3) { $res_op = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">สำเร็จ</span>'; }
-                    return $res_op;
                 })
                 ->addColumn('created', function($row){
                     $created = $row->created_at;
                     return $created;
                 })
-                ->rawColumns(['orderscode', 'custname', 'statusorder', 'statusorderpayment'])
+                ->rawColumns(['orderscode', 'custname', 'statusorder'])
                 ->make(true);
         }
     }
@@ -92,7 +89,6 @@ class OrdersController extends Controller
         $paymenttype = DB::table('payment_type')
         ->where('active', 1)
         ->get();
-        // dd($paymenttype);
 
         return view('orders.detail', compact('res', 'list', 'paymenttype'));
     }
@@ -165,7 +161,6 @@ class OrdersController extends Controller
         $arr_order = array(
             "code" => $gencode,
             "status_order" => $arrorder['status_order'],
-            "status_orderpayment" => $arrorder['status_orderpayment'],
             "cust_code" => $arrorder['cust_code'],
             "price_paid" => $arrorder['price_paid'],
             "price_balance" => $arrorder['price_balance'],
@@ -206,7 +201,6 @@ class OrdersController extends Controller
             ->where('id', $request->id)
             ->first();
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res->evidence ]);
-            // dd($res);
     }
 
 }
