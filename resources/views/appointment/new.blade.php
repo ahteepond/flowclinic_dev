@@ -32,18 +32,17 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <p class="fs-18 fw-semibold mb-0"><a href="#">CUS-0001</a><br> พงศกร เหล่านิยมไทย</p>
+                                        <p class="fs-18 fw-semibold mb-0"><a href="javascript:void(0)">{{ $info->cust_code }}</a><br> {{ $info->cust_fname }} {{ $info->cust_lname }}</p>
                                         <address>
-                                            <span><b>081 234 5678</b></span><br>
-                                            เลขที่ 1/2 แขวงลาดพร้าว เขตลาดพร้าว
-                                            กรุงเทพมหานคร, 10230
+                                            <span><b>{{ $info->cust_tel }}</b></span><br>
+                                            {{ $info->cust_addr }}
                                         </address>
                                     </div>
                                     <div class="col-lg-12 text-start">
-                                        <p class="mb-1">เลขบัตรประชาชน : 1234567898765</p>
-                                        <p class="mb-1">วันเกิด : 01/01/2500</p>
-                                        <p class="mb-1">อายุ : 65 ปี</p>
-                                        <p class="mb-1">กรุ๊ปเลือด : โอ</p>
+                                        <p class="mb-1">เลขบัตรประชาชน : {{ $info->cust_idcard }}</p>
+                                        <p class="mb-1">วันเกิด : {{ $info->cust_bdate }}</p>
+                                        <p class="mb-1">อายุ : {{ $info->cust_bdate }} ปี</p>
+                                        <p class="mb-1">กรุ๊ปเลือด : {{ $info->cust_bloodtype }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -59,26 +58,26 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <p class="h3">ข้อมูลบริการ:</p>
-                                        <p class="fs-16 fw-semibold mb-0">ประเภทบริการ: ศัลยกรรมใหญ่</p>
-                                        <p class="fs-18 fw-semibold mb-0">บริการ: เสริมหน้าอก (Breast Augmentation)</p>
-                                        <p class="fs-16 fw-semibold mb-0">บริการย่อย: ซิลิโคน ซิลิเมต (Silicone Silimed)</p>
-                                        <p class="fs-16 fw-semibold mb-0">จำนวนครั้งที่นัดแล้ว: <span class="fs-20">0 ครั้ง</span></p>
+                                    <div class="col-md-12 text-end">
+                                        <p class="">สินค้าจากใบสั่งซื้อ <a href="#"><b>{{ $info->order_code }}</b></a></p>
                                     </div>
-                                    <div class="col-md-6 text-end">
-                                        <p class="pt-5">สินค้าจากใบสั่งซื้อ <a href="#"><b>ORD-0001</b></a></p>
+                                    <div class="col-md-12">
+                                        <p class="h3">ข้อมูลบริการ</p>
+                                        <p class="fs-16 mb-2">ประเภทบริการ: {{ $info->servicetype_nameth }}</p>
+                                        <p class="fs-18 fw-semibold mb-0">บริการ: {{ $info->servicemaster_nameth }} ({{ $info->servicemaster_nameen }})</p>
+                                        <p class="fs-16 fw-semibold mb-2">{{ $info->service_nameth }} ({{ $info->service_nameen }})</p>
+                                        <p class="fs-16  mb-0">จำนวนครั้งที่นัดแล้ว: <span class="fs-20">{{ $round }} ครั้ง</span></p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12"><hr></div>
-                                    <div class="col-12">
-                                        <div class="row mb-3">
+                                    <div class="col-md-5">
+                                        <div class="row mb-4">
                                             <div class="col-auto my-auto"><span class="fs-25">นัดครั้งที่</span></div>
-                                            <div class="col-2"><input class="form-control fs-25 text-center" type="text" value="1" readonly></div>
+                                            <div class="col"><input class="form-control fs-25 text-center" type="text" value="{{ $round+1 }}" readonly></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <div class="row mb-3">
                                             <div class="col-auto my-auto"><span class="fs-20">เลือกหมอ</span></div>
                                             <div class="col">
@@ -89,20 +88,26 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                    </div> --}}
+                                    <div class="col-md-7 d-flex align-items-center justify-content-center">
                                         <div class="row mb-3">
-                                            <div class="col-auto my-auto"><span class="fs-20">เลือกวันที่นัด</span></div>
-                                            <div class="col">
+                                            <div class="col-auto my-auto"><span class="fs-20">วันที่นัด</span></div>
+                                            <div class="col-auto">
                                                 <div class="form-group mb-0">
                                                     <div class="input-group">
                                                         <div class="input-group-text">
                                                             <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                         </div>
-                                                        <input onchange="checkAppointmentDate(this.value)" class="form-control fc-datepicker" name="order_date" id="order_date" placeholder="กรุณาระบุวันที่ต้องการนัด..." type="text">
+                                                        <input class="form-control fc-datepicker" name="order_date" id="order_date" placeholder="กรุณาระบุวันที่ต้องการนัด..." type="text">
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label"><i class="fa fa-sticky-note-o me-2 text-azure"></i>บันทึก</label>
+                                            <textarea class="form-control mb-4" placeholder="" rows="4" id="note_sale"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -244,11 +249,12 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="row mt-5">
-                                    <div class="col-md-12">
-                                        <div id='mycalendar'></div>
+                                <div class="row mt-5">
+                                    <div class="col-md-12 text-center">
+                                        <hr>
+                                        <button class="btn btn-primary my-2 ms-2"  onclick="newAppointment('')">บันทึกใบนัด</button>
                                     </div>
-                                </div> --}}
+                                </div>
 
 
 
@@ -402,6 +408,10 @@
 
     function searchTable() {
         dataTable.ajax.reload();
+    }
+
+    function newAppointment() {
+        alert('New Appointment');
     }
 
     </script>

@@ -30,8 +30,7 @@
                         </li>
                         <li class="list-group-item p-5">
                             <h4>เมนู ออกใบนัด</h4>
-                            <p class="m-0">- แสดงรายการ order->service ให้เลือก (+Modal)</p>
-                            <p class="m-0">- insert ข้อมูล</p>
+                            <p class="m-0">- บันทึกใบนัด (insert ข้อมูล)</p>
                         </li>
                     </ul>
                 </div>
@@ -49,6 +48,9 @@
     $( document ).ready(function() {
         // alert( "ready!" );
     });
+
+
+
     </script>
 @endsection
 

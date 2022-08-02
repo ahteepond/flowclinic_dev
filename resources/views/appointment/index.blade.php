@@ -79,37 +79,8 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive mt-5">
-                                    <table id="datatable" class="table table-bordered w-100 table-hover border-bottom">
-                                        <thead>
-                                            <tr class=" ">
-                                                <th>No.</th>
-                                                <th class="text-center">เลขที่ใบสั่งซื้อ</th>
-                                                <th class="text-center">วันที่สั่งซื้อ</th>
-                                                <th class="text-center">ออกใบนัด</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-center">1</td>
-                                                <td><p class="font-w600 mb-1">ODR2206-00001</p></td>
-                                                <td class="text-start">2022-06-25 04:19:32</td>
-                                                <td class="text-center">
-                                                    <a id="" href="#" class="btn btn-sm btn-primary">
-                                                        เลือกบริการ
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">2</td>
-                                                <td><p class="font-w600 mb-1">ODR2206-00002</p></td>
-                                                <td class="text-start">2022-06-25 04:19:32</td>
-                                                <td class="text-center">
-                                                    <a id="" href="#" class="btn btn-sm btn-primary">
-                                                        เลือกบริการ
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                    <table id="datatable_order" class="table table-bordered w-100 table-hover border-bottom">
+
                                     </table>
                                 </div>
                             </div>
@@ -125,6 +96,38 @@
 @endsection
 
 
+
+@section('other')
+<div class="modal fade" id="modal_servicelist">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="fs-18 fw-semibold mb-0" id="ordercode_hmodal">
+
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="table-responsive mt-5">
+                            <table id="datatable_service" class="table table-bordered w-100 table-hover border-bottom">
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+
+
+
 @section('script')
 
     <!-- DATA TABLE JS-->
@@ -133,16 +136,13 @@
     <script>
     $( document ).ready(function() {
 
+        $("#modal_servicelist").on('hidden.bs.modal', function(){
+            $('#ordercode_hmodal').html('');
+        });
     });
 
-    var dataTable = $('#datatable').DataTable({});
-    dataTable.columns.adjust().draw();
-
-    function searchTable() {
-        dataTable.ajax.reload();
-    }
-
     function searchOrderByCustomer() {
+        $('#orderspace_ls').fadeOut();
         var filtertype = $('#filter_type :selected').val();
         var filtertext = $('#filter_text').val();
         if (filtertext == "") {
@@ -152,6 +152,11 @@
                 type: "warning",
                 confirmButtonText: "OK",
                 closeOnConfirm: true,
+            },
+            function(isConfirm) {
+                if (isConfirm) {
+                    $('#orderspace_ls').fadeOut();
+                }
             });
             return false;
         }
@@ -165,9 +170,6 @@
             },
             success: function (response) {
                 if(response.status == "success") {
-                    //Log
-                    console.log(response.customer);
-                    console.log(response.list);
                     //Set Customer Info
                     $('#customercode').html(response.customer.code);
                     $('#fullname').html(response.customer.fname + ' ' + response.customer.lname);
@@ -177,23 +179,10 @@
                     $('#bdate').html(response.customer.bdate);
                     $('#age').html(getAge(response.customer.bdate));
                     $('#bloodtype').html(response.customer.bloodtype);
-
+                    //Set Orders List
+                    ordersList(response.customer.code);
+                    //Show
                     $('#orderspace_ls').fadeIn();
-                    // setTimeout(() => {
-                    //     $('#o_custcode').html(response.param[0].code);
-                    //     $('#o_fname').html(response.param[0].fname);
-                    //     $('#o_lname').html(response.param[0].lname);
-                    //     $('#o_birthdate').html(response.param[0].bdate);
-                    //     $('#o_idcard').html(response.param[0].idcard);
-                    //     $('#o_bloodtype').html(response.param[0].bloodtype);
-                    //     $('#o_email').html(response.param[0].email);
-                    //     $('#o_tel').html(response.param[0].tel);
-                    //     $('#o_addr').html(response.param[0].addr);
-                    //     $('#o_custtype').html(response.param[0].name);
-
-                    //     $('#rescustinfo').fadeIn();
-                    //     $('#btnselectcust').removeClass('disabled');
-                    // }, 400)
                 }
                 if(response.status == "failed") {
                     swal({
@@ -205,14 +194,10 @@
                     },
                     function(isConfirm) {
                         if (isConfirm) {
-                            // $('#rescustinfo').fadeOut();
-                            // $('#btnselectcust').addClass('disabled');
-                            // setTimeout(() => {
-                            //     $('#filter_text').focus();
-                            //     $('#filter_text').select();
-                            // }, 400)
+                            $('#orderspace_ls').fadeOut();
                         }
                     });
+                    return false;
                 }
             },
             complete: function () {
@@ -221,10 +206,73 @@
 
     }
 
-
     function getAge(dateString) {
         var ageInMilliseconds = new Date() - new Date(dateString);
         return Math.floor(ageInMilliseconds/1000/60/60/24/365); // convert to years
+    }
+
+
+    function ordersList(customercode) {
+        var dataTable = $('#datatable_order').DataTable({
+            "bDestroy": true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                type: "GET",
+                url: "{{ route('appointment.orderlist') }}",
+                data: function( d ) {
+                    d.customercode = customercode
+                },
+            },
+            columns: [
+                { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { title: "เลขที่ใบสั่งซื้อ", data: 'orderscode', name: 'orderscode' },
+                { title: "วันที่สั่งซื้อ", data: 'ordersdate', name: 'ordersdate' },
+                { title: "ออกใบนัด", data: 'selectservice', name: 'selectservice' },
+            ],
+            'columnDefs': [
+                { "className": "text-center", "targets": [0,1,2,3] },
+            ]
+        });
+        dataTable.columns.adjust().draw();
+    }
+
+
+    function serviceList(ordercode) {
+        $('#ordercode_hmodal').html('<h3 class="text-primary mt-5">'+ordercode+'</h3>');
+        var dataTable = $('#datatable_service').DataTable({
+            "bDestroy": true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                type: "GET",
+                url: "{{ route('appointment.servicelist') }}",
+                data: function( d ) {
+                    d.ordercode = ordercode
+                },
+            },
+            columns: [
+                { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { title: "เลขที่บริการ", data: 'servicecode', name: 'servicecode' },
+                { title: "บริการ", data: 'service', name: 'service' },
+                { title: "บริการย่อย", data: 'servicemaster', name: 'servicemaster' },
+                { title: "ประเภทบริการ", data: 'servicetype', name: 'servicetype' },
+                { title: "จำนวน", data: 'qty', name: 'qty' },
+                { title: "ออกใบนัด", data: 'selectservice', name: 'selectservice' },
+            ],
+            'columnDefs': [
+                { "className": "text-center", "targets": [0,5,6] },
+            ]
+        });
+        dataTable.columns.adjust().draw();
+    }
+
+    function takeAppointment(ordercode, servicecode, id) {
+        // console.log(ordercode);
+        // console.log(servicecode);
+        // console.log(id);
+        var url = "{{ route('appointment.new', '')}}"+"/"+id;
+        location.href = url;
     }
 
     </script>

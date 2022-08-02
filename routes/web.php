@@ -120,9 +120,11 @@ Route::post('/customertype/insert', 'CustomerTypeController@insert')->name('cust
 
 // Appointment -------------------------------
 Route::get('/appointment', 'AppointmentController@index')->name('appointment');
-Route::get('/appointment/new', 'AppointmentController@new')->name('appointment.new');
+Route::get('/appointment/new/{id}', 'AppointmentController@new')->name('appointment.new');
 Route::get('/appointment/history', 'AppointmentController@history')->name('appointment.history');
 Route::post('/appointment/searchorders', 'AppointmentController@searchorders')->name('appointment.searchorders');
+Route::get('/appointment/orderlist', 'AppointmentController@orderlist')->name('appointment.orderlist');
+Route::get('/appointment/servicelist', 'AppointmentController@servicelist')->name('appointment.servicelist');
 
 
 
