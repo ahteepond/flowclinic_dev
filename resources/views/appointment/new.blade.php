@@ -74,22 +74,12 @@
                                     <div class="col-md-5">
                                         <div class="row mb-4">
                                             <div class="col-auto my-auto"><span class="fs-25">นัดครั้งที่</span></div>
-                                            <div class="col"><input class="form-control fs-25 text-center" type="text" value="{{ $round+1 }}" readonly></div>
+                                            <div class="col"><input class="form-control fs-25 text-center" id="round_at" type="text" value="{{ $round+1 }}" readonly></div>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-6">
-                                        <div class="row mb-3">
-                                            <div class="col-auto my-auto"><span class="fs-20">เลือกหมอ</span></div>
-                                            <div class="col">
-                                                <select class="form-control select2-show-search form-select fs-20" data-placeholder="กรุณาเลือกหมอ...">
-                                                    <option value="0" selected disabled>กรุณาเลือกหมอ...</option>
-                                                    <option value="1">EMP-D001 คุณหมอ คนที่หนึ่ง</option>
-                                                    <option value="2">EMP-D002 คุณหมอ คนที่สอง</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    <div class="col-md-7 d-flex align-items-center justify-content-center">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 d-flex align-items-center">
                                         <div class="row mb-3">
                                             <div class="col-auto my-auto"><span class="fs-20">วันที่นัด</span></div>
                                             <div class="col-auto">
@@ -98,21 +88,56 @@
                                                         <div class="input-group-text">
                                                             <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                         </div>
-                                                        <input class="form-control fc-datepicker" name="order_date" id="order_date" placeholder="กรุณาระบุวันที่ต้องการนัด..." type="text">
+                                                        <input class="form-control fc-datepicker" id="appt_date" placeholder="กรุณาระบุวันที่..." type="text">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label"><i class="fa fa-sticky-note-o me-2 text-azure"></i>บันทึก</label>
-                                            <textarea class="form-control mb-4" placeholder="" rows="4" id="note_sale"></textarea>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <div class="row mb-3">
+                                            <div class="col-auto my-auto"><span class="fs-20">เวลานัด</span></div>
+                                            <div class="col-auto">
+                                                <div class="form-group mb-0">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-clock-o tx-16 lh-0 op-6"></i>
+                                                        </div>
+                                                        <input class="form-control" id="appt_time" placeholder="กรุณาระบุเวลา..." type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-12"><hr></div>
+                                    <div class="col-12"><label class="form-label mb-3">Note :</label></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="form-floating floating-label1">
+                                                <textarea class="form-control" placeholder="Comments" id="note_sale" style="height: 140px"></textarea>
+                                                <label for="note_sale"><i class="fa fa-sticky-note-o me-2 text-azure"></i>Sale</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="form-floating floating-label1">
+                                                <textarea class="form-control" placeholder="Comments" id="note_or" style="height: 140px"></textarea>
+                                                <label for="note_or"><i class="fa fa-sticky-note-o me-2 text-azure"></i>OR</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="form-floating floating-label1">
+                                                <textarea class="form-control" placeholder="Comments" id="note_doctor" style="height: 140px"></textarea>
+                                                <label for="note_doctor"><i class="fa fa-sticky-note-o me-2 text-azure"></i>Doctor</label>
+                                            </div>
+                                        </div>
+                                    </div> --}}
                                 </div>
 
-                                <div class="row mt-5" id="res_queue" style="display: none;">
+                                {{-- <div class="row mt-5" id="res_queue" style="display: none;">
                                     <div class="col-12">
                                         <div class="expanel expanel-default">
                                             <div class="expanel-body">
@@ -247,7 +272,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="row mt-5">
                                     <div class="col-md-12 text-center">
@@ -288,7 +313,9 @@
 
     <script>
     $( document ).ready(function() {
-
+        $('#appt_time').timepicker({
+            'timeFormat': 'H:i'
+        });
     });
 
     function checkAppointmentDate(val) {
@@ -314,90 +341,6 @@
         });
     }
 
-
-    //Full Calendar
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     var calendarEl = document.getElementById('mycalendar');
-    //     var calendar = new FullCalendar.Calendar(calendarEl, {
-    //         timeZone: 'Asia/Bangkok',
-    //         initialView: 'dayGridMonth',
-    //         headerToolbar: {
-    //             left: 'prev,next today',
-    //             center: 'title',
-    //             right: 'dayGridMonth,timeGridDay'
-    //             },
-    //         defaultView: 'month',
-    //         navLinks: true, // can click day/week names to navigate views
-    //         businessHours: true, // display business hours
-    //         editable: true,
-    //         selectable: true,
-    //         selectMirror: true,
-    //         droppable: true, // this allows things to be dropped onto the calendar
-    //         dayMaxEvents: true, // allow "more" link when too many events
-    //         select: function(arg) {
-    //             var title = prompt('Event Title:');
-    //             if (title) {
-    //                 calendar.addEvent({
-    //                     title: title,
-    //                     start: arg.start,
-    //                     end: arg.end,
-    //                     allDay: arg.allDay
-    //                 })
-    //             }
-    //             calendar.unselect()
-    //         },
-    //         eventClick: function(arg) {
-    //             if (confirm('Are you sure you want to delete this event?')) {
-    //                 arg.event.remove()
-    //             }
-    //         },
-    //         events: [{
-    //                 title: 'Business Lunch',
-    //                 start: '2022-04-03T13:00:00',
-    //                 constraint: 'businessHours'
-    //             }, {
-    //                 title: 'Meeting',
-    //                 start: '2022-04-13T11:00:00',
-    //                 constraint: 'availableForMeeting', // defined below
-    //                 color: '#f35e90'
-    //             }, {
-    //                 title: 'Conference',
-    //                 start: '2022-04-18',
-    //                 end: '2021-07-20',
-    //                 color: '#e67e22'
-    //             },
-    //             // areas where "Meeting" must be dropped
-    //             {
-    //                 id: 'availableForMeeting',
-    //                 start: '2022-04-11T10:00:00',
-    //                 end: '2021-03-11T16:00:00',
-    //                 rendering: 'background',
-    //                 color: '#5e72e4'
-    //             }, {
-    //                 id: 'availableForMeeting',
-    //                 start: '2022-04-13T10:00:00',
-    //                 end: '2021-03-13T16:00:00',
-    //                 rendering: 'background'
-    //             },
-    //             // red areas where no events can be dropped
-    //             {
-    //                 start: '2022-04-24',
-    //                 end: '2021-03-28',
-    //                 overlap: false,
-    //                 rendering: 'background',
-    //                 color: 'rgba(0,0,0,0.1)'
-    //             }, {
-    //                 start: '2022-04-06',
-    //                 end: '2021-03-11',
-    //                 overlap: false,
-    //                 rendering: 'background',
-    //                 color: 'rgba(0,0,0,0.1)'
-    //             }
-    //         ]
-    //     });
-    //     calendar.render();
-    // });
-
     $('.select2-show-search').select2({
         minimumResultsForSearch: '',
         width: '100%'
@@ -411,7 +354,69 @@
     }
 
     function newAppointment() {
-        alert('New Appointment');
+        var orderdetail_id = '{{ $info->id }}';
+        var order_code = '{{ $info->order_code }}';
+        var service_name = '{{ $info->service_nameth }} ({{ $info->service_nameen }})';
+        var servicemaster_name = '{{ $info->servicemaster_nameth }} ({{ $info->servicemaster_nameen }})';
+        var servicetype_name = '{{ $info->servicetype_nameth }}';
+        var cust_code = '{{ $info->cust_code }}';
+        var round_at = $('#round_at').val();
+        var appointment_date = $('#appt_date').val();
+        var appointment_time = $('#appt_time').val();
+        var note_sale = $('#note_sale').val();
+        var note_or = $('#note_or').val();
+        var note_doctor = $('#note_doctor').val();
+        var creator = "{{ session()->get('session_empcode') }}";
+        swal({
+                title: "ยืนยันข้อมูลใบนัด",
+                text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
+                type: "warning",
+                confirmButtonText: "ยืนยันข้อมูลถูกต้อง",
+                cancelButtonText: 'ยกเลิก',
+                showCancelButton: true,
+                },
+                function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '{{ route('appointment.insert') }}',
+                        method: 'post',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            orderdetail_id: orderdetail_id,
+                            order_code: order_code,
+                            service_name : service_name,
+                            servicemaster_name : servicemaster_name,
+                            servicetype_name : servicetype_name,
+                            cust_code : cust_code,
+                            round_at : round_at,
+                            appointment_date : appointment_date,
+                            appointment_time : appointment_time,
+                            note_sale : note_sale,
+                            creator : creator
+                        },
+                        success: function (response) {
+                            if(response.status == "success") {
+                                swal({
+                                    title: "สร้างใบนัดแล้ว!",
+                                    text: "Your infomation has been succesfully save.",
+                                    type: "success",
+                                    confirmButtonText: "OK",
+                                    confirmButtonClass: "btn-success",
+                                    },
+                                function(isConfirm) {
+                                    if (isConfirm) {
+                                        var url = "{{ route('appointment')}}";
+                                        location.href = url;
+                                    }
+                                });
+                            }
+
+                        },
+                        complete: function () {
+                        }
+                    });
+                }
+            });
     }
 
     </script>

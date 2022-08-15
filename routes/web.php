@@ -125,6 +125,10 @@ Route::get('/appointment/history', 'AppointmentController@history')->name('appoi
 Route::post('/appointment/searchorders', 'AppointmentController@searchorders')->name('appointment.searchorders');
 Route::get('/appointment/orderlist', 'AppointmentController@orderlist')->name('appointment.orderlist');
 Route::get('/appointment/servicelist', 'AppointmentController@servicelist')->name('appointment.servicelist');
+Route::post('/appointment/insert', 'AppointmentController@insert')->name('appointment.insert');
+
+Route::get('/appointmentlist', 'AppointmentController@checklist')->name('appointmentlist');
+Route::get('/appointmentlist/list', 'AppointmentController@getlist')->name('appointmentlist.list');
 
 
 

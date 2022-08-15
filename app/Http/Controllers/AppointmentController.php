@@ -44,7 +44,7 @@ class AppointmentController extends Controller
         )
         ->where('od.id', $id)
         ->first();
-        
+
         $findround = DB::table('appointment')
         ->select('round_at')
         ->where('orderdetail_id', $id)
@@ -138,5 +138,106 @@ class AppointmentController extends Controller
                 ->make(true);
         }
     }
+
+    public function insert(Request $request) {
+
+        //Check Running Order No
+        $rescode = DB::table('appointment')
+            ->orderBy('code', 'DESC')
+            ->first();
+        $prefix = "APT".Carbon::now()->format('ym')."-";
+        if ($rescode) {
+            if (Carbon::parse($rescode->created_at)->format('Y-m-d') != Carbon::now()->format('Y-m-d')) {
+                $gencode = $prefix . "00001";
+            } else {
+                $code_current = explode('-',$rescode->code)[1];
+                $code_new = sprintf("%05d", (int)$code_current + 1);
+                $gencode = $prefix . $code_new;
+            }
+        } else {
+            $gencode = $prefix . "00001";
+        }
+
+        $arr_data = array(
+            'code' => $gencode,
+            'orderdetail_id' => $request->orderdetail_id,
+            'order_code' => $request->order_code,
+            'service_name' => $request->service_name,
+            'servicemaster_name' => $request->servicemaster_name,
+            'servicetype_name' => $request->servicetype_name,
+            'cust_code' => $request->cust_code,
+            'round_at' => $request->round_at,
+            'appointment_date' => Carbon::parse($request->appointment_date)->format('Y-m-d'),
+            'appointment_time' => Carbon::parse($request->appointment_time)->format('H:i:s'),
+            'note_sale' => $request->note_sale,
+            'status' => 1,
+            'creator' => $request->creator,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        $res = DB::table('appointment')
+        ->insertOrIgnore($arr_data);
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+    }
+
+
+    public function checklist() {
+        return view('appointment.checklist');
+    }
+
+    public function getlist(Request $request) {
+        if ($request->ajax()) {
+            $data = DB::table('appointment as a');
+            $data = $data->join('customer as c', 'c.code', '=', 'a.cust_code');
+            $data = $data->select(
+                'c.fname as custfname',
+                'c.lname as custlname',
+                'c.idcard',
+                'c.tel',
+                'a.*'
+            );
+            if($request->cust_value != '') { $data = $data->where($request->cust_option, $request->cust_value); }
+            if($request->code != '') { $data = $data->where('a.code', $request->code); }
+            if($request->date != '') { $data = $data->where('a.appointment_date', $request->date); }
+            if($request->status != '') { $data = $data->where('a.status', $request->status); }
+            $data = $data->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('aptcode', function($row){
+                    return '<a href="javascript:void(0)" onclick="detail('."'".$row->code."'".')" title="" class="text-primary">'.$row->code.'</a>';
+                })
+                ->addColumn('custfullname', function($row){
+                    return $row->custfname.' '.$row->custlname;
+                })
+                ->addColumn('aptstatus', function($row){
+                    $status = $row->status;
+                    if ($status == 0) { $res_o = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
+                    if ($status == 1) { $res_o = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก</span>'; }
+                    if ($status == 2) { $res_o = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอ OR ดำเนินการ</span>'; }
+                    if ($status == 3) { $res_o = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอหมอดำเนินการ</span>'; }
+                    if ($status == 4) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">เข้ารับการรักษาแล้ว</span>'; }
+                    return $res_o;
+                })
+                ->addColumn('aptdatetime', function($row){
+                    $datetime = $row->appointment_date.'<br>'.$row->appointment_time;
+                    return $datetime;
+                })
+                ->addColumn('created', function($row){
+                    $created = $row->created_at;
+                    return $created;
+                })
+                ->addColumn('action', function($row){
+                    $btn = '<a href="javascript:void(0)" title="ส่ง OR" onclick="sendtoOR('."'".$row->code."'".')" class="btn btn-sm btn-outline-primary mb-2 ms-2">ส่ง OR</a>';
+                    $btn .= '<a href="javascript:void(0)" title="ยกเลิกนัด" onclick="cancleAPT('."'".$row->code."'".')" class="btn btn-sm btn-outline-danger mb-2 ms-2">ยกเลิกนัด</a>';
+                    return $btn;
+                })
+                ->rawColumns(['aptcode', 'aptstatus', 'aptdatetime', 'action'])
+                ->make(true);
+        }
+    }
+
+
+
+
 
 }

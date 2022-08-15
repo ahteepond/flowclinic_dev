@@ -102,7 +102,7 @@
                                                     <td class="text-center"><span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">Waiting</span></td>
                                                     <td>07-04-2022<br>09:00:00</td>
                                                     <td class="text-center">
-                                                        <a id="" href="{{ route('appointment.new') }}" class="btn btn-sm btn-danger">
+                                                        <a id="" href="" class="btn btn-sm btn-danger">
                                                             ยกเลิกนัด
                                                         </a>
                                                     </td>
