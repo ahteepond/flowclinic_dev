@@ -204,7 +204,7 @@ class AppointmentController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('aptcode', function($row){
-                    return '<a href="javascript:void(0)" onclick="detail('."'".$row->code."'".')" title="" class="text-primary">'.$row->code.'</a>';
+                    return '<a href="javascript:void(0)" data-bs-effect="effect-scale" onclick="detail('."'".$row->code."'".')" title="" class="text-primary modal-effect">'.$row->code.'</a>';
                 })
                 ->addColumn('custfullname', function($row){
                     return $row->custfname.' '.$row->custlname;
@@ -227,8 +227,8 @@ class AppointmentController extends Controller
                     return $created;
                 })
                 ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" title="ส่ง OR" onclick="sendtoOR('."'".$row->code."'".')" class="btn btn-sm btn-outline-primary mb-2 ms-2">ส่ง OR</a>';
-                    $btn .= '<a href="javascript:void(0)" title="ยกเลิกนัด" onclick="cancleAPT('."'".$row->code."'".')" class="btn btn-sm btn-outline-danger mb-2 ms-2">ยกเลิกนัด</a>';
+                    $btn = '<a href="javascript:void(0)" title="ส่ง OR" onclick="detail('."'".$row->code."'".')" class="btn btn-sm btn-primary mb-2 ms-2">ส่งใบนัด</a>';
+                    $btn .= '<a href="javascript:void(0)" title="ยกเลิกนัด" onclick="cancleAPT('."'".$row->code."'".')" class="btn btn-sm btn-danger mb-2 ms-2">ยกเลิกนัด</a>';
                     return $btn;
                 })
                 ->rawColumns(['aptcode', 'aptstatus', 'aptdatetime', 'action'])
