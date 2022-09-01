@@ -352,7 +352,7 @@
     }
 
     $("#dtlapt_modal").on('show.bs.modal', function(){
-        alert(mAptCode);
+        alert('mAptCode'); /////current task
     });
 
 
