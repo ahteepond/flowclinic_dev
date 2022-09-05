@@ -30,8 +30,7 @@
                         </li>
                         <li class="list-group-item p-5">
                             <h4>เมนู ตรวจสอบการนัดหมาย</h4>
-                            <p class="m-0">- Update ข้อมูล -> ส่ง OR, ยกเลิกนัด</p>
-                            <p class="m-0">- Modal รายละเอียดใบนัด -> Set รายละเอียด</p>
+                            <p class="m-0">- Set แสดงผลปุ่มตามสถานะใบนัด</p>
                         </li>
                     </ul>
                 </div>

@@ -125,7 +125,7 @@
                 <!-- ROW  -->
                 <div class="row">
                     <div class="col-md">
-                        <p class="mb-3 fs-18">เลขที่ใบนัด <b><span class="text-primary fw-semibold clear_dtl_t" id="dtl_appointment_code">APT2208-00001</span></b></p>
+                        <p class="mb-3 fs-18">เลขที่ใบนัด <b><span class="text-primary fw-semibold clear_dtl_t" id="dtl_appointment_code"></span></b></p>
                     </div>
                     <div class="col-12">
                         <div class="expanel expanel-default">
@@ -140,7 +140,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="float-end">
-                                                    <h3 class="fw-bold mb-0 text-primary mt-1 clear_dtl_t" id="dtl_round">4</h3>
+                                                    <h3 class="fw-bold mb-0 text-primary mt-1 clear_dtl_t" id="dtl_round"></h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +155,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="float-end">
-                                                    <h4 class="fw-bold mb-0 mt-2 text-blue clear_dtl_t" id="dtl_aptdate">2022-08-11</h4>
+                                                    <h4 class="fw-bold mb-0 mt-2 text-blue clear_dtl_t" id="dtl_aptdate"></h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,7 +170,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="float-end">
-                                                    <h4 class="fw-bold mb-0 mt-2 text-blue clear_dtl_t" id="dtl_apttime">14:30</h4>
+                                                    <h4 class="fw-bold mb-0 mt-2 text-blue clear_dtl_t" id="dtl_apttime"></h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -183,7 +183,7 @@
 
                 <div class="row">
                     <div class="col-md-12 text-end">
-                        <p class="">สินค้าจากใบสั่งซื้อ <a href="#"><b><span class="clear_dtl_t" id="dtl_order_code">ODR2206-00001</span></b></a></p>
+                        <p class="">สินค้าจากใบสั่งซื้อ <a href="#"><b><span class="clear_dtl_t" id="dtl_order_code"></span></b></a></p>
                     </div>
                 </div>
 
@@ -193,24 +193,27 @@
                         <hr class="my-1">
                     </div>
                     <div class="col-md-12">
-                        <p class="fs-14 mb-0"><span class="fw-semibold text-primary clear_dtl_t" id="dtl_custcode">CUS-00001 </span><span class="clear_dtl_t" id="dtl_custfullname">สายใจ เกาะมหาสนุก</span></p>
+                        <p class="fs-14 mb-0">
+                            <span class="fw-semibold text-primary clear_dtl_t" id="dtl_custcode"></span> 
+                            <span class="clear_dtl_t" id="dtl_custfullname"></span>
+                        </p>
                     </div>
                     <div class="col-md-12">
                         <p class="fs-14 mb-0"><span class="fw-semibold">การติดต่อ : </span></p>
-                        <p class="fs-14 mb-0"><span class="clear_dtl_t" id="dtl_custtel">0611111111</span></p>
-                        <p class="fs-14 mb-0"><span class="clear_dtl_t" id="dtl_custaddr">21-29 ถ.นาคราช แขวงคลองมหานาคเขตป้อมปราบ จ.กรุงเทพฯ 10100</span></p>
+                        <p class="fs-14 mb-0"><span class="clear_dtl_t" id="dtl_custtel"></span></p>
+                        <p class="fs-14 mb-0"><span class="clear_dtl_t" id="dtl_custaddr"></span></p>
                     </div>
                     <div class="col-md-auto">
-                        <p class="fs-14 mb-0"><span class="fw-semibold">เลขบัตรประชาชน : </span><span class="clear_dtl_t" id="dtl_custidcard">7771402217260</span></p>
+                        <p class="fs-14 mb-0"><span class="fw-semibold">เลขบัตรประชาชน : </span><span class="clear_dtl_t" id="dtl_custidcard"></span></p>
                     </div>
                     <div class="col-md-auto">
-                        <p class="fs-14 mb-0"><span class="fw-semibold">วันเกิด : </span><span class="clear_dtl_t" id="dtl_custbdate">2001-05-01</span></p>
+                        <p class="fs-14 mb-0"><span class="fw-semibold">วันเกิด : </span><span class="clear_dtl_t" id="dtl_custbdate"></span></p>
                     </div>
                     <div class="col-md-auto">
-                        <p class="fs-14 mb-0"><span class="fw-semibold">อายุ : </span><span class="clear_dtl_t" id="dtl_custage">20</span> ปี</p>
+                        <p class="fs-14 mb-0"><span class="fw-semibold">อายุ : </span><span class="clear_dtl_t" id="dtl_custage"></span> ปี</p>
                     </div>
                     <div class="col-md-auto">
-                        <p class="fs-14 mb-0"><span class="fw-semibold">กรุ๊ปเลือด : </span><span class="clear_dtl_t" id="dtl_custbloodtype">โอ</span></p>
+                        <p class="fs-14 mb-0"><span class="fw-semibold">กรุ๊ปเลือด : </span><span class="clear_dtl_t" id="dtl_custbloodtype"></span></p>
                     </div>
                 </div>
 
@@ -220,11 +223,19 @@
                         <hr class="my-1">
                     </div>
                     <div class="col-md">
-                        <p class="fs-14 mb-0"><span class="fw-semibold">บริการ : </span><span class="clear_dtl_t" id="dtl_service_master">เสริมหน้าอก (Breast Augmentation)</span></p>
-                        <p class="fs-14 mb-0"><span class="clear_dtl_t" id="dtl_service">ซิลิโคน ซิลิเมต (Silicone Silimed)</span></p>
+                        <p class="fs-14 mb-0"><span class="fw-semibold">บริการ : </span><span class="clear_dtl_t" id="dtl_service_master"></span></p>
+                        <p class="fs-14 mb-0"><span class="clear_dtl_t" id="dtl_service"></span></p>
                     </div>
                     <div class="col-md">
-                        <p class="fs-14 mb-0"><span class="fw-semibold">ประเภทบริการ : </span><span class="clear_dtl_t" id="dtl_service_type">ศัลยกรรมใหญ่</span></p>
+                        <p class="fs-14 mb-0"><span class="fw-semibold">ประเภทบริการ : </span><span class="clear_dtl_t" id="dtl_service_type"></span></p>
+                    </div>
+                </div>
+
+                <div class="row mt-6">
+                    <div class="col-12"><p class="h4 fw-semibold">หมายเหตุ</p></div>
+                    <hr class="my-1">
+                    <div class="col-md-12">
+                        <p id="note_newapt"></p>
                     </div>
                 </div>
 
@@ -260,11 +271,28 @@
                 <div class="row mt-4">
                     <div class="col-md-12 text-center">
                         <button class="btn btn-primary my-2 ms-2" onclick="sendtoOR('')">ส่งใบนัดให้ OR</button>
-                        <button class="btn btn-danger my-2 ms-2" onclick="cancleAPT('')">ยกเลิกนัด</button>
+                        <button class="btn btn-danger my-2 ms-2" onclick="cancelAPT('')">ยกเลิกนัด</button>
                         <button class="btn btn-light my-2 ms-2" data-bs-dismiss="modal">ปิด</button>
                     </div>
                 </div>
                 <!-- ROW END -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="aptcancel_modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center p-4 pb-5">
+                <i class="icon icon-exclamation fs-70 text-danger lh-1 my-4 d-inline-block"></i>
+                <h4 class="text-danger mb-20">กรุณากรอกเหตุผลการยกเลิกนัด (<span id="titlecancel_aptcode"></span>)</h4>
+                <input type="text" id="tmpcancle_aptno" hidden>
+                <textarea class="form-control mb-4" placeholder="กรอกเหตุผล..." rows="4" id="note_cancel"></textarea>
+                <button class="btn btn-danger my-2 ms-2 pd-x-25" onclick="confirmCancelAPT($('#note_cancel').val())">ยกเลิกนัด</button>
+                <button data-bs-dismiss="modal" class="btn btn-outline-danger my-2 ms-2 pd-x-25" onclick="">ปิด</button>
             </div>
         </div>
     </div>
@@ -297,7 +325,7 @@
         serverSide: true,
         ajax: {
             type: "GET",
-            url: "{{ route('appointmentlist.list') }}",
+            url: "{{ route('appointmentlist.getlist') }}",
             data: function( d ) {
                 d.cust_option = $('#cust_option').val(),
                 d.cust_value = $('#cust_value').val(),
@@ -344,6 +372,7 @@
 
     $("#dtlapt_modal").on('hidden.bs.modal', function(){
         clearDetail();
+        searchTable();
     });
 
     function detail(aptcode) {
@@ -352,7 +381,39 @@
     }
 
     $("#dtlapt_modal").on('show.bs.modal', function(){
-        alert('mAptCode'); /////current task
+        $.ajax({
+            url: '{{ route('appointmentlist.getdetail') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                aptcode : mAptCode
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    var res = response.param
+                    $('#dtl_appointment_code').html(res.code),
+                    $('#dtl_round').html(res.round_at),
+                    $('#dtl_aptdate').html(res.appointment_date),
+                    $('#dtl_apttime').html(res.appointment_time),
+                    $('#dtl_order_code').html(res.order_code),
+                    $('#dtl_custcode').html(res.cust_code),
+                    $('#dtl_custfullname').html(res.fname+' '+res.lname),
+                    $('#dtl_custtel').html(res.tel),
+                    $('#dtl_custaddr').html(res.addr),
+                    $('#dtl_custidcard').html(res.idcard),
+                    $('#dtl_custbdate').html(res.bdate),
+                    $('#dtl_custage').html(res.bdate),
+                    $('#dtl_custbloodtype').html(res.bloodtype),
+                    $('#dtl_service_master').html(res.servicemaster_name),
+                    $('#dtl_service').html(res.service_name),
+                    $('#dtl_service_type').html(res.servicetype_name),
+                    $('#note_newapt').html(res.note_newapt ? res.note_newapt : '-'),
+                    $('#note_sale').val(res.note_sale)
+                }
+            },
+            complete: function () {
+            }
+        });
     });
 
 
@@ -369,27 +430,93 @@
             },
             function(isConfirm) {
             if (isConfirm) {
-
+                $.ajax({
+                    url: '{{ route('appointmentlist.updatedetail') }}',
+                    method: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        aptcode : mAptCode,
+                        note_sale : $('#note_sale').val(),
+                        param : 'to_or'
+                    },
+                    success: function (response) {
+                        if(response.status == "success") {
+                            swal({
+                                title: "ส่งใบนัดเลขที่ "+response.aptcode+" ไปยัง OR เรียบร้อย",
+                                type: "success",
+                                confirmButtonText: "ตกลง",
+                            });
+                        }
+                    },
+                    complete: function () {
+                        $("#dtlapt_modal").modal('hide');
+                    }
+                });
             }
         });
     }
 
-    function cancleAPT(aptcode) {
-        swal({
-            title: "ยืนยันยกเลิกใบนัด",
-            text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
-            type: "warning",
-            confirmButtonText: "ยืนยันยกเลิกใบนัด",
-            cancelButtonText: 'ยกเลิก',
-            showCancelButton: true,
-            },
-            function(isConfirm) {
-            if (isConfirm) {
 
-            }
-        });
+    $("#aptcancel_modal").on('hidden.bs.modal', function(){
+        $('#tmpcancle_aptno').val('');
+        $('#note_cancel').val('');
+        searchTable();
+    });
+
+    
+    function cancelAPT(aptcode) {
+        $("#aptcancel_modal").modal('show');
+        $('#titlecancel_aptcode').html(aptcode);
+        $('#tmpcancle_aptno').val(aptcode);
+    }
+
+    function confirmCancelAPT(notecancel) {
+        var aptcode = $('#tmpcancle_aptno').val();
+        if ($('#note_cancel').val() != '') {
+            swal({
+                title: "ยืนยันยกเลิกใบนัด "+aptcode,
+                text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
+                type: "warning",
+                confirmButtonText: "ยืนยันยกเลิกใบนัด",
+                cancelButtonText: 'ยกเลิก',
+                showCancelButton: true,
+                },
+                function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '{{ route('appointmentlist.updatedetail') }}',
+                        method: 'post',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : aptcode,
+                            note_cancel : $('#note_cancel').val(),
+                            param : 'cancel'
+                        },
+                        success: function (response) {
+                            if(response.status == "success") {
+                                console.log(response);
+                                swal({
+                                    title: "ยกเลิกใบนัดเลขที่ "+response.aptcode+" เรียบร้อย",
+                                    type: "success",
+                                    confirmButtonText: "ตกลง",
+                                });
+                            }
+                        },
+                        complete: function () {
+                            $("#aptcancel_modal").modal('hide');
+                        }
+                    });
+                }
+            });
+        } else {
+            swal({
+                title: "กรุณากรอกเหตุผลการยกเลิกนัด",
+                type: "error",
+                confirmButtonText: "ตกลง",
+            });
+        }
+       
     }
 
     </script>
 @endsection
-

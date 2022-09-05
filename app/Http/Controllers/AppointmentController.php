@@ -169,7 +169,7 @@ class AppointmentController extends Controller
             'round_at' => $request->round_at,
             'appointment_date' => Carbon::parse($request->appointment_date)->format('Y-m-d'),
             'appointment_time' => Carbon::parse($request->appointment_time)->format('H:i:s'),
-            'note_sale' => $request->note_sale,
+            'note_newapt' => $request->note_newapt,
             'status' => 1,
             'creator' => $request->creator,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -200,6 +200,7 @@ class AppointmentController extends Controller
             if($request->code != '') { $data = $data->where('a.code', $request->code); }
             if($request->date != '') { $data = $data->where('a.appointment_date', $request->date); }
             if($request->status != '') { $data = $data->where('a.status', $request->status); }
+            $data = $data->orderBy('a.code', 'desc');
             $data = $data->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -227,13 +228,62 @@ class AppointmentController extends Controller
                     return $created;
                 })
                 ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" title="ส่ง OR" onclick="detail('."'".$row->code."'".')" class="btn btn-sm btn-primary mb-2 ms-2">ส่งใบนัด</a>';
-                    $btn .= '<a href="javascript:void(0)" title="ยกเลิกนัด" onclick="cancleAPT('."'".$row->code."'".')" class="btn btn-sm btn-danger mb-2 ms-2">ยกเลิกนัด</a>';
+                    $btn = '';
+                    if ($row->status > 0) {
+                        if ($row->status < 2) {
+                            $btn .= '<a href="javascript:void(0)" title="ส่ง OR" onclick="detail('."'".$row->code."'".')" class="btn btn-sm btn-primary mb-2 ms-2">ส่งใบนัด</a>';
+                        }
+                        $btn .= '<a href="javascript:void(0)" title="ยกเลิกนัด" onclick="cancelAPT('."'".$row->code."'".')" class="btn btn-sm btn-danger mb-2 ms-2">ยกเลิกนัด</a>';
+                    }
                     return $btn;
                 })
                 ->rawColumns(['aptcode', 'aptstatus', 'aptdatetime', 'action'])
                 ->make(true);
         }
+    }
+
+
+
+    public function getdetail(Request $request) {
+        $res = DB::table('appointment as a')
+        ->join('customer as c', 'a.cust_code', '=', 'c.code')
+        ->select(
+            'a.*',
+            'c.fname', 
+            'c.lname',
+            'c.tel',
+            'c.addr',
+            'c.idcard',
+            'c.bdate',
+            'c.bloodtype'
+        )
+        ->where('a.code', $request->aptcode)
+        ->first();
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+    }
+
+
+    public function updatedetail(Request $request) {
+        switch ($request->param) {
+            case 'to_or':
+                $arr_data = array(
+                    'note_sale' => $request->note_sale,
+                    'status' => 2,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+            break;
+            case 'cancel':
+                $arr_data = array(
+                    'note_cancel' => $request->note_cancel,
+                    'status' => 0,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+            break;
+        }
+        $res = DB::table('appointment')
+        ->where('code', $request->aptcode)
+        ->update($arr_data);
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res, 'aptcode' => $request->aptcode ]);
     }
 
 

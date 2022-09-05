@@ -110,169 +110,17 @@
                                         </div>
                                     </div>
                                     <div class="col-12"><hr></div>
-                                    <div class="col-12"><label class="form-label mb-3">Note :</label></div>
-                                    <div class="col-md-4">
+                                    <div class="col-12"><label class="form-label mb-3 h4 fw-semibold">หมายเหตุ</label></div>
+                                    <div class="col-12"></div>
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="form-floating floating-label1">
-                                                <textarea class="form-control" placeholder="Comments" id="note_sale" style="height: 140px"></textarea>
-                                                <label for="note_sale"><i class="fa fa-sticky-note-o me-2 text-azure"></i>Sale</label>
+                                                <textarea class="form-control" placeholder="Comments" id="note_newapt" style="height: 100px"></textarea>
+                                                <label for="note_newapt"><i class="fa fa-sticky-note-o me-2 text-azure"></i>หมายเหตุใบนัด</label>
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-4">
-                                        <div class="form-group">
-                                            <div class="form-floating floating-label1">
-                                                <textarea class="form-control" placeholder="Comments" id="note_or" style="height: 140px"></textarea>
-                                                <label for="note_or"><i class="fa fa-sticky-note-o me-2 text-azure"></i>OR</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <div class="form-floating floating-label1">
-                                                <textarea class="form-control" placeholder="Comments" id="note_doctor" style="height: 140px"></textarea>
-                                                <label for="note_doctor"><i class="fa fa-sticky-note-o me-2 text-azure"></i>Doctor</label>
-                                            </div>
-                                        </div>
-                                    </div> --}}
                                 </div>
-
-                                {{-- <div class="row mt-5" id="res_queue" style="display: none;">
-                                    <div class="col-12">
-                                        <div class="expanel expanel-default">
-                                            <div class="expanel-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <h3 class="mb-2 mt-5 px-3 fw-bold">Queue Result</h3>
-                                                        <h4 class="my-1 px-3 fw-semibold">วันที่: 08/04/2022</h4>
-                                                        <h4 class="mb-5 px-3 fw-semibold">ชื่อหมอ: EMP-D001 คุณหมอ คนที่หนึ่ง</h4>
-                                                        <hr>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="vtimeline">
-                                                            <div class="timeline-wrapper timeline-wrapper-danger">
-                                                                <div class="avatar avatar-md timeline-badge">
-                                                                    <span class="timeline-icon"><i class="fa fa-clock-o"></i></span>
-                                                                </div>
-                                                                <div class="timeline-panel">
-                                                                    <div class="timeline-heading">
-                                                                        <h6 class="timeline-title">เวลา 09:00 - 10:00</h6>
-                                                                    </div>
-                                                                    <div class="timeline-body">
-                                                                        <p class="mb-0">เลขที่ใบนัด: APT-0095</p>
-                                                                        <p class="mb-0">ประเภทบริการ: ศัลยกรรมใหญ่</p>
-                                                                        <p class="mb-0">บริการ: เสริมหน้าอก (Breast Augmentation)</p>
-                                                                        <p class="mb-0">บริการย่อย: ซิลิโคน ซิลิเมต (Silicone Silimed)</p>
-                                                                        <p class="mb-4">ชื่อลูกค้า: นายกอ กอสกุล</p>
-                                                                    </div>
-                                                                    <div class="timeline-footer d-flex align-items-center flex-wrap">
-                                                                        <span class="ms-auto"><i class="fe fe-calendar text-muted me-1"></i>08/04/2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="timeline-wrapper timeline-inverted timeline-wrapper-danger">
-                                                                <div class="avatar avatar-md timeline-badge">
-                                                                    <span class="timeline-icon"><i class="fa fa-clock-o"></i></span>
-                                                                </div>
-                                                                <div class="timeline-panel">
-                                                                    <div class="timeline-heading">
-                                                                        <h6 class="timeline-title">เวลา 10:00 - 11:00</h6>
-                                                                    </div>
-                                                                    <div class="timeline-body">
-                                                                        <p class="mb-0">เลขที่ใบนัด: APT-0096</p>
-                                                                        <p class="mb-0">ประเภทบริการ: ศัลยกรรมใหญ่</p>
-                                                                        <p class="mb-0">บริการ: เสริมหน้าอก (Breast Augmentation)</p>
-                                                                        <p class="mb-0">บริการย่อย: ซิลิโคน ซิลิเมต (Silicone Silimed)</p>
-                                                                        <p class="mb-4">ชื่อลูกค้า: นายกอ กอสกุล</p>
-                                                                    </div>
-                                                                    <div class="timeline-footer d-flex align-items-center flex-wrap">
-                                                                        <span class="ms-auto"><i class="fe fe-calendar text-muted me-1"></i>08/04/2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="timeline-wrapper timeline-wrapper-danger">
-                                                                <div class="avatar avatar-md timeline-badge">
-                                                                    <span class="timeline-icon"><i class="fa fa-clock-o"></i></span>
-                                                                </div>
-                                                                <div class="timeline-panel">
-                                                                    <div class="timeline-heading">
-                                                                        <h6 class="timeline-title">เวลา 11:00 - 12:00</h6>
-                                                                    </div>
-                                                                    <div class="timeline-body">
-                                                                        <p class="mb-0">เลขที่ใบนัด: APT-0097</p>
-                                                                        <p class="mb-0">ประเภทบริการ: ศัลยกรรมใหญ่</p>
-                                                                        <p class="mb-0">บริการ: เสริมหน้าอก (Breast Augmentation)</p>
-                                                                        <p class="mb-0">บริการย่อย: ซิลิโคน ซิลิเมต (Silicone Silimed)</p>
-                                                                        <p class="mb-4">ชื่อลูกค้า: นายกอ กอสกุล</p>
-                                                                    </div>
-                                                                    <div class="timeline-footer d-flex align-items-center flex-wrap">
-                                                                        <span class="ms-auto"><i class="fe fe-calendar text-muted me-1"></i>08/04/2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="timeline-wrapper timeline-inverted timeline-wrapper-danger">
-                                                                <div class="avatar avatar-md timeline-badge">
-                                                                    <span class="timeline-icon"><i class="fa fa-clock-o"></i></span>
-                                                                </div>
-                                                                <div class="timeline-panel">
-                                                                    <div class="timeline-heading">
-                                                                        <h6 class="timeline-title">เวลา 13:00 - 14:00</h6>
-                                                                    </div>
-                                                                    <div class="timeline-body">
-                                                                        <p class="mb-0">เลขที่ใบนัด: APT-0098</p>
-                                                                        <p class="mb-0">ประเภทบริการ: ศัลยกรรมใหญ่</p>
-                                                                        <p class="mb-0">บริการ: เสริมหน้าอก (Breast Augmentation)</p>
-                                                                        <p class="mb-0">บริการย่อย: ซิลิโคน ซิลิเมต (Silicone Silimed)</p>
-                                                                        <p class="mb-4">ชื่อลูกค้า: นายกอ กอสกุล</p>
-                                                                    </div>
-                                                                    <div class="timeline-footer d-flex align-items-center flex-wrap">
-                                                                        <span class="ms-auto"><i class="fe fe-calendar text-muted me-1"></i>08/04/2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="timeline-wrapper timeline-wrapper-success" role="button" onclick="confirmMakeAppointment()">
-                                                                <div class="avatar avatar-md timeline-badge">
-                                                                    <span class="timeline-icon"><i class="fa fa-clock-o"></i></span>
-                                                                </div>
-                                                                <div class="timeline-panel">
-                                                                    <div class="timeline-heading">
-                                                                        <h6 class="timeline-title">เวลา 14:00 - 15:00</h6>
-                                                                    </div>
-                                                                    <div class="timeline-body">
-                                                                        <p class="mb-0">ว่าง</p>
-                                                                    </div>
-                                                                    <div class="timeline-footer d-flex align-items-center flex-wrap">
-                                                                        <span class="ms-auto"><i class="fe fe-calendar text-muted me-1"></i>08/04/2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="timeline-wrapper timeline-inverted timeline-wrapper-danger">
-                                                                <div class="avatar avatar-md timeline-badge">
-                                                                    <span class="timeline-icon"><i class="fa fa-clock-o"></i></span>
-                                                                </div>
-                                                                <div class="timeline-panel">
-                                                                    <div class="timeline-heading">
-                                                                        <h6 class="timeline-title">เวลา 16:00 - 17:00</h6>
-                                                                    </div>
-                                                                    <div class="timeline-body">
-                                                                        <p class="mb-0">เลขที่ใบนัด: APT-0099</p>
-                                                                        <p class="mb-0">ประเภทบริการ: ศัลยกรรมใหญ่</p>
-                                                                        <p class="mb-0">บริการ: เสริมหน้าอก (Breast Augmentation)</p>
-                                                                        <p class="mb-0">บริการย่อย: ซิลิโคน ซิลิเมต (Silicone Silimed)</p>
-                                                                        <p class="mb-4">ชื่อลูกค้า: นายกอ กอสกุล</p>
-                                                                    </div>
-                                                                    <div class="timeline-footer d-flex align-items-center flex-wrap">
-                                                                        <span class="ms-auto"><i class="fe fe-calendar text-muted me-1"></i>08/04/2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
 
                                 <div class="row mt-5">
                                     <div class="col-md-12 text-center">
@@ -363,9 +211,7 @@
         var round_at = $('#round_at').val();
         var appointment_date = $('#appt_date').val();
         var appointment_time = $('#appt_time').val();
-        var note_sale = $('#note_sale').val();
-        var note_or = $('#note_or').val();
-        var note_doctor = $('#note_doctor').val();
+        var note_newapt = $('#note_newapt').val();
         var creator = "{{ session()->get('session_empcode') }}";
         swal({
                 title: "ยืนยันข้อมูลใบนัด",
@@ -391,7 +237,7 @@
                             round_at : round_at,
                             appointment_date : appointment_date,
                             appointment_time : appointment_time,
-                            note_sale : note_sale,
+                            note_newapt : note_newapt,
                             creator : creator
                         },
                         success: function (response) {

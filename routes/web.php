@@ -128,7 +128,10 @@ Route::get('/appointment/servicelist', 'AppointmentController@servicelist')->nam
 Route::post('/appointment/insert', 'AppointmentController@insert')->name('appointment.insert');
 
 Route::get('/appointmentlist', 'AppointmentController@checklist')->name('appointmentlist');
-Route::get('/appointmentlist/list', 'AppointmentController@getlist')->name('appointmentlist.list');
+Route::get('/appointmentlist/getlist', 'AppointmentController@getlist')->name('appointmentlist.getlist');
+Route::post('/appointmentlist/getdetail', 'AppointmentController@getdetail')->name('appointmentlist.getdetail');
+Route::post('/appointmentlist/updatedetail', 'AppointmentController@updatedetail')->name('appointmentlist.updatedetail');
+
 
 
 
