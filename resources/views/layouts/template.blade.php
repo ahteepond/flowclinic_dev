@@ -166,7 +166,7 @@
                                     <li><a href="/orders/new" class="slide-item"> คำสั่งซื้อใหม่</a></li>
                                     <li><a href="/checkpayment" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
                                     <li><a href="/appointment" class="slide-item"> ออกใบนัด</a></li>
-                                    <li><a href="/appointmentlist" class="slide-item"> ตรวจสอบการนัดหมาย</a></li>
+                                    <li><a href="/appointment/checklist" class="slide-item"> ตรวจสอบการนัดหมาย</a></li>
                                     <li><a href="/appointment" class="slide-item"> รอรับการรักษา</a></li>
                                     <li><a href="/admitted" class="slide-item"> เข้ารับการรักษา</a></li>
                                     <li><a href="/opd" class="slide-item"> บันทึกประวัติ OPD</a></li>

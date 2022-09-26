@@ -110,13 +110,13 @@
                                         </div>
                                     </div>
                                     <div class="col-12"><hr></div>
-                                    <div class="col-12"><label class="form-label mb-3 h4 fw-semibold">หมายเหตุ</label></div>
+                                    <div class="col-12"><label class="form-label mb-3 h4 fw-semibold">บันทึก</label></div>
                                     <div class="col-12"></div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="form-floating floating-label1">
                                                 <textarea class="form-control" placeholder="Comments" id="note_newapt" style="height: 100px"></textarea>
-                                                <label for="note_newapt"><i class="fa fa-sticky-note-o me-2 text-azure"></i>หมายเหตุใบนัด</label>
+                                                <label for="note_newapt"><i class="fa fa-sticky-note-o me-2 text-azure"></i>บันทึกใบนัด</label>
                                             </div>
                                         </div>
                                     </div>
@@ -211,7 +211,7 @@
         var round_at = $('#round_at').val();
         var appointment_date = $('#appt_date').val();
         var appointment_time = $('#appt_time').val();
-        var note_newapt = $('#note_newapt').val();
+        var note = $('#note_newapt').val();
         var creator = "{{ session()->get('session_empcode') }}";
         swal({
                 title: "ยืนยันข้อมูลใบนัด",
@@ -237,7 +237,7 @@
                             round_at : round_at,
                             appointment_date : appointment_date,
                             appointment_time : appointment_time,
-                            note_newapt : note_newapt,
+                            note : note,
                             creator : creator
                         },
                         success: function (response) {

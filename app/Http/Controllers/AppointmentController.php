@@ -140,6 +140,8 @@ class AppointmentController extends Controller
     }
 
     public function insert(Request $request) {
+        //Set Status for Action
+        $status_param = 2; //บันทึก(S)
 
         //Check Running Order No
         $rescode = DB::table('appointment')
@@ -147,7 +149,7 @@ class AppointmentController extends Controller
             ->first();
         $prefix = "APT".Carbon::now()->format('ym')."-";
         if ($rescode) {
-            if (Carbon::parse($rescode->created_at)->format('Y-m-d') != Carbon::now()->format('Y-m-d')) {
+            if (Carbon::parse($rescode->created_at)->format('Y-m') != Carbon::now()->format('Y-m')) {
                 $gencode = $prefix . "00001";
             } else {
                 $code_current = explode('-',$rescode->code)[1];
@@ -157,6 +159,10 @@ class AppointmentController extends Controller
         } else {
             $gencode = $prefix . "00001";
         }
+
+        $res_aptstatus = DB::table('appointment_status')
+        ->where('status', $status_param)
+        ->first();
 
         $arr_data = array(
             'code' => $gencode,
@@ -169,23 +175,42 @@ class AppointmentController extends Controller
             'round_at' => $request->round_at,
             'appointment_date' => Carbon::parse($request->appointment_date)->format('Y-m-d'),
             'appointment_time' => Carbon::parse($request->appointment_time)->format('H:i:s'),
-            'note_newapt' => $request->note_newapt,
-            'status' => 1,
+            'status' => $res_aptstatus->status,
             'creator' => $request->creator,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         );
-        $res = DB::table('appointment')
-        ->insertOrIgnore($arr_data);
-        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+        DB::table('appointment')->insertOrIgnore($arr_data);
+
+        $arr_note = array(
+            'appointment_code' => $gencode,
+            'emp_session' => $request->creator,
+            'status' => $res_aptstatus->status,
+            'status_text' => $res_aptstatus->status_text,
+            'note' => $request->note,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        DB::table('appointment_note')->insertOrIgnore($arr_note);
+
+        return response()->json([ 'status' => 'success', 'result' => true ]);
     }
 
 
     public function checklist() {
-        return view('appointment.checklist');
+        $session_cur = session()->get('session_empcode');
+        $empdtl = DB::table('employee')
+        ->where('emp_code',$session_cur)
+        ->first();
+
+        $aptstatus = DB::table('appointment_status')
+        ->where('role','like','%|'.$empdtl->emp_prefix.'|%')
+        ->get();
+
+        return view('appointment.checklist', compact('aptstatus'));
     }
 
-    public function getlist(Request $request) {
+    public function getaptlist(Request $request) {
         if ($request->ajax()) {
             $data = DB::table('appointment as a');
             $data = $data->join('customer as c', 'c.code', '=', 'a.cust_code');
@@ -227,16 +252,6 @@ class AppointmentController extends Controller
                     $created = $row->created_at;
                     return $created;
                 })
-                ->addColumn('action', function($row){
-                    $btn = '';
-                    if ($row->status > 0) {
-                        if ($row->status < 2) {
-                            $btn .= '<a href="javascript:void(0)" title="ส่ง OR" onclick="detail('."'".$row->code."'".')" class="btn btn-sm btn-primary mb-2 ms-2">ส่งใบนัด</a>';
-                        }
-                        $btn .= '<a href="javascript:void(0)" title="ยกเลิกนัด" onclick="cancelAPT('."'".$row->code."'".')" class="btn btn-sm btn-danger mb-2 ms-2">ยกเลิกนัด</a>';
-                    }
-                    return $btn;
-                })
                 ->rawColumns(['aptcode', 'aptstatus', 'aptdatetime', 'action'])
                 ->make(true);
         }
@@ -244,7 +259,7 @@ class AppointmentController extends Controller
 
 
 
-    public function getdetail(Request $request) {
+    public function getaptdetail(Request $request) {
         $res = DB::table('appointment as a')
         ->join('customer as c', 'a.cust_code', '=', 'c.code')
         ->select(
@@ -263,7 +278,7 @@ class AppointmentController extends Controller
     }
 
 
-    public function updatedetail(Request $request) {
+    public function updateaptdetail(Request $request) {
         switch ($request->param) {
             case 'to_or':
                 $arr_data = array(

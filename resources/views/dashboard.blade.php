@@ -30,7 +30,7 @@
                         </li>
                         <li class="list-group-item p-5">
                             <h4>เมนู ตรวจสอบการนัดหมาย</h4>
-                            <p class="m-0">- Set แสดงผลปุ่มตามสถานะใบนัด</p>
+                            <p class="m-0">-checklist - set new status</p>
                         </li>
                     </ul>
                 </div>

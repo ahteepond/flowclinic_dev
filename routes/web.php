@@ -127,10 +127,13 @@ Route::get('/appointment/orderlist', 'AppointmentController@orderlist')->name('a
 Route::get('/appointment/servicelist', 'AppointmentController@servicelist')->name('appointment.servicelist');
 Route::post('/appointment/insert', 'AppointmentController@insert')->name('appointment.insert');
 
-Route::get('/appointmentlist', 'AppointmentController@checklist')->name('appointmentlist');
-Route::get('/appointmentlist/getlist', 'AppointmentController@getlist')->name('appointmentlist.getlist');
-Route::post('/appointmentlist/getdetail', 'AppointmentController@getdetail')->name('appointmentlist.getdetail');
-Route::post('/appointmentlist/updatedetail', 'AppointmentController@updatedetail')->name('appointmentlist.updatedetail');
+// ****
+Route::get('/appointment/checklist', 'AppointmentController@checklist')->name('appointment.checklist');
+// Route::get('/appointmentlist', 'AppointmentController@list')->name('appointmentlist');
+// Route::get('/appointment/checkaptlist', 'AppointmentController@checkaptlist')->name('appointment.checkaptlist');
+Route::get('/appointment/getaptlist', 'AppointmentController@getaptlist')->name('appointment.getaptlist');
+Route::post('/appointment/getaptdetail', 'AppointmentController@getaptdetail')->name('appointment.getaptdetail');
+Route::post('/appointment/updateaptdetail', 'AppointmentController@updateaptdetail')->name('appointment.updateaptdetail');
 
 
 

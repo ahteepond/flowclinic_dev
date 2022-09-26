@@ -147,7 +147,7 @@ class OrdersController extends Controller
             ->first();
         $prefix = "ODR".Carbon::now()->format('ym')."-";
         if ($rescode) {
-            if (Carbon::parse($rescode->orderdate)->format('Y-m-d') != Carbon::now()->format('Y-m-d')) {
+            if (Carbon::parse($rescode->orderdate)->format('Y-m') != Carbon::now()->format('Y-m')) {
                 $gencode = $prefix . "00001";
             } else {
                 $code_current = explode('-',$rescode->code)[1];
