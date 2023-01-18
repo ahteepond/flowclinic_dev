@@ -29,16 +29,16 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-3">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
-                                            <label class="form-label">ชื่อประเภทบริการ <span class="text-red">*</span></label>
+                                            <label class="form-label">ประเภทบริการ <span class="text-red">*</span></label>
                                             <input type="text" class="form-control" placeholder="กรุณากรอกชื่อประเภทบริการ" id="name" value="{{ $res->name_th }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-9"></div>
+                                    <div class="col-md-6"></div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">สถานะผู้ใช้งาน <span class="text-red">*</span></label>
+                                            <label class="form-label">สถานะ <span class="text-red">*</span></label>
                                             <select class="form-select" id="active">
                                                 <option value="1" {{ $res->active === 1 ? "Selected" : "" }}>Active</option>
                                                 <option value="0" {{ $res->active === 0 ? "Selected" : "" }}>Inactive</option>
@@ -78,37 +78,46 @@
     });
 
     function update(id) {
-        $.ajax({
-            url: '{{ route('servicetype.update') }}',
-            method: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                id: id,
-                name: $('#name').val(),
-                active: $('#active :selected').val(),
-            },
-            success: function (response) {
-                if(response.status == "success") {
-                    swal({
-                        title: "Updated!",
-                        text: "Your infomation has been succesfully update.",
-                        type: "success",
-                        confirmButtonText: "OK",
-                        confirmButtonClass: "btn-success",
-                        closeOnConfirm: false,
-                        },
-                        function(isConfirm) {
-                        if (isConfirm) {
-                            location.href = '{{ route('servicetype') }}';
-                        }
-                    });
+        if (validateInput() != false) {
+            $.ajax({
+                url: '{{ route('servicetype.update') }}',
+                method: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                    name: $('#name').val(),
+                    active: $('#active :selected').val(),
+                },
+                success: function (response) {
+                    if(response.status == "success") {
+                        swal({
+                            title: "Updated!",
+                            text: "Your infomation has been succesfully update.",
+                            type: "success",
+                            confirmButtonText: "OK",
+                            confirmButtonClass: "btn-success",
+                            closeOnConfirm: false,
+                            },
+                            function(isConfirm) {
+                            if (isConfirm) {
+                                location.href = '{{ route('servicetype') }}';
+                            }
+                        });
+                    }
+                },
+                complete: function () {
                 }
-            },
-            complete: function () {
-            }
-        });
+            });
+        }
+        
     }
 
+    function validateInput() {
+        if ($('#name').val() == '') {
+            swal("กรุณากรอกชื่อประเภทบริการ");
+            return false;
+        }
+    }
 
     </script>
 @endsection

@@ -94,12 +94,12 @@ class EmployeeController extends Controller
         ->insertOrIgnore($arr_data_emp);
 
         switch ($request->empposi) {
-            case '1': $role = "sa"; break;
-            case '2': $role = "ac"; break;
-            case '3': $role = "or"; break;
-            case '4': $role = "do"; break;
-            case '5': $role = "ad"; break;
-            case '6': $role = "su"; break;
+            case '1': $role = "S"; break;
+            case '2': $role = "A"; break;
+            case '3': $role = "O"; break;
+            case '4': $role = "D"; break;
+            case '5': $role = "AD"; break;
+            case '6': $role = "SU"; break;
         }
         $arr_data_user = array(
             "emp_code" => $request->empcode,

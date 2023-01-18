@@ -11,9 +11,6 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -57,6 +54,16 @@ Route::post('/servicetype/insert', 'ServiceTypeController@insert')->name('servic
 Route::get('/servicetype/edit/{id}', 'ServiceTypeController@edit')->name('servicetype.edit');
 Route::post('/servicetype/update', 'ServiceTypeController@update')->name('servicetype.update');
 
+
+
+// ServiceMaster -------------------------------
+Route::get('/servicemaster', 'ServiceMasterController@index')->name('servicemaster');
+Route::get('/servicemaster/list', 'ServiceMasterController@list')->name('servicemaster.list');
+Route::get('/servicemaster/new', 'ServiceMasterController@new')->name('servicemaster.new');
+Route::post('/servicemaster/insert', 'ServiceMasterController@insert')->name('servicemaster.insert');
+Route::get('/servicemaster/edit/{id}', 'ServiceMasterController@edit')->name('servicemaster.edit');
+Route::post('/servicemaster/update', 'ServiceMasterController@update')->name('servicemaster.update');
+Route::post('/servicemaster/getdata', 'ServiceMasterController@getdata')->name('servicemaster.getdata');
 
 
 // Service -------------------------------
@@ -129,6 +136,9 @@ Route::post('/appointment/insert', 'AppointmentController@insert')->name('appoin
 
 // ****
 Route::get('/appointment/checklist', 'AppointmentController@checklist')->name('appointment.checklist');
+Route::get('/appointment/waittingadmit', 'AppointmentController@waittingadmit')->name('appointment.waittingadmit');
+Route::post('/appointment/waittingadmit/getemplist', 'AppointmentController@getemplist')->name('appointment.waittingadmit.getemplist');
+Route::get('/appointment/admitted', 'AppointmentController@admitted')->name('appointment.admitted');
 // Route::get('/appointmentlist', 'AppointmentController@list')->name('appointmentlist');
 // Route::get('/appointment/checkaptlist', 'AppointmentController@checkaptlist')->name('appointment.checkaptlist');
 Route::get('/appointment/getaptlist', 'AppointmentController@getaptlist')->name('appointment.getaptlist');
@@ -169,5 +179,12 @@ Route::get('/admitted/process', 'AdmittedController@process')->name('admitted.pr
 
 // OPD -------------------------------
 Route::get('/opd', 'OPDController@index')->name('opd');
+Route::post('/opd/searchorders', 'OPDController@searchorders')->name('opd.searchorders');
+Route::get('/opd/orderlist', 'OPDController@orderlist')->name('opd.orderlist');
+
+
 Route::get('/opd/process', 'OPDController@process')->name('opd.process');
 Route::get('/opd/history', 'OPDController@history')->name('opd.history');
+
+
+Route::get('/opd/detail', 'OPDController@detail')->name('opd.detail');

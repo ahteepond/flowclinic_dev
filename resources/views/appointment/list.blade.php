@@ -26,7 +26,6 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
                 <div class="row">
-
                     <div class="col-xl-12 col-md-12">
                         <div class="card">
                             <div class="card-header">
@@ -57,7 +56,7 @@
                                                     <div class="input-group-text">
                                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
-                                                    <input class="form-control fc-datepicker" name="appointment_date" id="appointment_date" placeholder="กรุณาระบุวันที่ใบสั่งซื้อ..." type="text">
+                                                    <input class="form-control fc-datepicker" name="appointment_date" id="appointment_date" placeholder="กรุณาระบุวันที่นัดหมาย..." type="text">
                                                 </div>
                                             </div>
                                             <div class="form-group col-auto">
@@ -82,11 +81,13 @@
                     </div>
 
                 </div>
+                
             </div>
         </div>
         <!-- ROW END -->
 
-        @yield('appointment_checklist')
+        @yield('all_list')
+
 
     </div>
     <!-- CONTAINER END -->
@@ -94,7 +95,7 @@
 
 @section('other')
 <div class="modal fade" id="dtlapt_modal">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="dialog">
         <div class="modal-content">
             <div class="modal-body p-6">
                 <!-- ROW  -->
@@ -103,6 +104,7 @@
                         <p class="mb-3 fs-18">เลขที่ใบนัด <b><span class="text-primary fw-semibold clear_dtl_t" id="dtl_appointment_code"></span></b></p>
                     </div>
                     <div class="col-md text-end" id="disp_status"></div>
+                    <input type="text" style="display:none;" id="tmp_status"> {{--  //////// --}}
                     <div class="col-12">
                         <div class="expanel expanel-default">
                             <div class="expanel-body pt-5">
@@ -206,16 +208,39 @@
                         <p class="fs-14 mb-0"><span class="fw-semibold">ประเภทบริการ : </span><span class="clear_dtl_t" id="dtl_service_type"></span></p>
                     </div>
                 </div>
-
-                <div class="row mt-6">
-                    <div class="col-12"><p class="h4 fw-semibold">หมายเหตุ</p></div>
-                    <hr class="my-1">
+                <div class="row mt-6" id="disptext_emp">
                     <div class="col-md-12">
-                        <p id="note_newapt"></p>
+                        <p class="h4 fw-semibold">ผู้ดำเนินการรักษา</p>
+                        <hr class="my-1">
+                    </div>
+                    <div class="col-md">
+                        <p class="fs-14 mb-0"><span class="fw-semibold">หมอ : </span><span class="" id="disp_doc"></span></p>
+                    </div>
+                    <div class="col-md">
+                        <p class="fs-14 mb-0"><span class="fw-semibold">OR คนที่ 1 : </span><span class="" id="disp_or1"></span></p>
+                        <p class="fs-14 mb-0"><span class="fw-semibold">OR คนที่ 2 : </span><span class="" id="disp_or2"></span></p>
+                    </div>
+                </div>
+                <div class="row mt-6" id="disptext_nextapt">
+                    <div class="col-md-12">
+                        <p class="h3 fw-semibold text-primary"><i class="fa fa fa-bell text-warning"></i> นัดรักษาครั้งต่อไป</p>
+                        <hr class="my-1">
+                    </div>
+                </div>
+                <div class="row mt-6" id="disptext_opd">
+                    <div class="col-md-12">
+                        <p class="h4 fw-semibold">บันทึกประวัติ OPD</p>
+                        <hr class="my-1">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="button" class="btn btn-secondary mb-3 btn-block" onclick="gotoOPD()">รายละเอียด OPD</button>
                     </div>
                 </div>
 
-                <div class="row mt-6">
+                @yield('detail_waittingadmit')
+                @yield('detail_admitted')
+
+                <div class="row mt-6" id="space_note">
                     <div class="col-12"><p class="h4 fw-semibold">บันทึก</p></div>
                     <hr class="my-1">
                     <div class="col-md-12">
@@ -240,29 +265,19 @@
                     <div class="col-12"><p class="h4 fw-semibold">ประวัติการบันทึก</p></div>
                     <hr class="my-2">
                     <div class="col-md-12">
-                        <ul class="task-list">
-                            <li class="d-sm-flex">
-                                <div>
-                                    <i class="task-icon bg-secondary"></i>
-                                    <h6 class="fw-semibold">
-                                        <span class="text-primary me-1">Sale</span>
-                                        <span>พงศกร เหล่านิยมไทย</span>
-                                        <span class="text-muted fs-11 ms-2 fw-normal">2022/09/1</span>
-                                    </h6>
-                                    <p class="text-muted fs-12">Adam Berry finished task on</p>
-                                </div>
-                            </li>
+                        <ul class="task-list" id="historynote">
                         </ul>
                     </div>
                 </div>
 
                 <div class="row mt-6">
                     <div class="col-md-12 text-center">
-                        <button class="btn btn-primary my-2 ms-2" onclick="sendtoOR('')" id="btn_apt_sendtoor">ส่งใบนัดให้ OR</button>
-                        <button class="btn btn-danger my-2 ms-2" onclick="cancelAPT('')" id="btn_apt_cancle">ยกเลิกนัด</button>
+                        @yield('detail_button')
+                        <button class="btn btn-danger my-2 ms-2" onclick="cancelAPT()" id="btn_apt_cancle">ยกเลิกนัด</button>
                         <button class="btn btn-outline-primary my-2 ms-2" data-bs-dismiss="modal">ปิด</button>
                     </div>
                 </div>
+
                 <!-- ROW END -->
             </div>
         </div>
@@ -279,7 +294,7 @@
                 <h4 class="text-danger mb-20">กรุณากรอกเหตุผลการยกเลิกนัด (<span id="titlecancel_aptcode"></span>)</h4>
                 <input type="text" id="tmpcancle_aptno" hidden>
                 <textarea class="form-control mb-4" placeholder="กรอกเหตุผล..." rows="4" id="note_cancel"></textarea>
-                <button class="btn btn-danger my-2 ms-2 pd-x-25" onclick="confirmCancelAPT($('#note_cancel').val())">ยกเลิกนัด</button>
+                <button class="btn btn-danger my-2 ms-2 pd-x-25" onclick="confirmCancelAPT()">ยกเลิกนัด</button>
                 <button data-bs-dismiss="modal" class="btn btn-outline-danger my-2 ms-2 pd-x-25" onclick="">ปิด</button>
             </div>
         </div>
@@ -327,11 +342,12 @@
             { title: "เลขที่ใบนัด", data: 'aptcode', name: 'aptcode' },
             { title: "ชื่อลูกค้า", data: 'custfullname', name: 'custfullname' },
             { title: "สถานะใบนัด", data: 'aptstatus', name: 'aptstatus' },
+            { title: "นัดครั้งต่อไป", data: 'aptnextflag', name: 'aptnextflag' },
             { title: "วันเวลานัดหมาย", data: 'aptdatetime', name: 'aptdatetime' },
             { title: "วันที่สร้าง", data: 'created', name: 'created' },
         ],
         'columnDefs': [
-            { "className": "text-center", "targets": [0,3,4,5] },
+            { "className": "text-center", "targets": [0,3,4,5,6] },
         ]
     });
     dataTable.columns.adjust().draw();
@@ -358,6 +374,8 @@
     }
 
     $("#dtlapt_modal").on('hidden.bs.modal', function(){
+        $('#tmpcancle_aptno').val('');
+        $('#note_cancel').val('');
         clearDetail();
         searchTable();
     });
@@ -394,42 +412,60 @@
                     $('#dtl_service_master').html(res.servicemaster_name);
                     $('#dtl_service').html(res.service_name);
                     $('#dtl_service_type').html(res.servicetype_name);
-                    $('#note_newapt').html(res.note_newapt ? res.note_newapt : '-');
-                    $('#note_sale').val(res.note_sale);
-                    $('#note_or').val(res.note_or);
-                    $('#note_doctor').val(res.note_doctor);
                     $('#txt_note_cancel').html(res.note_cancel ? res.note_cancel : '-');
-
-                    if (res.status == 0) { var badgestatus = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
-                    if (res.status == 1) { var badgestatus = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก</span>'; }
-                    if (res.status == 2) { var badgestatus = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอ OR ดำเนินการ</span>'; }
-                    if (res.status == 3) { var badgestatus = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอหมอดำเนินการ</span>'; }
-                    if (res.status == 4) { var badgestatus = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">เข้ารับการรักษาแล้ว</span>'; }
-                    $('#disp_status').html(badgestatus);
-
-                    switch (res.status) {
-                        case 0:
-                            $('#btn_apt_sendtoor').hide();
-                            $('#btn_apt_cancle').hide();
-                            $('#note_sale').prop('disabled', true);
-                            $('#disp_note_cancel').show();
-                            break;
-                        case 1:
-                            $('#btn_apt_sendtoor').show();
-                            $('#btn_apt_cancle').show();
-                            $('#note_sale').prop('disabled', false);
-                            $('#disp_note_cancel').hide();
-                            
-                            break;
-                        case 2:
-                            $('#btn_apt_sendtoor').hide();
-                            $('#btn_apt_cancle').hide();
-                            $('#note_sale').prop('disabled', true);
-                            $('#disp_note_cancel').hide();
-                            break;
+                    $('#tmpcancle_aptno').val(res.code);
+                    $('#titlecancel_aptcode').html(res.code);
+                    setTimeout(() => { 
+                        $('#empdoctor').val(res.doctor);
+                        $('#empdoctor').trigger('change');
+                        $('#empor1').val(res.or_1);
+                        $('#empor1').trigger('change');
+                        $('#empor2').val(res.or_2);
+                        $('#empor2').trigger('change');
+                    }, 300)
                     
+                    
+                    var hnote = '';
+                    for (var i = 0; i < response.note.length; i++) {
+                        hnote += '<li class="d-sm-flex"><div><i class="task-icon bg-secondary"></i>';
+                        hnote += '<h6 class="fw-semibold">';
+                        hnote += '<p class="fw-semibold mb-1 text-muted">'+response.note[i].status_text+'</p>';
+                        hnote += '<span class="text-primary me-1">'+response.note[i].emp_posi_name+'</span>';
+                        hnote += '<span>'+response.note[i].emp_fname_th+' '+response.note[i].emp_lname_th+'</span>';
+                        hnote += '<span class="text-muted fs-11 ms-2 fw-normal">'+response.note[i].created_at+'</span>';
+                        hnote += '</h6>';
+                        if (response.note[i].note) {
+                            hnote += '<div class="media-body border p-4 overflow-visible br-5">';
+                            hnote += '<p class="font-13 text-dark mb-0">'+response.note[i].note+'</p>';
+                            hnote += '</div>';
+                        }
+                        hnote += '</div></li>';
                     }
+                    $('#historynote').html(hnote);
 
+                    if (res.status == 6 || res.status == 7) {
+                        $('#disp_doc').html(res.doctor+' - '+response.empdoc.emp_fname_th+' '+response.empdoc.emp_lname_th);
+                        $('#disp_or1').html(res.or_1+' - '+response.empor1.emp_fname_th+' '+response.empor1.emp_lname_th);
+                        $('#disp_or2').html(res.or_2 ? (res.or_2+' - '+response.empor2.emp_fname_th+' '+response.empor2.emp_lname_th) : ' - ');
+                    }
+                    
+                    if (res.status == 0) { var badgestatus = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
+                    if (res.status == 1) { var badgestatus = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอการแก้ไข (S)</span>'; }
+                    if (res.status == 2) { var badgestatus = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก (S)</span>'; }
+                    if (res.status == 3) { var badgestatus = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอ OR ดำเนินการ</span>'; }
+                    if (res.status == 4) { var badgestatus = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอการแก้ไข (O)</span>'; }
+                    if (res.status == 5) { var badgestatus = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก (O)</span>'; }
+                    if (res.status == 6) { var badgestatus = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอหมอดำเนินการ</span>'; }
+                    if (res.status == 7) { var badgestatus = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">เข้ารับการรักษาแล้ว</span>'; }
+                    if (res.status == 90) { var badgestatus = '<span class="badge bg-success-transparent rounded-pill text-primary p-2 px-3">นัดรักษาครั้งต่อไป</span>'; }
+                    $('#disp_status').html(badgestatus);
+                    $('#tmp_status').val(res.status);
+                    dispBtnAPTDetail(res.status);
+                    if(res.nextapt_flag == 1) {
+                        $('#disptext_nextapt').show();
+                    } else {
+                        $('#disptext_nextapt').hide();
+                    }
                 }
             },
             complete: function () {
@@ -437,33 +473,151 @@
         });
     });
 
+    function dispBtnAPTDetail(status) {
+        // 1 | Set button display first
+        $('#btn_apt_savedraf').hide();
+        $('#btn_apt_recall').hide();
+        $('#btn_apt_send').hide();
+        $('#btn_apt_cancle').hide();
+        $('#note').prop('disabled', true);
+        $('#disp_note_cancel').hide();
+        $('#disptext_emp').hide();
+        $('#disptext_opd').hide();
+        $('#disptext_nextapt').hide();
+        
+        // 2 | Set button display by status
+        switch (status) {
+            case 0:
+                break;
+            case 1:
+                $('#btn_apt_send').show();
+                $('#btn_apt_cancle').show();
+                $('#note').prop('disabled', false);
+                break;
+            case 2:
+                $('#btn_apt_send').show();
+                $('#btn_apt_cancle').show();
+                $('#note').prop('disabled', false);
+                break;
+            case 3:
+                $('#btn_apt_savedraf').show();
+                $('#btn_apt_recall').show();
+                $('#btn_apt_send').show();
+                $('#btn_apt_cancle').show();
+                $('#note').prop('disabled', false);
+                break;
+            case 4:
+                $('#btn_apt_savedraf').show();
+                $('#btn_apt_recall').show();
+                $('#btn_apt_send').show();
+                $('#btn_apt_cancle').show();
+                $('#note').prop('disabled', false);
+                break;
+            case 5:
+                $('#btn_apt_savedraf').show();
+                $('#btn_apt_recall').show();
+                $('#btn_apt_send').show();
+                $('#btn_apt_cancle').show();
+                $('#note').prop('disabled', false);
+                break;
+            case 6:
+                $('#btn_apt_recall').show();
+                $('#btn_apt_send').show();
+                $('#disptext_emp').show();
+                $('#note').prop('disabled', false);
+                break;
+            case 7:
+                $('#space_note').hide();
+                $('#space_emp').hide();
+                $('#space_opd').hide();
+                $('#space_nextapt').hide();
+                $('#disptext_emp').show();
+                $('#disptext_opd').show();
+                $('#disptext_nextapt').show();
+                break;
+        }
+    }
 
 
-
-    function sendtoOR(aptcode) {
+    function updateAPT(param, alerttxt) {
         swal({
-            title: "ยืนยันการส่งใบนัดให้ OR",
+            title: alerttxt,
             text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
             type: "warning",
-            confirmButtonText: "ยืนยันการส่งใบนัด",
+            confirmButtonText: "ยืนยันการอัพเดทสถานะใบนัด",
             cancelButtonText: 'ยกเลิก',
             showCancelButton: true,
             },
             function(isConfirm) {
             if (isConfirm) {
+                var arrdata = "";
+                switch (param) {
+                    case 0:
+                        arrdata = {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : mAptCode,
+                            note_cancel : $('#note_cancel').val(),
+                            param : param
+                        }
+                        break;
+                    case 3:
+                        arrdata = {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : mAptCode,
+                            note : $('#note').val(),
+                            param : param
+                        }
+                        break;
+                    case 5:
+                        arrdata = {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : mAptCode,
+                            note : $('#note').val(),
+                            doctor : $('#empdoctor :selected').val(),
+                            or_1: $('#empor1 :selected').val(),
+                            or_2: ($('#empor2 :selected').val() == 0 ? '' : $('#empor2 :selected').val()),
+                            param : param
+                        }
+                        break;
+                    case 6:
+                        arrdata = {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : mAptCode,
+                            note : $('#note').val(),
+                            doctor : $('#empdoctor :selected').val(),
+                            or_1: $('#empor1 :selected').val(),
+                            or_2: ($('#empor2 :selected').val() == 0 ? '' : $('#empor2 :selected').val()),
+                            param : param
+                        }
+                        break;
+                    case 7:
+                        var checkBox = document.getElementById("chknextapt");  
+                        arrdata = {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : mAptCode,
+                            note : $('#note').val(),
+                            chknextapt: (checkBox.checked == true ? 1 : null),
+                            opd: $('#opd').val(),
+                            param : param
+                        }
+                        break;
+                    default:
+                        arrdata = {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : mAptCode,
+                            param : param
+                        }
+                        break;
+                }
+                
                 $.ajax({
                     url: '{{ route('appointment.updateaptdetail') }}',
                     method: 'post',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        aptcode : mAptCode,
-                        note_sale : $('#note_sale').val(),
-                        param : 'to_or'
-                    },
+                    data: arrdata,
                     success: function (response) {
                         if(response.status == "success") {
                             swal({
-                                title: "ส่งใบนัดเลขที่ "+response.aptcode+" ไปยัง OR เรียบร้อย",
+                                title: "อัพเดทสถานะใบนัดเลขที่ "+response.aptcode+" เรียบร้อย",
                                 type: "success",
                                 confirmButtonText: "ตกลง",
                             });
@@ -474,24 +628,17 @@
                     }
                 });
             }
+
+
         });
     }
 
-
-    $("#aptcancel_modal").on('hidden.bs.modal', function(){
-        $('#tmpcancle_aptno').val('');
-        $('#note_cancel').val('');
-        searchTable();
-    });
-
     
-    function cancelAPT(aptcode) {
+    function cancelAPT() {
         $("#aptcancel_modal").modal('show');
-        $('#titlecancel_aptcode').html(aptcode);
-        $('#tmpcancle_aptno').val(aptcode);
     }
 
-    function confirmCancelAPT(notecancel) {
+    function confirmCancelAPT() {
         var aptcode = $('#tmpcancle_aptno').val();
         if ($('#note_cancel').val() != '') {
             swal({
@@ -511,7 +658,7 @@
                             _token: "{{ csrf_token() }}",
                             aptcode : aptcode,
                             note_cancel : $('#note_cancel').val(),
-                            param : 'cancel'
+                            param : 0
                         },
                         success: function (response) {
                             if(response.status == "success") {
@@ -525,6 +672,7 @@
                         },
                         complete: function () {
                             $("#aptcancel_modal").modal('hide');
+                            $("#dtlapt_modal").modal('hide');
                         }
                     });
                 }
@@ -539,5 +687,14 @@
        
     }
 
+    function gotoOPD() {
+        // var url = "{{ route('opd.detail', '')}}"+"/"+ordercode;
+        var url = "{{ route('opd.detail')}}";
+        window.open(url, "_blank");
+    }
+    
+    
     </script>
+    @yield('js_detail')
 @endsection
+

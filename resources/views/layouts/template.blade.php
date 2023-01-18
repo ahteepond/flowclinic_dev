@@ -141,37 +141,57 @@
                             <li class="sub-category">
                                 <h3>Menu</h3>
                             </li>
-                            <li class="slide">
-                                <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i
-                                        class="side-menu__icon fe fe-database"></i><span
-                                        class="side-menu__label">จัดการข้อมูลพื้นฐาน</span><i
-                                        class="angle fe fe-chevron-right"></i></a>
-                                <ul class="slide-menu">
-                                    <li><a href="/servicetype" class="slide-item"> ประเภทบริการ</a></li>
-                                    <li><a href="/service" class="slide-item"> รายการบริการ</a></li>
-                                    <li><a href="/employee" class="slide-item"> ข้อมูลพนักงาน</a></li>
-                                    <li><a href="/paymenttype" class="slide-item"> วิธีการชำระเงิน</a></li>
-                                    <li><a href="/discounttype" class="slide-item"> ประเภทส่วนลด</a></li>
-                                    <li><a href="/customertype" class="slide-item"> ประเภทลูกค้า</a></li>
-                                    {{-- <li><a href="{{ route('index') }}" class="slide-item"> ข้อมูลลูกค้า</a></li> --}}
-                                </ul>
-                            </li>
+                            
+                            @if ( session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                <li class="slide">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i
+                                            class="side-menu__icon fe fe-database"></i><span
+                                            class="side-menu__label">จัดการข้อมูลพื้นฐาน</span><i
+                                            class="angle fe fe-chevron-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <li><a href="/servicetype" class="slide-item"> ประเภทบริการ</a></li>
+                                        <li><a href="/servicemaster" class="slide-item"> บริการหลัก</a></li>
+                                        <li><a href="/service" class="slide-item"> รายการบริการ</a></li>
+                                        <li><a href="/employee" class="slide-item"> ข้อมูลพนักงาน</a></li>
+                                        <li><a href="/paymenttype" class="slide-item"> วิธีการชำระเงิน</a></li>
+                                        <li><a href="/discounttype" class="slide-item"> ประเภทส่วนลด</a></li>
+                                        <li><a href="/customertype" class="slide-item"> ประเภทลูกค้า</a></li>
+                                        {{-- <li><a href="{{ route('index') }}" class="slide-item"> ข้อมูลลูกค้า</a></li> --}}
+                                    </ul>
+                                </li>
+                            @endif
                             <li class="slide">
                                 <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i
                                         class="side-menu__icon fe fe-slack"></i><span
                                         class="side-menu__label">บันทึกรายการข้อมูล</span><i
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
-                                    <li><a href="/orders" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
-                                    <li><a href="/orders/new" class="slide-item"> คำสั่งซื้อใหม่</a></li>
-                                    <li><a href="/checkpayment" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
-                                    <li><a href="/appointment" class="slide-item"> ออกใบนัด</a></li>
-                                    <li><a href="/appointment/checklist" class="slide-item"> ตรวจสอบการนัดหมาย</a></li>
-                                    <li><a href="/appointment" class="slide-item"> รอรับการรักษา</a></li>
-                                    <li><a href="/admitted" class="slide-item"> เข้ารับการรักษา</a></li>
-                                    <li><a href="/opd" class="slide-item"> บันทึกประวัติ OPD</a></li>
+
+                                    @if ( session()->get('session_role') == 'S' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                        <li><a href="/orders" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
+                                        <li><a href="/orders/new" class="slide-item"> คำสั่งซื้อใหม่</a></li>
+                                    @endif
+
+                                    @if ( session()->get('session_role') == 'A' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                        <li><a href="/checkpayment" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>
+                                    @endif
+
+                                    @if ( session()->get('session_role') == 'S' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                        <li><a href="/appointment" class="slide-item"> ออกใบนัด</a></li>
+                                        <li><a href="/appointment/checklist" class="slide-item"> ตรวจสอบการนัดหมาย</a></li>
+                                    @endif
+
+                                    @if ( session()->get('session_role') == 'O' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                        <li><a href="/appointment/waittingadmit" class="slide-item"> รอรับการรักษา</a></li>
+                                    @endif
+
+                                    @if ( session()->get('session_role') == 'D' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                        <li><a href="/appointment/admitted" class="slide-item"> เข้ารับการรักษา</a></li>
+                                        <li><a href="/opd/detail" class="slide-item"> บันทึกประวัติ OPD</a></li>
+                                    @endif
                                 </ul>
                             </li>
+                            
                             <li class="sub-category">
                                 <h3>Reports</h3>
                             </li>

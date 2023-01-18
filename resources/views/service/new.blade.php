@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-5">
                                         <div class="form-group">
-                                            <label class="form-label">บริการย่อย (EN) <span class="text-red">*</span></label>
+                                            <label class="form-label">บริการย่อย (EN)</label>
                                             <input type="text" class="form-control" placeholder="กรุณากรอกชื่อบริการย่อย" id="service_nameen" value="">
                                         </div>
                                     </div>
@@ -180,40 +180,65 @@
     }
 
     function insert() {
-        $.ajax({
-            url: '{{ route('service.insert') }}',
-            method: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                servicetypeid: $('#servicetype :selected').val(),
-                servicemasterid: $('#servicemaster :selected').val(),
-                service_nameth: $('#service_nameth').val(),
-                service_nameen: $('#service_nameen').val(),
-                description: $('#description').val(),
-                price: $('#price').val(),
-                price_promo: $('#price_promo').val(),
-                active: $('#active :selected').val(),
-            },
-            success: function (response) {
-                if(response.status == "success") {
-                    swal({
-                        title: "Save!",
-                        text: "Your infomation has been succesfully save.",
-                        type: "success",
-                        confirmButtonText: "OK",
-                        confirmButtonClass: "btn-success",
-                        closeOnConfirm: false,
-                        },
-                        function(isConfirm) {
-                        if (isConfirm) {
-                            location.href = '{{ route('service') }}';
-                        }
-                    });
+        if (validateInput() != false) {
+            $.ajax({
+                url: '{{ route('service.insert') }}',
+                method: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    servicetypeid: $('#servicetype :selected').val(),
+                    servicemasterid: $('#servicemaster :selected').val(),
+                    service_nameth: $('#service_nameth').val(),
+                    service_nameen: $('#service_nameen').val(),
+                    description: $('#description').val(),
+                    price: $('#price').val(),
+                    price_promo: $('#price_promo').val(),
+                    active: $('#active :selected').val(),
+                },
+                success: function (response) {
+                    if(response.status == "success") {
+                        swal({
+                            title: "Save!",
+                            text: "Your infomation has been succesfully save.",
+                            type: "success",
+                            confirmButtonText: "OK",
+                            confirmButtonClass: "btn-success",
+                            closeOnConfirm: false,
+                            },
+                            function(isConfirm) {
+                            if (isConfirm) {
+                                location.href = '{{ route('service') }}';
+                            }
+                        });
+                    }
+                },
+                complete: function () {
                 }
-            },
-            complete: function () {
-            }
-        });
+            });
+        }
+    }
+
+    function validateInput() {
+        if ($('#servicetype :selected').val() == '') {
+            swal("กรุณาเลือกประเภทบริการ");
+            return false;
+        }
+        if ($('#servicemaster :selected').val() == '') {
+            swal("กรุณาเลือกบริการหลัก");
+            return false;
+        }
+        if ($('#service_nameth').val() == '') {
+            swal("กรุณากรอกชื่อบริการย่อย (TH)");
+            return false;
+        }
+        if ($('#price').val() == 0) {
+            swal("กรุณากรอกราคา");
+            return false;
+        }
+        if ($('#price_promo').val() == 0) {
+            swal("กรุณากรอกราคาโปรโมชั่น");
+            return false;
+        }
     }
 
     </script>

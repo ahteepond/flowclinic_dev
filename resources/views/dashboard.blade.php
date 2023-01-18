@@ -25,12 +25,7 @@
                     <ul class="list-group">
                         <li class="list-group-item p-5">
                             <h4>เมนู จัดการคำสั่งซื้อ</h4>
-                            <p class="m-0">- fillter หน้าจัดการรายการ (Success : order_status) (Error : order_date, order_no)</p>
                             <p class="m-0">- Upload หลักฐานการชำระเงิน (Evidence) (Save/Edit)</p>
-                        </li>
-                        <li class="list-group-item p-5">
-                            <h4>เมนู ตรวจสอบการนัดหมาย</h4>
-                            <p class="m-0">-checklist - set new status</p>
                         </li>
                     </ul>
                 </div>

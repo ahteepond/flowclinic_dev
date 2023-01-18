@@ -204,10 +204,44 @@ class AppointmentController extends Controller
         ->first();
 
         $aptstatus = DB::table('appointment_status')
-        ->where('role','like','%|'.$empdtl->emp_prefix.'|%')
+        // ->where('role','like','%|'.$empdtl->emp_prefix.'|%')
         ->get();
 
         return view('appointment.checklist', compact('aptstatus'));
+    }
+    
+    public function waittingadmit() {
+        $session_cur = session()->get('session_empcode');
+        $empdtl = DB::table('employee')
+        ->where('emp_code',$session_cur)
+        ->first();
+
+        $aptstatus = DB::table('appointment_status')
+        // ->where('role','like','%|'.$empdtl->emp_prefix.'|%')
+        ->get();
+
+        return view('appointment.waittingadmit', compact('aptstatus'));
+    }
+
+    public function admitted() {
+        $session_cur = session()->get('session_empcode');
+        $empdtl = DB::table('employee')
+        ->where('emp_code',$session_cur)
+        ->first();
+
+        $aptstatus = DB::table('appointment_status')
+        // ->where('role','like','%|'.$empdtl->emp_prefix.'|%')
+        ->get();
+
+        return view('appointment.admitted', compact('aptstatus'));
+    }
+
+    public function getemplist(Request $request) {
+        $res = DB::table('employee')
+        ->where('emp_prefix', $request->prefix)
+        ->where('active', 1)
+        ->get();
+        return response()->json([ 'status' => 'success', 'result' => true, 'data' => $res,]);
     }
 
     public function getaptlist(Request $request) {
@@ -238,11 +272,19 @@ class AppointmentController extends Controller
                 ->addColumn('aptstatus', function($row){
                     $status = $row->status;
                     if ($status == 0) { $res_o = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
-                    if ($status == 1) { $res_o = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก</span>'; }
-                    if ($status == 2) { $res_o = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอ OR ดำเนินการ</span>'; }
-                    if ($status == 3) { $res_o = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอหมอดำเนินการ</span>'; }
-                    if ($status == 4) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">เข้ารับการรักษาแล้ว</span>'; }
+                    if ($status == 1) { $res_o = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอการแก้ไข (S)</span>'; }
+                    if ($status == 2) { $res_o = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก (S)</span>'; }
+                    if ($status == 3) { $res_o = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอ OR ดำเนินการ</span>'; }
+                    if ($status == 4) { $res_o = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอการแก้ไข (O)</span>'; }
+                    if ($status == 5) { $res_o = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก (O)</span>'; }
+                    if ($status == 6) { $res_o = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอหมอดำเนินการ</span>'; }
+                    if ($status == 7) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">เข้ารับการรักษาแล้ว</span>'; }
+                    if ($status == 90) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-primary p-2 px-3">นัดรักษาครั้งต่อไป</span>'; }
                     return $res_o;
+                })
+                ->addColumn('aptnextflag', function($row){
+                    $res_nextflag = $row->nextapt_flag;
+                    return $res_nextflag == 1 ? '<i class="fa fa fa-bell text-warning"></i>' : '-';
                 })
                 ->addColumn('aptdatetime', function($row){
                     $datetime = $row->appointment_date.'<br>'.$row->appointment_time;
@@ -252,7 +294,7 @@ class AppointmentController extends Controller
                     $created = $row->created_at;
                     return $created;
                 })
-                ->rawColumns(['aptcode', 'aptstatus', 'aptdatetime', 'action'])
+                ->rawColumns(['aptcode', 'aptstatus', 'aptnextflag', 'aptdatetime', 'action'])
                 ->make(true);
         }
     }
@@ -274,30 +316,138 @@ class AppointmentController extends Controller
         )
         ->where('a.code', $request->aptcode)
         ->first();
-        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+        $note = DB::table('appointment_note as an')
+        ->select(
+            'an.*',
+            'e.emp_fname_th', 
+            'e.emp_lname_th',
+            'ep.emp_posi_name',
+        )
+        ->join('employee as e', 'an.emp_session', '=', 'e.emp_code')
+        ->join('employee_position as ep', 'e.emp_prefix', '=', 'ep.prefix')
+        ->where('an.appointment_code', $request->aptcode)
+        ->orderBy('created_at', 'asc')
+        ->get();
+
+        $empdoc = DB::table('appointment as a')
+        ->join('employee as e', 'a.doctor', '=', 'e.emp_code')
+        ->select( 'e.*' )
+        ->where('a.code', $request->aptcode)
+        ->first();
+        $empor1 = DB::table('appointment as a')
+        ->join('employee as e', 'a.or_1', '=', 'e.emp_code')
+        ->select( 'e.*' )
+        ->where('a.code', $request->aptcode)
+        ->first();
+        $empor2 = DB::table('appointment as a')
+        ->join('employee as e', 'a.or_2', '=', 'e.emp_code')
+        ->select( 'e.*' )
+        ->where('a.code', $request->aptcode)
+        ->first();
+
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res, 'note' => $note, 'empdoc' => $empdoc, 'empor1' => $empor1, 'empor2' => $empor2, ]);
     }
 
 
     public function updateaptdetail(Request $request) {
-        switch ($request->param) {
-            case 'to_or':
-                $arr_data = array(
-                    'note_sale' => $request->note_sale,
-                    'status' => 2,
+        $reqstatus = $request->param;
+        $reqnote = $request->note;
+        $reqcancel = $request->note_cancel;
+
+        $reqdoctor = $request->doctor ? $request->doctor : null;
+        $reqor1 = $request->or_1 ? $request->or_1 : null;
+        $reqor2 = $request->or_2 ? $request->or_2 : null;
+
+        $reqchknextapt = $request->chknextapt;
+        $reqopd = $request->opd;
+
+        switch ($reqstatus) {
+            case 0:
+                $arr_apt = array(
+                    'note_cancel' => $reqcancel,
+                    'status' => $reqstatus,
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 );
-            break;
-            case 'cancel':
-                $arr_data = array(
-                    'note_cancel' => $request->note_cancel,
-                    'status' => 0,
+                break;
+            case 3:
+                //Update Appointment
+                $arr_apt = array(
+                    'note_cancel' => $reqcancel,
+                    'status' => $reqstatus,
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 );
-            break;
+                
+                break;
+            case 5:
+                //Update Appointment
+                $arr_apt = array(
+                    'status' => $reqstatus,
+                    'doctor' => $reqdoctor,
+                    'or_1' => $reqor1,
+                    'or_2' => $reqor2,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+                break;
+            case 6:
+                //Update Appointment
+                $arr_apt = array(
+                    'status' => $reqstatus,
+                    'doctor' => $reqdoctor,
+                    'or_1' => $reqor1,
+                    'or_2' => $reqor2,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+                break;
+            case 7:
+                //Update Appointment
+                $arr_apt = array(
+                    'status' => $reqstatus,
+                    'nextapt_flag' => $reqchknextapt,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+                //Add OPD
+                $ordercode = DB::table('appointment')
+                ->where('code', $request->aptcode)
+                ->first();
+                $arr_opd = array(
+                    'appointment_code' => $request->aptcode,
+                    'order_code' => $ordercode->order_code,
+                    'emp_session' => session()->get('session_empcode'),
+                    'note' => $reqopd,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+                DB::table('opd')->insertOrIgnore($arr_opd);
+                break;
+            default:
+                //Update Appointment
+                $arr_apt = array(
+                    'status' => $reqstatus,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+                break;
         }
+
+        
         $res = DB::table('appointment')
         ->where('code', $request->aptcode)
-        ->update($arr_data);
+        ->update($arr_apt);
+
+        //Add Note
+        $notestatus = DB::table('appointment_status')
+        ->where('status', $reqstatus)
+        ->first();
+        $arr_note = array(
+            'appointment_code' => $request->aptcode,
+            'emp_session' => session()->get('session_empcode'),
+            'status' => $reqstatus,
+            'status_text' => $notestatus->status_text,
+            'note' => $reqnote,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        DB::table('appointment_note')->insertOrIgnore($arr_note);
+        
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res, 'aptcode' => $request->aptcode ]);
     }
 

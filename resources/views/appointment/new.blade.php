@@ -202,6 +202,24 @@
     }
 
     function newAppointment() {
+        if ($('#appt_date').val() == "") {
+            swal({
+                title: "กรุณาระบุวันที่นัด",
+                type: "error",
+                confirmButtonText: "OK",
+                confirmButtonClass: "btn-success",
+            });
+            return false;
+        }
+        if ($('#appt_time').val() == "") {
+            swal({
+                title: "กรุณาระบุเวลานัด",
+                type: "error",
+                confirmButtonText: "OK",
+                confirmButtonClass: "btn-success",
+            });
+            return false;
+        }
         var orderdetail_id = '{{ $info->id }}';
         var order_code = '{{ $info->order_code }}';
         var service_name = '{{ $info->service_nameth }} ({{ $info->service_nameen }})';
@@ -241,6 +259,7 @@
                             creator : creator
                         },
                         success: function (response) {
+                            console.log(response.status);
                             if(response.status == "success") {
                                 swal({
                                     title: "สร้างใบนัดแล้ว!",
@@ -251,7 +270,7 @@
                                     },
                                 function(isConfirm) {
                                     if (isConfirm) {
-                                        var url = "{{ route('appointment')}}";
+                                        var url = "{{ route('appointment.checklist')}}";
                                         location.href = url;
                                     }
                                 });
