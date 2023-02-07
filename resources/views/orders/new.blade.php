@@ -1074,6 +1074,7 @@
                         arr_orderdetail: arrSumInfoOrderDetail,
                     },
                     success: function (response) {
+                        
                         if(response.status == "success") {
                             swal({
                                 title: "เลขที่ใบสั่งซื้อ "+response.ordercode+" ทำการบันทึกข้อมูลเรียบร้อย",

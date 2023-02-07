@@ -91,11 +91,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="form-group">
                                                 <label class="form-label">รหัสผ่าน</label>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="resetPwd('{{ $res->emp_id }}', '{{ $res->emp_code }}', '{{ $res->emp_fname_th }} {{ $res->emp_lname_th }}')"><i class="mdi mdi-account-key me-2"></i>รีเซ็ตรหัสผ่าน</button>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="resetPwd('{{ $res->emp_id }}', '{{ $res->emp_code }}', '{{ $res->emp_fname_th }} {{ $res->emp_lname_th }}')"><i class="mdi mdi-account-key me-2"></i>รีเซ็ตรหัสผ่าน</button> <cite class="text-primary ms-1" style="font-size: 0.8rem">รีเซ็ตรหัสผ่านเป็น 88888888</cite>
                                             </div>
                                         </div>
                                     </div>
@@ -104,7 +104,7 @@
                                     <div class="col-12 text-end">
                                         <hr>
                                         <a href="{{ route('employee') }}" class="btn btn-outline-primary me-2">Back</a>
-                                        <a href="javascript:void(0)" onclick="edit({{ $res->emp_code }})" class="btn btn-primary">Edit</a>
+                                        <a href="javascript:void(0)" onclick="edit('{{ $res->emp_code }}')" class="btn btn-primary">Edit</a>
                                     </div>
 
                                 </div>

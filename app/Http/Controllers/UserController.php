@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
     public function resetpassword(Request $request) {
         $update = DB::table('user')
             ->where('emp_code', $request->empcode)
-            ->update(["resetpassword" => 1]);
+            ->update(["resetpassword" => 1, "password" => Hash::make("88888888")]);
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $update ]);
     }
 

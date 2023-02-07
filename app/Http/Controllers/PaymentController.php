@@ -45,7 +45,7 @@ class PaymentController extends Controller
             "round" => $genround,
             "paymenttype_id" => $request->paymenttype_id,
             "price_paid" => $request->price_paid,
-            "evidence_file" => '',
+            "evidence_file" => '', //
             "remark" => $request->remark,
             "paymentdate" => Carbon::now()->format('Y-m-d H:i:s'),
             "payment_status" => 1,
@@ -56,7 +56,7 @@ class PaymentController extends Controller
         );
         $res = DB::table('orders_payment')
         ->insertOrIgnore($arr_data);
-        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res ]);
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res, 'code' => $gencode ]);
     }
 
     public function list(Request $request) {
@@ -191,15 +191,23 @@ class PaymentController extends Controller
     }
 
     public function upload(Request $request) {
-        // if ($request->hasFile('file')) {
-        //     $file = $request->file('file');
-        //     $destinationPath = public_path('/kiosk_video/dashboard/');
-        //     $profileImage = date('YmdHis') . "." . $file->getClientOriginalExtension();
-        //     $file->move($destinationPath, $profileImage);
-        //     return response()->json(['status' => 'success', 'filename' => $profileImage]);
-        // } else {
-        //     return response()->json(['status' => 'error']);
-        // }
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $destinationPath = public_path('/payment_evidence/');
+            $profileImage = date('YmdHis') . "." . $file->getClientOriginalExtension();
+            $file->move($destinationPath, $profileImage);
+
+            $arr_data = array(
+                "evidence_file" => $profileImage
+            );
+            $update = DB::table('orders_payment')
+            ->where('code', $request->code)
+            ->update($arr_data);
+
+            return response()->json(['status' => 'success', 'filename' => $profileImage]);
+        } else {
+            return response()->json(['status' => 'error']);
+        }
     }
 
 

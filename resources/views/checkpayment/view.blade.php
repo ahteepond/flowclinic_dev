@@ -99,7 +99,7 @@
                                                         <div class="col-md-5">
                                                             <div class="form-group">
                                                                 <label class="form-label">หลักฐานการชำระเงิน</label>
-                                                                <a href="#" class="btn btn-sm btn-outline-dark">ดูหลักฐานการชำระเงิน</a>
+                                                                <a href="/payment_evidence/{{ $res->evidence_file }}" class="btn btn-sm btn-outline-dark" target="_blank">ดูหลักฐานการชำระเงิน</a>
                                                             </div>
                                                         </div>
                                                         @break

@@ -209,7 +209,7 @@
                             <input type="text" id="valevidence_new" style="display: none;">
                             <div class="control-group form-group  row">
                                 <div class="col-lg-12 col-sm-12">
-                                    <input type="file" class="dropify" onchange="" data-height="180" id="evidence_new" data-allowed-file-extensions="jpg png" data-max-file-size="5M"/>
+                                    <input type="file" class="dropify" onchange="" data-height="180" id="evidence_new" data-allowed-file-extensions="jpg png pdf" data-max-file-size="10M"/>
                                 </div>
                             </div>
                         </div>
@@ -312,6 +312,12 @@
     <script>
     $( document ).ready(function() {
         setPaymentList();
+    });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
     });
 
     $('#evidence_new').dropify();
@@ -436,7 +442,7 @@
                         html += '<div class="col-md-5"><div class="form-group"><label class="form-label">สถานะการชำระเงิน</label><span class="badge bg-'+status_color+'-transparent rounded-pill text-'+status_color+' p-2 px-3">'+status_text+'</span></div></div>';
                         html += '<div class="col-md-5"><div class="form-group"><label class="form-label">หมายเหตุ/บันทึก</label><p>'+(response.data[i].remark ? response.data[i].remark : "-")+'</p></div></div>';
                         if(response.data[i].evidence == 1) {
-                            html += '<div class="col-md-5"><div class="form-group"><label class="form-label">หลักฐานการชำระเงิน</label><a href="#" class="btn btn-sm btn-outline-dark">ดูหลักฐานการชำระเงิน</a></div></div>';
+                            html += '<div class="col-md-5"><div class="form-group"><label class="form-label">หลักฐานการชำระเงิน</label><a href="../../payment_evidence/'+(response.data[i].evidence_file)+'" class="btn btn-sm btn-outline-dark" target="_blank">ดูหลักฐานการชำระเงิน</a></div></div>';
                         }
                         html += '</div></div>';
                         html += '</div>';
@@ -500,7 +506,7 @@
                         success: function (response) {
                             if(response.status == "success") {
 // --------------------------------------------------
-                            // uploadSaveEvidenceFile();
+                            uploadSaveEvidenceFile(response.code);
                                 swal({
                                     title: "บันทึกข้อมูลการชำระเงินเรียบร้อย",
                                     type: "success",
@@ -524,11 +530,12 @@
         }
     }
 
-    function uploadSaveEvidenceFile() {
+    function uploadSaveEvidenceFile(code) {
         var files = document.getElementById("evidence_new");
         var file = files.files[0];
         var fd = new FormData();
         fd.append('file',file);
+        fd.append('code',code);
         $.ajax({
             type: "POST",
             url: "{{ route('payment.upload') }}",
@@ -539,7 +546,6 @@
             cache:false,
             success: function(response){
                 console.log(response.filename);
-
             }
         });
     }

@@ -106,7 +106,7 @@
                                         <div class="form-group">
                                             <div class="form-group">
                                                 <label class="form-label">รหัสผ่านเริ่มต้น</label>
-                                                <p><cite class="text-primary">flowclinic1234</cite></p>
+                                                <p><cite class="text-primary">88888888</cite></p>
                                             </div>
                                         </div>
                                     </div>

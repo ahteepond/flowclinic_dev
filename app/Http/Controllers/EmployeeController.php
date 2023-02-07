@@ -104,7 +104,7 @@ class EmployeeController extends Controller
         $arr_data_user = array(
             "emp_code" => $request->empcode,
             "username" => $request->empcode,
-            "password" => Hash::make("flowclinic1234"),
+            "password" => Hash::make("88888888"),
             "password_exp" => "2999-01-01 00:00:00",
             "role" => $role,
             "resetpassword" => 1,
