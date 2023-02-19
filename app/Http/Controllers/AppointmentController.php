@@ -248,15 +248,20 @@ class AppointmentController extends Controller
         if ($request->ajax()) {
             $data = DB::table('appointment as a');
             $data = $data->join('customer as c', 'c.code', '=', 'a.cust_code');
+            $data = $data->leftJoin('employee as e', 'e.emp_code', '=', 'a.doctor');
             $data = $data->select(
+                'c.code as custcode',
                 'c.fname as custfname',
                 'c.lname as custlname',
                 'c.idcard',
                 'c.tel',
+                'e.emp_fname_th as doctor_fname',
+                'e.emp_lname_th as doctor_lname',
                 'a.*'
             );
-            if($request->cust_value != '') { $data = $data->where($request->cust_option, $request->cust_value); }
-            if($request->code != '') { $data = $data->where('a.code', $request->code); }
+            if($request->cust_value != '') { $data = $data->where($request->cust_option, 'LIKE', '%'.$request->cust_value.'%'); }
+            if($request->code != '') { $data = $data->where('a.code', 'LIKE', '%'.$request->code.'%'); }
+            if($request->orderno != '') { $data = $data->where('a.order_code', 'LIKE', '%'.$request->orderno.'%'); }
             if($request->date != '') { $data = $data->where('a.appointment_date', $request->date); }
             if($request->status != '') { $data = $data->where('a.status', $request->status); }
             $data = $data->orderBy('a.code', 'desc');
@@ -265,6 +270,9 @@ class AppointmentController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aptcode', function($row){
                     return '<a href="javascript:void(0)" data-bs-effect="effect-scale" onclick="detail('."'".$row->code."'".')" title="" class="text-primary modal-effect">'.$row->code.'</a>';
+                })
+                ->addColumn('custcode', function($row){
+                    return $row->custcode;
                 })
                 ->addColumn('custfullname', function($row){
                     return $row->custfname.' '.$row->custlname;
@@ -281,6 +289,15 @@ class AppointmentController extends Controller
                     if ($status == 7) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">เข้ารับการรักษาแล้ว</span>'; }
                     if ($status == 90) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-primary p-2 px-3">นัดรักษาครั้งต่อไป</span>'; }
                     return $res_o;
+                })
+                ->addColumn('doctorname', function($row){
+                    $dortorname = "";
+                    if ($row->doctor != "") {
+                        $dortorname = $row->doctor_fname. ' ' .$row->doctor_lname;
+                    } else {
+                        $dortorname = "-";
+                    }
+                    return $dortorname;
                 })
                 ->addColumn('aptnextflag', function($row){
                     $res_nextflag = $row->nextapt_flag;
@@ -369,6 +386,21 @@ class AppointmentController extends Controller
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 );
                 break;
+            case 1:
+                $arr_apt = array(
+                    'note_cancel' => $reqcancel,
+                    'status' => $reqstatus,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+            break;
+            case 2:
+                $arr_apt = array(
+                    'note_cancel' => $reqcancel,
+                    'status' => $reqstatus,
+                    'doctor' => $reqdoctor,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+            break;
             case 3:
                 //Update Appointment
                 $arr_apt = array(
@@ -376,8 +408,14 @@ class AppointmentController extends Controller
                     'status' => $reqstatus,
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 );
-                
-                break;
+            break;
+            case 4:
+                $arr_apt = array(
+                    'note_cancel' => $reqcancel,
+                    'status' => $reqstatus,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+            break;
             case 5:
                 //Update Appointment
                 $arr_apt = array(
@@ -393,8 +431,6 @@ class AppointmentController extends Controller
                 $arr_apt = array(
                     'status' => $reqstatus,
                     'doctor' => $reqdoctor,
-                    'or_1' => $reqor1,
-                    'or_2' => $reqor2,
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 );
                 break;
@@ -403,6 +439,8 @@ class AppointmentController extends Controller
                 $arr_apt = array(
                     'status' => $reqstatus,
                     'nextapt_flag' => $reqchknextapt,
+                    'or_1' => $reqor1,
+                    'or_2' => $reqor2,
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 );
                 //Add OPD

@@ -51,6 +51,10 @@
                                                 <input type="text" name="appointment_no" id="appointment_no" class="form-control">
                                             </div>
                                             <div class="form-group col-auto">
+                                                <label class="form-label">เลขที่ Order</label>
+                                                <input type="text" name="order_no" id="order_no" class="form-control">
+                                            </div>
+                                            <div class="form-group col-auto">
                                                 <label class="form-label">วันที่นัดหมาย</label>
                                                 <div class="input-group">
                                                     <div class="input-group-text">
@@ -333,6 +337,7 @@
                 d.cust_option = $('#cust_option').val(),
                 d.cust_value = $('#cust_value').val(),
                 d.code = $('#appointment_no').val(),
+                d.orderno = $('#order_no').val(),
                 d.date = $('#appointment_date').val(),
                 d.status = $('#appointment_status :selected').val()
             },
@@ -340,14 +345,16 @@
         columns: [
             { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
             { title: "เลขที่ใบนัด", data: 'aptcode', name: 'aptcode' },
+            { title: "รหัสลูกค้า", data: 'custcode', name: 'custcode' },
             { title: "ชื่อลูกค้า", data: 'custfullname', name: 'custfullname' },
             { title: "สถานะใบนัด", data: 'aptstatus', name: 'aptstatus' },
+            { title: "หมอ", data: 'doctorname', name: 'aptstatus' },
             { title: "นัดครั้งต่อไป", data: 'aptnextflag', name: 'aptnextflag' },
             { title: "วันเวลานัดหมาย", data: 'aptdatetime', name: 'aptdatetime' },
             { title: "วันที่สร้าง", data: 'created', name: 'created' },
         ],
         'columnDefs': [
-            { "className": "text-center", "targets": [0,3,4,5,6] },
+            { "className": "text-center", "targets": [0,4,5,6,7] },
         ]
     });
     dataTable.columns.adjust().draw();
@@ -445,7 +452,7 @@
 
                     if (res.status == 6 || res.status == 7) {
                         $('#disp_doc').html(res.doctor+' - '+response.empdoc.emp_fname_th+' '+response.empdoc.emp_lname_th);
-                        $('#disp_or1').html(res.or_1+' - '+response.empor1.emp_fname_th+' '+response.empor1.emp_lname_th);
+                        $('#disp_or1').html(res.or_1 ? (res.or_1+' - '+response.empor1.emp_fname_th+' '+response.empor1.emp_lname_th) : ' - ');
                         $('#disp_or2').html(res.or_2 ? (res.or_2+' - '+response.empor2.emp_fname_th+' '+response.empor2.emp_lname_th) : ' - ');
                     }
                     
@@ -490,12 +497,16 @@
             case 0:
                 break;
             case 1:
+                $('#btn_apt_savedraf').show();
                 $('#btn_apt_send').show();
+                // $('#btn_apt_send').show();
                 $('#btn_apt_cancle').show();
                 $('#note').prop('disabled', false);
                 break;
             case 2:
+                $('#btn_apt_savedraf').show();
                 $('#btn_apt_send').show();
+                // $('#btn_apt_send').show();
                 $('#btn_apt_cancle').show();
                 $('#note').prop('disabled', false);
                 break;
@@ -503,7 +514,8 @@
                 $('#btn_apt_savedraf').show();
                 $('#btn_apt_recall').show();
                 $('#btn_apt_send').show();
-                $('#btn_apt_cancle').show();
+                $('#disptext_nextapt').show();
+                $('#disptext_opd').show();
                 $('#note').prop('disabled', false);
                 break;
             case 4:
@@ -511,19 +523,25 @@
                 $('#btn_apt_recall').show();
                 $('#btn_apt_send').show();
                 $('#btn_apt_cancle').show();
+                $('#space_emp').hide();
                 $('#note').prop('disabled', false);
                 break;
             case 5:
-                $('#btn_apt_savedraf').show();
+                // $('#btn_apt_savedraf').show();
                 $('#btn_apt_recall').show();
                 $('#btn_apt_send').show();
                 $('#btn_apt_cancle').show();
+                $('#space_emp').hide();
                 $('#note').prop('disabled', false);
                 break;
             case 6:
                 $('#btn_apt_recall').show();
                 $('#btn_apt_send').show();
+                $('#btn_apt_next').show();
                 $('#disptext_emp').show();
+                $('#space_emp').show();
+                $('#disptext_nextapt').hide();
+                $('#disptext_opd').hide();
                 $('#note').prop('disabled', false);
                 break;
             case 7:
@@ -560,6 +578,23 @@
                             param : param
                         }
                         break;
+                    case 1:
+                    arrdata = {
+                        _token: "{{ csrf_token() }}",
+                        aptcode : mAptCode,
+                        note : $('#note').val(),
+                        param : param
+                    }
+                    break;
+                    case 2:
+                        arrdata = {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : mAptCode,
+                            doctor : $('#empdoctor :selected').val(),
+                            note : $('#note').val(),
+                            param : param
+                        }
+                    break;
                     case 3:
                         arrdata = {
                             _token: "{{ csrf_token() }}",
@@ -567,13 +602,20 @@
                             note : $('#note').val(),
                             param : param
                         }
-                        break;
+                    break;
+                    case 4:
+                    arrdata = {
+                        _token: "{{ csrf_token() }}",
+                        aptcode : mAptCode,
+                        note : $('#note').val(),
+                        param : param
+                    }
+                    break;
                     case 5:
                         arrdata = {
                             _token: "{{ csrf_token() }}",
                             aptcode : mAptCode,
                             note : $('#note').val(),
-                            doctor : $('#empdoctor :selected').val(),
                             or_1: $('#empor1 :selected').val(),
                             or_2: ($('#empor2 :selected').val() == 0 ? '' : $('#empor2 :selected').val()),
                             param : param
@@ -584,9 +626,8 @@
                             _token: "{{ csrf_token() }}",
                             aptcode : mAptCode,
                             note : $('#note').val(),
+                            opd: $('#opd').val(),
                             doctor : $('#empdoctor :selected').val(),
-                            or_1: $('#empor1 :selected').val(),
-                            or_2: ($('#empor2 :selected').val() == 0 ? '' : $('#empor2 :selected').val()),
                             param : param
                         }
                         break;
@@ -597,6 +638,8 @@
                             aptcode : mAptCode,
                             note : $('#note').val(),
                             chknextapt: (checkBox.checked == true ? 1 : null),
+                            or_1: $('#empor1 :selected').val(),
+                            or_2: ($('#empor2 :selected').val() == 0 ? '' : $('#empor2 :selected').val()),
                             opd: $('#opd').val(),
                             param : param
                         }

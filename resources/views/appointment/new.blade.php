@@ -232,49 +232,49 @@
         var note = $('#note_newapt').val();
         var creator = "{{ session()->get('session_empcode') }}";
         swal({
-                title: "ยืนยันข้อมูลใบนัด",
-                text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
-                type: "warning",
-                confirmButtonText: "ยืนยันข้อมูลถูกต้อง",
-                cancelButtonText: 'ยกเลิก',
-                showCancelButton: true,
-                },
-                function(isConfirm) {
-                if (isConfirm) {
-                    $.ajax({
-                        url: '{{ route('appointment.insert') }}',
-                        method: 'post',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            orderdetail_id: orderdetail_id,
-                            order_code: order_code,
-                            service_name : service_name,
-                            servicemaster_name : servicemaster_name,
-                            servicetype_name : servicetype_name,
-                            cust_code : cust_code,
-                            round_at : round_at,
-                            appointment_date : appointment_date,
-                            appointment_time : appointment_time,
-                            note : note,
-                            creator : creator
-                        },
-                        success: function (response) {
-                            console.log(response.status);
-                            if(response.status == "success") {
-                                swal({
-                                    title: "สร้างใบนัดแล้ว!",
-                                    text: "Your infomation has been succesfully save.",
-                                    type: "success",
-                                    confirmButtonText: "OK",
-                                    confirmButtonClass: "btn-success",
-                                    },
-                                function(isConfirm) {
-                                    if (isConfirm) {
-                                        var url = "{{ route('appointment.checklist')}}";
-                                        location.href = url;
-                                    }
-                                });
-                            }
+            title: "ยืนยันข้อมูลใบนัด",
+            text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
+            type: "warning",
+            confirmButtonText: "ยืนยันข้อมูลถูกต้อง",
+            cancelButtonText: 'ยกเลิก',
+            showCancelButton: true,
+            },
+            function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: '{{ route('appointment.insert') }}',
+                    method: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        orderdetail_id: orderdetail_id,
+                        order_code: order_code,
+                        service_name : service_name,
+                        servicemaster_name : servicemaster_name,
+                        servicetype_name : servicetype_name,
+                        cust_code : cust_code,
+                        round_at : round_at,
+                        appointment_date : appointment_date,
+                        appointment_time : appointment_time,
+                        note : note,
+                        creator : creator
+                    },
+                    success: function (response) {
+                        console.log(response.status);
+                        if(response.status == "success") {
+                            swal({
+                                title: "สร้างใบนัดแล้ว!",
+                                text: "Your infomation has been succesfully save.",
+                                type: "success",
+                                confirmButtonText: "OK",
+                                confirmButtonClass: "btn-success",
+                                },
+                            function(isConfirm) {
+                                if (isConfirm) {
+                                    var url = "{{ route('appointment.checklist')}}";
+                                    location.href = url;
+                                }
+                            });
+                        }
 
                         },
                         complete: function () {

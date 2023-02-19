@@ -1215,7 +1215,6 @@
                         method: 'post',
                         data: {
                             _token: "{{ csrf_token() }}",
-                            n_customertype: $('#n_customertype').val(),
                             n_fname: $('#n_fname').val(),
                             n_lname: $('#n_lname').val(),
                             n_birthdate: $('#n_birthdate').val(),

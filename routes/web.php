@@ -109,6 +109,14 @@ Route::post('/discounttype/insert', 'DiscountTypeController@insert')->name('disc
 
 
 // Customer -------------------------------
+Route::get('/customer', 'CustomerController@index')->name('customer');
+Route::get('/customer/list', 'CustomerController@list')->name('customer.list');
+Route::get('/customer/new', 'CustomerController@new')->name('customer.new');
+Route::post('/customer/insert', 'CustomerController@insert')->name('customer.insert');
+Route::get('/customer/edit/{id}', 'CustomerController@edit')->name('customer.edit');
+Route::post('/customer/update', 'CustomerController@update')->name('customer.update');
+Route::post('/customer/getdata', 'CustomerController@getdata')->name('customer.getdata');
+// -------------------------
 Route::post('/customer/insert', 'CustomerController@insert')->name('customer.insert');
 Route::post('/customer/getdatacusttype', 'CustomerController@getdatacusttype')->name('customer.getdatacusttype');
 

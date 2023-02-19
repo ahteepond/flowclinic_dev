@@ -29,6 +29,7 @@
 </div>
 @endsection
 
+
 @section('detail_waittingadmit')
 <style>
     .select2-container { margin-bottom: 10px; }
@@ -39,8 +40,7 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="form-label">หมอ :</label>
-            <select class="form-control select2-show-search form-select" id="empdoctor"></select>
-            
+            <select class="form-control select2-show-search form-select" id="empdoctor" disabled></select>
         </div>
     </div>
     <div class="col-md-6">
@@ -54,10 +54,27 @@
 @endsection
 
 
+
+@section('detail_admitted')
+<div class="row mt-6" id="space_nextapt" style="display: none;">
+    <div class="col-12">
+        <div class="form-group m-0"> 
+            <div class="custom-controls-stacked"> 
+                <label class="custom-control custom-checkbox-lg">
+                    <input type="checkbox" class="custom-control-input" id="chknextapt" value="1" onclick="changeBtn()">
+                    <span class="custom-control-label h4 fw-semibold text-info">นัดรักษาครั้งต่อไป</span> 
+                </label>
+            </div>
+        </div>
+    </div>
+    <hr class="my-1">
+</div>
+@endsection
+
+
 @section('detail_button')
-<button class="btn btn-primary my-2 ms-2" onclick="updateAPT(5, 'ยืนยันการบันทึกใบนัดให้ OR')" id="btn_apt_savedraf">บันทึก</button>
-<button class="btn btn-primary my-2 ms-2" onclick="preUpdateAPT()" id="btn_apt_send">บันทึกและส่งใบนัดให้หมอ</button>
-<button class="btn btn-warning my-2 ms-2" onclick="updateAPT(1, 'ยืนยันการส่งบันทึกใบนัดกลับไปให้ Sale')" id="btn_apt_recall">ส่งกลับ</button>
+<button class="btn btn-success my-2 ms-2" onclick="preUpdateAPT(7, 'ยืนยันเข้ารับการรักษาแล้ว')" id="btn_apt_next">เข้ารับการรักษาแล้ว</button>
+<button class="btn btn-warning my-2 ms-2" onclick="updateAPT(6, 'ยืนยันการส่งบันทึกใบนัดกลับไปให้ Doctor')" id="btn_apt_recall">ส่งกลับ</button>
 @endsection
 
 
@@ -65,12 +82,7 @@
 <script>
     $("#dtlapt_modal").on('show.bs.modal', function(){
         setTimeout(() => { 
-            if ($('#tmp_status').val() == 6) {
-                $('#btn_apt_send').hide();
-                $('#btn_apt_recall').hide();
-                $('#space_emp').hide();
-                $('#space_note').hide();
-            }
+            
             if ($('#tmp_status').val() == 1) {
                 $('#btn_apt_send').hide();
                 $('#btn_apt_cancle').hide();
@@ -79,6 +91,8 @@
             }
             if ($('#tmp_status').val() == 2) {
                 $('#btn_apt_send').hide();
+                $('#btn_apt_savedraf').hide();
+                $('#btn_apt_next').hide();
                 $('#btn_apt_cancle').hide();
                 $('#space_note').hide();
                 $('#space_nextapt').hide();
@@ -86,25 +100,29 @@
                 $('#space_note').hide();
                 $('#space_emp').hide();
             }
+            if ($('#tmp_status').val() == 6) {
+                $('#btn_apt_send').hide();
+                $('#btn_apt_recall').hide();
+                $('#space_emp').hide();
+                $('#space_note').hide();
+                $('#disptext_emp').show();
+                $('#btn_apt_next').hide();
+            }
+            if ($('#tmp_status').val() == 7) {
+                $('#space_emp').hide();
+                $('#disptext_emp').show();
+                $('#btn_apt_next').hide();
+                $('#btn_apt_send').hide();
+            }
         }, 150)
         getEmpList();
-        // $('#empdoctor').select2({
-        //     dropdownParent: $("#dtlapt_modal"),
-        //     minimumResultsForSearch: '',
-        //     width: '100%'
-        // });
-        // $('#empor1').select2({
-        //     dropdownParent: $("#dtlapt_modal"),
-        //     minimumResultsForSearch: '',
-        //     width: '100%'
-        // });
-        // $('#empor2').select2({
-        //     dropdownParent: $("#dtlapt_modal"),
-        //     minimumResultsForSearch: '',
-        //     width: '100%'
-        // });
     });
 
+    function preUpdateAPT(status, alert) {
+        if (checkEmpSelected() != false) {
+            updateAPT(status, alert);
+        }
+    }
 
     function checkEmpSelected() {
         if ($('#empdoctor :selected').val() == "") {
@@ -144,11 +162,6 @@
         }
     }
 
-    function preUpdateAPT() {
-        if (checkEmpSelected() != false) {
-            updateAPT(6, 'ยืนยันการส่งใบนัดให้หมอ');
-        }
-    }
 
     function getEmpList() {
         $.ajax({

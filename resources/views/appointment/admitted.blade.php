@@ -31,14 +31,13 @@
 
 
 @section('detail_admitted')
-
 <div class="row mt-6" id="space_nextapt">
     <div class="col-12">
         <div class="form-group m-0"> 
             <div class="custom-controls-stacked"> 
                 <label class="custom-control custom-checkbox-lg">
-                    <input type="checkbox" class="custom-control-input" id="chknextapt" value="1">
-                    <span class="custom-control-label h4 fw-semibold text-primary">นัดรักษาครั้งต่อไป</span> 
+                    <input type="checkbox" class="custom-control-input" id="chknextapt" value="1" onclick="changeBtn()">
+                    <span class="custom-control-label h4 fw-semibold text-info">นัดรักษาครั้งต่อไป</span> 
                 </label>
             </div>
         </div>
@@ -61,14 +60,27 @@
 
 
 @section('detail_button')
-<button class="btn btn-success my-2 ms-2" onclick="updateAPT(7, 'ยืนยันเข้ารับการรักษาแล้ว')" id="btn_apt_send">เข้ารับการรักษาแล้ว</button>
-<button class="btn btn-warning my-2 ms-2" onclick="updateAPT(4, 'ยืนยันการส่งบันทึกใบนัดกลับไปให้ OR')" id="btn_apt_recall">ส่งกลับ</button>
+<button class="btn btn-info my-2 ms-2" onclick="updateAPT(7, 'ยืนยันนัดรักษาครั้งต่อไป')" id="btn_apt_next">นัดรักษาครั้งต่อไป</button>
+<button class="btn btn-success my-2 ms-2" onclick="updateAPT(3, 'ยืนยันเข้ารับการรักษา')" id="btn_apt_send">เข้ารับการรักษาและส่งให้ OR</button>
+<button class="btn btn-warning my-2 ms-2" onclick="updateAPT(1, 'ยืนยันการส่งบันทึกใบนัดกลับไปให้ Sale')" id="btn_apt_recall">ส่งกลับ</button>
 @endsection
 
 @section('js_detail')
 <script>
+    $( document ).ready(function() {
+        
+    });
+
     $("#dtlapt_modal").on('show.bs.modal', function(){
         setTimeout(() => { 
+            if ($('#tmp_status').val() == 1) {
+                $('#btn_apt_send').hide();
+                $('#btn_apt_cancle').hide();
+                $('#space_note').hide();
+                $('#space_nextapt').hide();
+                $('#space_opd').hide();
+                $('#space_note').hide();
+            }
             if ($('#tmp_status').val() == 2) {
                 $('#btn_apt_send').hide();
                 $('#btn_apt_cancle').hide();
@@ -81,13 +93,38 @@
                 $('#btn_apt_send').hide();
                 $('#btn_apt_recall').hide();
                 $('#btn_apt_cancle').hide();
+                $('#btn_apt_next').hide();
                 $('#space_note').hide();
                 $('#space_nextapt').hide();
                 $('#space_opd').hide();
                 $('#space_note').hide();
             }
+            if ($('#tmp_status').val() == 6) {
+                $('#space_emp').hide();
+                $('#disptext_emp').show();
+                changeBtn();
+            }
+            if ($('#tmp_status').val() == 7) {
+                $('#space_emp').hide();
+                $('#disptext_emp').show();
+                $('#btn_apt_next').hide();
+                $('#btn_apt_send').hide();
+            }
         }, 150)
     });
+
+    function changeBtn() {
+        if($("#chknextapt").prop("checked")) {
+            console.log('t');
+            $('#btn_apt_next').show();
+            $('#btn_apt_send').hide();
+        } else {
+            console.log('f');
+            $('#btn_apt_next').hide();
+            $('#btn_apt_send').show();
+        }  
+    }
+
 </script>
 @endsection
 

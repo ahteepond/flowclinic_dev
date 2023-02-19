@@ -156,6 +156,7 @@
                                         <li><a href="/paymenttype" class="slide-item"> วิธีการชำระเงิน</a></li>
                                         <li><a href="/discounttype" class="slide-item"> ประเภทส่วนลด</a></li>
                                         <li><a href="/customertype" class="slide-item"> ประเภทลูกค้า</a></li>
+                                        <li><a href="/customer" class="slide-item"> รายชื่อลูกค้า</a></li>
                                         {{-- <li><a href="{{ route('index') }}" class="slide-item"> ข้อมูลลูกค้า</a></li> --}}
                                     </ul>
                                 </li>
@@ -187,7 +188,7 @@
 
                                     @if ( session()->get('session_role') == 'D' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
                                         <li><a href="/appointment/admitted" class="slide-item"> เข้ารับการรักษา</a></li>
-                                        <li><a href="/opd/detail" class="slide-item"> บันทึกประวัติ OPD</a></li>
+                                        <li><a href="/opd/detail" class="slide-item"> ประวัติ OPD</a></li>
                                     @endif
                                 </ul>
                             </li>
