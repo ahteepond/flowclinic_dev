@@ -11,7 +11,7 @@
             <h1 class="page-title">@yield('title')</h1>
             <div>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('customertype') }}">ออกใบนัด</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('appointment') }}">ออกใบนัด</a></li>
                     <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
                 </ol>
             </div>

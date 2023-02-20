@@ -442,7 +442,7 @@
                         html += '<div class="col-md-5"><div class="form-group"><label class="form-label">สถานะการชำระเงิน</label><span class="badge bg-'+status_color+'-transparent rounded-pill text-'+status_color+' p-2 px-3">'+status_text+'</span></div></div>';
                         html += '<div class="col-md-5"><div class="form-group"><label class="form-label">หมายเหตุ/บันทึก</label><p>'+(response.data[i].remark ? response.data[i].remark : "-")+'</p></div></div>';
                         if(response.data[i].evidence == 1) {
-                            html += '<div class="col-md-5"><div class="form-group"><label class="form-label">หลักฐานการชำระเงิน</label><a href="../../payment_evidence/'+(response.data[i].evidence_file)+'" class="btn btn-sm btn-outline-dark" target="_blank">ดูหลักฐานการชำระเงิน</a></div></div>';
+                            html += '<div class="col-md-5"><div class="form-group"><label class="form-label">หลักฐานการชำระเงิน</label><a href="/payment_evidence/'+(response.data[i].evidence_file)+'" class="btn btn-sm btn-outline-dark" target="_blank">ดูหลักฐานการชำระเงิน</a></div></div>';
                         }
                         html += '</div></div>';
                         html += '</div>';

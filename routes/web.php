@@ -187,12 +187,17 @@ Route::get('/admitted/process', 'AdmittedController@process')->name('admitted.pr
 
 // OPD -------------------------------
 Route::get('/opd', 'OPDController@index')->name('opd');
-Route::post('/opd/searchorders', 'OPDController@searchorders')->name('opd.searchorders');
-Route::get('/opd/orderlist', 'OPDController@orderlist')->name('opd.orderlist');
+Route::post('/opd/search', 'OPDController@search')->name('opd.search');
+Route::get('/opd/list', 'OPDController@list')->name('opd.list');
+Route::get('/opd/detail/{customercode}', 'OPDController@detail')->name('opd.detail');
 
 
-Route::get('/opd/process', 'OPDController@process')->name('opd.process');
-Route::get('/opd/history', 'OPDController@history')->name('opd.history');
 
-
-Route::get('/opd/detail', 'OPDController@detail')->name('opd.detail');
+// Report -------------------------------
+Route::get('/report/customer', 'ReportController@customer')->name('report.customer');
+Route::get('/report/customer/search', 'ReportController@customerSearch')->name('report.customer.search');
+Route::get('/report/individualopd', 'ReportController@individualopd')->name('report.individualopd');
+Route::get('/report/individualopd/search', 'ReportController@individualopdSearch')->name('report.individualopd.search');
+Route::get('/report/productandservice', 'ReportController@productandservice')->name('report.productandservice');
+Route::get('/report/dailysalesreceipt', 'ReportController@dailysalesreceipt')->name('report.dailysalesreceipt');
+Route::get('/report/dailysalesproductandservice', 'ReportController@dailysalesproductandservice')->name('report.dailysalesproductandservice');

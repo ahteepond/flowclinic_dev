@@ -182,14 +182,19 @@
                                         <li><a href="/appointment/checklist" class="slide-item"> ตรวจสอบการนัดหมาย</a></li>
                                     @endif
 
+                                    @if ( session()->get('session_role') == 'D' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                        <li><a href="/appointment/admitted" class="slide-item"> รอรับการรักษา</a></li>
+                                    @endif
+
                                     @if ( session()->get('session_role') == 'O' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
-                                        <li><a href="/appointment/waittingadmit" class="slide-item"> รอรับการรักษา</a></li>
+                                        <li><a href="/appointment/waittingadmit" class="slide-item"> เข้ารับการรักษา</a></li>
                                     @endif
 
                                     @if ( session()->get('session_role') == 'D' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
-                                        <li><a href="/appointment/admitted" class="slide-item"> เข้ารับการรักษา</a></li>
-                                        <li><a href="/opd/detail" class="slide-item"> ประวัติ OPD</a></li>
+                                        <li><a href="/opd" class="slide-item"> ประวัติ OPD</a></li>
                                     @endif
+
+                                    
                                 </ul>
                             </li>
                             
@@ -202,11 +207,11 @@
                                         class="side-menu__label">รายงาน</span><i
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
-                                    <li><a href="/dashboard" class="slide-item"> รายงานข้อมูลลูกค้า</a></li>
-                                    <li><a href="/dashboard" class="slide-item"> รายงานข้อมูลการักษารายคน (OPD)</a></li>
-                                    <li><a href="/dashboard" class="slide-item"> รายงานสินค้าและบริการ</a></li>
-                                    <li><a href="/dashboard" class="slide-item"> รายงานยอดขายรายวัน<br>(ใบเสร็จ)</a></li>
-                                    <li><a href="/dashboard" class="slide-item"> รายงานยอดขายรายวัน<br>(สินค้าและบริการ)</a></li>
+                                    <li><a href="/report/customer" class="slide-item"> รายงานข้อมูลลูกค้า</a></li>
+                                    <li><a href="/report/individualopd" class="slide-item"> รายงานข้อมูลการรักษารายคน (OPD)</a></li>
+                                    <li><a href="/report/productandservice" class="slide-item"> รายงานสินค้าและบริการ</a></li>
+                                    <li><a href="/report/dailysalesreceipt" class="slide-item"> รายงานยอดขายรายวัน<br>(ใบเสร็จ)</a></li>
+                                    <li><a href="/report/dailysalesproductandservice" class="slide-item"> รายงานยอดขายรายวัน<br>(สินค้าและบริการ)</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -306,6 +311,10 @@
 
     <!-- CUSTOM JS -->
     <script src="{{asset('assets/js/custom.js')}}"></script>
+
+    <script src="{{asset('assets/js/moment.js')}}"></script>
+
+
 
     <script>
         function commaSeparateNumber(val) {

@@ -76,10 +76,11 @@
                                         <p class="mb-1">วันเกิด : <span id="bdate"></span></p>
                                         <p class="mb-1">อายุ : <span id="age"></span> ปี</p>
                                         <p class="mb-1">กรุ๊ปเลือด : <span id="bloodtype"></span></p>
+                                        <div class="my-3" id="v_btn"></div>
                                     </div>
                                 </div>
                                 <div class="table-responsive mt-5">
-                                    <table id="datatable_order" class="table table-bordered w-100 table-hover border-bottom">
+                                    <table id="datatable_opd" class="table table-bordered w-100 table-hover border-bottom">
 
                                     </table>
                                 </div>
@@ -98,31 +99,7 @@
 
 
 @section('other')
-<div class="modal fade" id="modal_servicelist">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-body p-5">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="fs-18 fw-semibold mb-0" id="ordercode_hmodal">
 
-                        </p>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="table-responsive mt-5">
-                            <table id="datatable_service" class="table table-bordered w-100 table-hover border-bottom">
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 
@@ -135,10 +112,6 @@
 
     <script>
     $( document ).ready(function() {
-
-        $("#modal_servicelist").on('hidden.bs.modal', function(){
-            $('#ordercode_hmodal').html('');
-        });
     });
 
     function searchOrderByCustomer() {
@@ -161,7 +134,7 @@
             return false;
         }
         $.ajax({
-            url: '{{ route('opd.searchorders') }}',
+            url: '{{ route('opd.search') }}',
             method: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
@@ -179,8 +152,10 @@
                     $('#bdate').html(response.customer.bdate);
                     $('#age').html(getAge(response.customer.bdate));
                     $('#bloodtype').html(response.customer.bloodtype);
-                    //Set Orders List
-                    ordersList(response.customer.code);
+                    var spc_btn = '<button type="button" class="btn btn-success" onclick="viewmoreOPD(`'+response.customer.code+'`)"><i class="zmdi zmdi-open-in-new me-2"></i>ดูรายละเอียด OPD ทั้งหมด</button>';
+                    $('#v_btn').html(spc_btn);
+                    //Set OPD List
+                    OPDList(response.customer.code);
                     //Show
                     $('#orderspace_ls').fadeIn();
                 }
@@ -206,32 +181,41 @@
 
     }
 
-    function getAge(dateString) {
-        var ageInMilliseconds = new Date() - new Date(dateString);
-        return Math.floor(ageInMilliseconds/1000/60/60/24/365); // convert to years
+    function viewmoreOPD(custcode) {
+        var url = "{{ route('opd.detail', '')}}"+"/"+custcode;
+        window.open(url,'_blank');
     }
 
+    function getAge(dateString) {
+        var date = dateString;
+        var fullage = moment(dateString, "YYYY-MM-DD").fromNow(true);
+        var age = fullage.split(" ", 1);
+        return age;
+    }
 
-    function ordersList(customercode) {
-        console.log(customercode);
-        var dataTable = $('#datatable_order').DataTable({
+    function OPDList(customercode) {
+        var dataTable = $('#datatable_opd').DataTable({
             "bDestroy": true,
             processing: true,
             serverSide: true,
             ajax: {
                 type: "GET",
-                url: "{{ route('opd.orderlist') }}",
+                url: "{{ route('opd.list') }}",
                 data: function( d ) {
                     d.customercode = customercode
                 },
             },
             columns: [
                 { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { title: "วันที่บันทึก OPD", data: 'created', name: 'created' },
                 { title: "เลขที่ใบสั่งซื้อ", data: 'orderscode', name: 'orderscode' },
                 { title: "เลขที่ใบนัด", data: 'aptcode', name: 'aptcode' },
-                { title: "บริการหลัก", data: 'servicemaster_name', name: 'servicemaster_name' },
                 { title: "บริการ", data: 'service_name', name: 'service_name' },
-                { title: "ออกใบนัด", data: 'selectservice', name: 'selectservice' },
+                { title: "บริการหลัก", data: 'servicemaster_name', name: 'servicemaster_name' },
+                { title: "ประเภทบริการ", data: 'servicetype_name', name: 'servicetype_name' },
+                { title: "รักษาครั้งที่", data: 'round_at', name: 'round_at' },
+                { title: "บันทึก OPD", data: 'note', name: 'note' },
+                // { title: "ผู้บันทึก OPD", data: 'doctor', name: 'doctor' },
             ],
             'columnDefs': [
                 // { "className": "text-center", "targets": [0,1,2,3] },
@@ -240,40 +224,6 @@
         dataTable.columns.adjust().draw();
     }
 
-
-    function serviceList(ordercode) {
-        $('#ordercode_hmodal').html('<h3 class="text-primary mt-5">'+ordercode+'</h3>');
-        var dataTable = $('#datatable_service').DataTable({
-            "bDestroy": true,
-            processing: true,
-            serverSide: true,
-            ajax: {
-                type: "GET",
-                url: "{{ route('appointment.servicelist') }}",
-                data: function( d ) {
-                    d.ordercode = ordercode
-                },
-            },
-            columns: [
-                { title: "No.", data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { title: "เลขที่บริการ", data: 'servicecode', name: 'servicecode' },
-                { title: "บริการ", data: 'service', name: 'service' },
-                { title: "บริการย่อย", data: 'servicemaster', name: 'servicemaster' },
-                { title: "ประเภทบริการ", data: 'servicetype', name: 'servicetype' },
-                { title: "จำนวน", data: 'qty', name: 'qty' },
-                { title: "ออกใบนัด", data: 'selectservice', name: 'selectservice' },
-            ],
-            'columnDefs': [
-                { "className": "text-center", "targets": [0,5,6] },
-            ]
-        });
-        dataTable.columns.adjust().draw();
-    }
-
-    function takeAppointment(ordercode, servicecode, id) {
-        var url = "{{ route('appointment.new', '')}}"+"/"+id;
-        location.href = url;
-    }
 
     </script>
 @endsection

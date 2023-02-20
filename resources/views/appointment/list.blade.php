@@ -236,8 +236,8 @@
                         <p class="h4 fw-semibold">บันทึกประวัติ OPD</p>
                         <hr class="my-1">
                     </div>
-                    <div class="col-md-auto">
-                        <button type="button" class="btn btn-secondary mb-3 btn-block" onclick="gotoOPD()">รายละเอียด OPD</button>
+                    <div class="col-md-auto" id="btn_viewopd">
+                        
                     </div>
                 </div>
 
@@ -414,7 +414,7 @@
                     $('#dtl_custaddr').html(res.addr);
                     $('#dtl_custidcard').html(res.idcard);
                     $('#dtl_custbdate').html(res.bdate);
-                    $('#dtl_custage').html(res.bdate);
+                    $('#dtl_custage').html(getAge(res.bdate));
                     $('#dtl_custbloodtype').html(res.bloodtype);
                     $('#dtl_service_master').html(res.servicemaster_name);
                     $('#dtl_service').html(res.service_name);
@@ -422,6 +422,10 @@
                     $('#txt_note_cancel').html(res.note_cancel ? res.note_cancel : '-');
                     $('#tmpcancle_aptno').val(res.code);
                     $('#titlecancel_aptcode').html(res.code);
+
+                    var btn_viewopd = '<button type="button" class="btn btn-secondary mb-3 btn-block" onclick="gotoOPD(`'+res.cust_code+'`)">รายละเอียด OPD</button>';
+                    $('#btn_viewopd').html(btn_viewopd);
+                    
                     setTimeout(() => { 
                         $('#empdoctor').val(res.doctor);
                         $('#empdoctor').trigger('change');
@@ -479,6 +483,13 @@
             }
         });
     });
+
+    function getAge(dateString) {
+        var date = dateString;
+        var fullage = moment(dateString, "YYYY-MM-DD").fromNow(true);
+        var age = fullage.split(" ", 1);
+        return age;
+    }
 
     function dispBtnAPTDetail(status) {
         // 1 | Set button display first
@@ -599,6 +610,7 @@
                         arrdata = {
                             _token: "{{ csrf_token() }}",
                             aptcode : mAptCode,
+                            opd: $('#opd').val(),
                             note : $('#note').val(),
                             param : param
                         }
@@ -730,9 +742,8 @@
        
     }
 
-    function gotoOPD() {
-        // var url = "{{ route('opd.detail', '')}}"+"/"+ordercode;
-        var url = "{{ route('opd.detail')}}";
+    function gotoOPD(custcode) {
+        var url = "{{ route('opd.detail', '')}}"+"/"+custcode;
         window.open(url, "_blank");
     }
     

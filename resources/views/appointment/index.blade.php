@@ -207,8 +207,10 @@
     }
 
     function getAge(dateString) {
-        var ageInMilliseconds = new Date() - new Date(dateString);
-        return Math.floor(ageInMilliseconds/1000/60/60/24/365); // convert to years
+        var date = dateString;
+        var fullage = moment(dateString, "YYYY-MM-DD").fromNow(true);
+        var age = fullage.split(" ", 1);
+        return age;
     }
 
 
