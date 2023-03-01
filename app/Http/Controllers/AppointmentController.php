@@ -177,6 +177,7 @@ class AppointmentController extends Controller
             'appointment_time' => Carbon::parse($request->appointment_time)->format('H:i:s'),
             'status' => $res_aptstatus->status,
             'creator' => $request->creator,
+            'doctor' => $request->doctor,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         );
@@ -264,6 +265,7 @@ class AppointmentController extends Controller
             if($request->orderno != '') { $data = $data->where('a.order_code', 'LIKE', '%'.$request->orderno.'%'); }
             if($request->date != '') { $data = $data->where('a.appointment_date', $request->date); }
             if($request->status != '') { $data = $data->where('a.status', $request->status); }
+            if($request->doctor != '') { $data = $data->where('a.doctor', $request->doctor); }
             $data = $data->orderBy('a.code', 'desc');
             $data = $data->get();
             return DataTables::of($data)
@@ -276,6 +278,12 @@ class AppointmentController extends Controller
                 })
                 ->addColumn('custfullname', function($row){
                     return $row->custfname.' '.$row->custlname;
+                })
+                ->addColumn('service', function($row){
+                    return $row->service_name;
+                })
+                ->addColumn('servicemaster', function($row){
+                    return $row->servicemaster_name;
                 })
                 ->addColumn('aptstatus', function($row){
                     $status = $row->status;

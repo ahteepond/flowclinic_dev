@@ -199,5 +199,6 @@ Route::get('/report/customer/search', 'ReportController@customerSearch')->name('
 Route::get('/report/individualopd', 'ReportController@individualopd')->name('report.individualopd');
 Route::get('/report/individualopd/search', 'ReportController@individualopdSearch')->name('report.individualopd.search');
 Route::get('/report/productandservice', 'ReportController@productandservice')->name('report.productandservice');
+Route::get('/report/productandservice/search', 'ReportController@productandserviceSearch')->name('report.productandservice.search');
 Route::get('/report/dailysalesreceipt', 'ReportController@dailysalesreceipt')->name('report.dailysalesreceipt');
 Route::get('/report/dailysalesproductandservice', 'ReportController@dailysalesproductandservice')->name('report.dailysalesproductandservice');

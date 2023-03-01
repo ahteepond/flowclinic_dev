@@ -73,6 +73,10 @@
                                                     <option value="" selected>ทั้งหมด</option>
                                                 </select>
                                             </div>
+                                            <div class="form-group col-auto">
+                                                <label class="form-label">หมอ</label>
+                                                <select class="form-control select2-show-search form-select" id="empdoctor"></select>
+                                            </div>
                                             <div class="col-auto">
                                                 <button type="button"onclick="clearFillter()" class="btn btn-outline-dark mb-4 ms-2"><i class="fa fa-refresh me-2"></i>ล้าง</button>
                                                 <button type="button"onclick="searchTable()" class="btn btn-outline-primary mb-4 ms-2"><i class="fa fa-search me-2"></i>ค้นหา</button>
@@ -324,7 +328,7 @@
 
     <script>
     $( document ).ready(function() {
-
+        getEmpDoctorList();
     });
 
     var dataTable = $('#datatable').DataTable({
@@ -339,7 +343,8 @@
                 d.code = $('#appointment_no').val(),
                 d.orderno = $('#order_no').val(),
                 d.date = $('#appointment_date').val(),
-                d.status = $('#appointment_status :selected').val()
+                d.status = $('#appointment_status :selected').val(),
+                d.doctor = $('#empdoctor :selected').val()
             },
         },
         columns: [
@@ -347,6 +352,8 @@
             { title: "เลขที่ใบนัด", data: 'aptcode', name: 'aptcode' },
             { title: "รหัสลูกค้า", data: 'custcode', name: 'custcode' },
             { title: "ชื่อลูกค้า", data: 'custfullname', name: 'custfullname' },
+            { title: "บริการ", data: 'service', name: 'service' },
+            { title: "บริการหลัก", data: 'servicemaster', name: 'servicemaster' },
             { title: "สถานะใบนัด", data: 'aptstatus', name: 'aptstatus' },
             { title: "หมอ", data: 'doctorname', name: 'aptstatus' },
             { title: "นัดครั้งต่อไป", data: 'aptnextflag', name: 'aptnextflag' },
@@ -354,7 +361,7 @@
             { title: "วันที่สร้าง", data: 'created', name: 'created' },
         ],
         'columnDefs': [
-            { "className": "text-center", "targets": [0,4,5,6,7] },
+            { "className": "text-center", "targets": [0,6,7,8,9] },
         ]
     });
     dataTable.columns.adjust().draw();
@@ -745,6 +752,28 @@
     function gotoOPD(custcode) {
         var url = "{{ route('opd.detail', '')}}"+"/"+custcode;
         window.open(url, "_blank");
+    }
+
+    function getEmpDoctorList() {
+        $.ajax({
+            url: '{{ route('appointment.waittingadmit.getemplist') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                prefix: 'D'
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    var html = '<option value="" selected>ทั้งหมด</option>';
+                    for (var i = 0; i < response.data.length; i++) {
+                        html += '<option value="'+response.data[i].emp_code+'" >'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
+                    }
+                    $('#empdoctor').html(html);
+                }
+            },
+            complete: function () {
+            }
+        });
     }
     
     

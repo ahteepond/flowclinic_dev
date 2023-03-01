@@ -190,7 +190,7 @@
                                         <li><a href="/appointment/waittingadmit" class="slide-item"> เข้ารับการรักษา</a></li>
                                     @endif
 
-                                    @if ( session()->get('session_role') == 'D' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                    @if ( session()->get('session_role') == 'D' || session()->get('session_role') == 'S' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
                                         <li><a href="/opd" class="slide-item"> ประวัติ OPD</a></li>
                                     @endif
 

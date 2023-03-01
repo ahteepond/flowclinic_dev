@@ -110,6 +110,13 @@
                                         </div>
                                     </div>
                                     <div class="col-12"><hr></div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">หมอ :</label>
+                                            <select class="form-control select2-show-search form-select" id="empdoctor"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12"><hr></div>
                                     <div class="col-12"><label class="form-label mb-3 h4 fw-semibold">บันทึก</label></div>
                                     <div class="col-12"></div>
                                     <div class="col-md-12">
@@ -164,6 +171,7 @@
         $('#appt_time').timepicker({
             'timeFormat': 'H:i'
         });
+        getEmpList();
     });
 
     function checkAppointmentDate(val) {
@@ -231,6 +239,7 @@
         var appointment_time = $('#appt_time').val();
         var note = $('#note_newapt').val();
         var creator = "{{ session()->get('session_empcode') }}";
+        var empdoctor = $('#empdoctor').val();
         swal({
             title: "ยืนยันข้อมูลใบนัด",
             text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
@@ -256,7 +265,8 @@
                         appointment_date : appointment_date,
                         appointment_time : appointment_time,
                         note : note,
-                        creator : creator
+                        creator : creator,
+                        doctor : empdoctor
                     },
                     success: function (response) {
                         console.log(response.status);
@@ -282,6 +292,29 @@
                     });
                 }
             });
+    }
+
+
+    function getEmpList() {
+        $.ajax({
+            url: '{{ route('appointment.waittingadmit.getemplist') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                prefix: 'D'
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    var html = '<option value="" selected disabled>กรุณาเลือกหมอ...</option>';
+                    for (var i = 0; i < response.data.length; i++) {
+                        html += '<option value="'+response.data[i].emp_code+'" >'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
+                    }
+                    $('#empdoctor').html(html);
+                }
+            },
+            complete: function () {
+            }
+        });
     }
 
     </script>

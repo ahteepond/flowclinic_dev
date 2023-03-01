@@ -162,8 +162,61 @@ class ReportController extends Controller
 
 
 
+    //______ รายงานข้อมูลการรักษารายคน (OPD)
+
     public function productandservice() {
         return view('report.productandservice');
+    }
+
+    public function productandserviceSearch(Request $request) {
+        if ($request->ajax()) {
+            $data = DB::table('service as s');
+            $data = $data->join('service_master as sm', 'sm.id', '=', 's.servicemaster_id');
+            $data = $data->join('service_type as st', 'st.id', '=', 'sm.servicetype_id');
+            $data = $data->select(
+                's.code as service_code',
+                's.name_th as service_nameth',
+                's.name_en as service_nameen',
+                's.description as service_description',
+                'sm.name_th as servicemaster_nameth',
+                'sm.name_en as servicemaster_nameen',
+                'st.name_th as servicetype_nameth'
+                // 'st.name_en as servicetype_nameen'
+            );
+            $data = $data->where('s.active', $request->active);
+            // if ($request->servicetype != '') {
+            //     $data = $data->where('appointment.cust_code', $request->servicetype);
+            // }
+            // if ($request->servicemaster != '') {
+            //     $data = $data->where('s.', $request->servicemaster);
+            // } 
+            // if ($request->service != '') {
+            //     $data = $data->where('opd.appointment_code', $request->service);
+            // } 
+
+            $data = $data->orderBy('service_nameth', 'ASC');
+            $data = $data->get();
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('service_code', function($row){
+                    return $row->service_code;
+                })
+                ->addColumn('service_name', function($row){
+                    return $row->service_nameth.' ('.$row->service_nameen.')';
+                })
+                ->addColumn('service_description', function($row){
+                    return $row->service_description;
+                })
+                ->addColumn('servicemaster_name', function($row){
+                    return $row->servicemaster_nameth.' ('.$row->servicemaster_nameen.')';
+                })
+                ->addColumn('servicetype_name', function($row){
+                    return $row->servicetype_nameth;
+                })
+                ->rawColumns(['service_code','servicetype_name'])
+                ->make(true);
+        }
     }
 
     public function dailysalesreceipt() {
