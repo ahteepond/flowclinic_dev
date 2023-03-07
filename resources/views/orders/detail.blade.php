@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         <div class="row pt-5">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <p class="h4">ผู้ขาย:</p>
                                 <div class="row">
                                     <div class="col-auto">
@@ -134,6 +134,9 @@
                                     @endif
 
                                 </div>
+                            </div>
+                            <div class="col-lg-6 text-end">
+                                <button class="btn btn-danger" onclick="voidOrder()"><i class="fa fa-times me-2"></i> ยกเลิก Order</button>
                             </div>
                         </div>
                     </div>
@@ -326,6 +329,73 @@
     // $("#evidence_new").on("change", function() {
 
     //     });
+
+
+    function voidOrder() {
+        // check all payment is voided
+        $.ajax({
+            url: '{{ route('orders.checkvoidpayment') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                ordercode: "{{ $ordercode }}"
+            },
+            success: function (response) {
+                console.log(response.param);
+                if (response.param == false) {
+                    swal({
+                        title: "ไม่สามารถยกเลิก Order ได้ กรุณาติดต่อบัญชีเพื่อยกเลิกการชำระเงิน",
+                        type: "error",
+                        confirmButtonText: "ตกลง",
+                    },
+                    function(isConfirm) {
+                    });
+                }
+                if (response.param == true) {
+                    swal({
+                        title: "ยืนยันการยกเลิก Order '{{ $ordercode }}'" ,
+                        type: "warning",
+                        confirmButtonText: "ตกลง",
+                        cancelButtonText: 'ยกเลิก',
+                        showCancelButton: true,
+                    },
+                    function(isConfirm) {
+                        if (isConfirm) {
+                            // Void Order
+                            voidOrderProgress('{{ $ordercode }}');
+                        }
+                    });
+                }
+            },
+            complete: function () {
+            }
+        });
+    }
+
+
+    function voidOrderProgress(ordercode) {
+        $.ajax({
+            url: '{{ route('orders.void') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                ordercode: ordercode
+            },
+            success: function (response) {
+                if (response.status == 'success') {
+                    swal({
+                        title: "ยกเลิก Order '"+ordercode+"' เรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง",
+                    },
+                    function(isConfirm) {
+                    });
+                }
+            },
+            complete: function () {
+            }
+        });
+    }
 
 
     function openModalPaymentAdd() {

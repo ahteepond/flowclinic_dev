@@ -90,7 +90,7 @@ class OrdersController extends Controller
         ->where('active', 1)
         ->get();
 
-        return view('orders.detail', compact('res', 'list', 'paymenttype'));
+        return view('orders.detail', compact('res', 'list', 'paymenttype', 'ordercode'));
     }
 
     public function selectcustomer(Request $request) {
@@ -201,6 +201,39 @@ class OrdersController extends Controller
             ->where('id', $request->id)
             ->first();
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $res->evidence ]);
+    }
+
+    public function checkvoidpayment(Request $request) {
+        $totalpayment = DB::table('orders_payment')
+        ->where('order_code', $request->ordercode)
+        ->get();
+        $totalpaymentCount = $totalpayment->count();
+
+        $totalvoid = DB::table('orders_payment')
+        ->where('order_code', $request->ordercode)
+        ->where('payment_status', '0')
+        ->get();
+        $totalvoidCount = $totalvoid->count();
+
+        if ($totalpaymentCount != $totalvoidCount) {
+            $param = false;
+        } else {
+            $param = true;
+        }
+
+        return response()->json([ 'status' => 'success', 'result' => true, 'param' => $param ]);
+    }
+
+
+    public function void(Request $request) {
+        $arr_data = array(
+            "status_order" => 0,
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        );
+        $update = DB::table('orders')
+            ->where('code', $request->ordercode)
+            ->update($arr_data);
+        return response()->json([ 'status' => 'success', 'result' => true ]);
     }
 
 }

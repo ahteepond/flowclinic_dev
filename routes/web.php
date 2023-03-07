@@ -169,6 +169,9 @@ Route::post('/orders/getempsale', 'OrdersController@getempsale')->name('orders.g
 Route::post('/orders/insert', 'OrdersController@insert')->name('orders.insert');
 Route::post('/orders/getevidence', 'OrdersController@getevidence')->name('orders.getevidence');
 // Route::get('/orders/view/{id}', 'OrdersController@view')->name('orders.view');
+Route::post('/orders/checkvoidpayment', 'OrdersController@checkvoidpayment')->name('orders.checkvoidpayment');
+Route::post('/orders/void', 'OrdersController@void')->name('orders.void');
+
 
 
 
