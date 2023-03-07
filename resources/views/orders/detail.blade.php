@@ -135,9 +135,17 @@
 
                                 </div>
                             </div>
+                            @if ($res->status_order == 0 || $res->status_order == 3 || session()->get('session_role') == 'A' ) 
+                                @if ($res->status_order == 0 && $res->void_reason != null)
+                                    <div class="col-lg-6 text-end">
+                                        <p class="text-danger"><b>เหตุผลการยกเลิก Order : </b><br>{{ $res->void_reason }}</p>
+                                    </div>
+                                @endif
+                            @else
                             <div class="col-lg-6 text-end">
                                 <button class="btn btn-danger" onclick="voidOrder()"><i class="fa fa-times me-2"></i> ยกเลิก Order</button>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -154,9 +162,13 @@
                         <div class="col-8 text-start">
                             <h3 class="card-title">การชำระเงิน</h3>
                         </div>
-                        <div class="col-4 text-end">
-                            <a class="btn btn-sm btn-primary" data-bs-effect="effect-scale" data-bs-toggle="modal" href="#modal_payment_add" onclick="openModalPaymentAdd()"><i class="fa fa-plus me-2"></i>เพิ่มบันทึกชำระเงิน</a>
-                        </div>
+                        @if (session()->get('session_role') == 'A')
+                        @else
+                            <div class="col-4 text-end">
+                                <a class="btn btn-sm btn-primary" data-bs-effect="effect-scale" data-bs-toggle="modal" href="#modal_payment_add" onclick="openModalPaymentAdd()"><i class="fa fa-plus me-2"></i>เพิ่มบันทึกชำระเงิน</a>
+                            </div>
+                        @endif
+                        
                     </div>
                     <div class="card-body" id="payment_space">
 
@@ -303,6 +315,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_voidorder">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger font-weight-bold"><i class="fa fa-note me-2"></i>ระบุเหตุผลการยกเลิก Order '{{ $ordercode }}'</h5><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body p-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">เหตุผล</label>
+                            <textarea class="form-control" id="voidreason" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="voidOrderProgress('{{ $ordercode }}')">ยกเลิก Order</button>
+                    <button class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 
@@ -315,6 +351,9 @@
     <script>
     $( document ).ready(function() {
         setPaymentList();
+        $("#modal_voidorder").on('hidden.bs.modal', function(){
+            $("#voidreason").val('');
+        });
     });
 
     $.ajaxSetup({
@@ -352,19 +391,11 @@
                     });
                 }
                 if (response.param == true) {
-                    swal({
-                        title: "ยืนยันการยกเลิก Order '{{ $ordercode }}'" ,
-                        type: "warning",
-                        confirmButtonText: "ตกลง",
-                        cancelButtonText: 'ยกเลิก',
-                        showCancelButton: true,
-                    },
-                    function(isConfirm) {
-                        if (isConfirm) {
-                            // Void Order
-                            voidOrderProgress('{{ $ordercode }}');
-                        }
+                    // Open Modal
+                    $("#modal_voidorder").on('show.bs.modal', function(){
+                       $("#voidreason").val('');
                     });
+                    $("#modal_voidorder").modal("show");
                 }
             },
             complete: function () {
@@ -374,27 +405,52 @@
 
 
     function voidOrderProgress(ordercode) {
-        $.ajax({
-            url: '{{ route('orders.void') }}',
-            method: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                ordercode: ordercode
+        if ($("#voidreason").val() == "") {
+            swal({
+                title: "กรุณากรอกเหตุผลการยกเลิก Order",
+                type: "error",
+                confirmButtonText: "ตกลง",
             },
-            success: function (response) {
-                if (response.status == 'success') {
-                    swal({
-                        title: "ยกเลิก Order '"+ordercode+"' เรียบร้อย",
-                        type: "success",
-                        confirmButtonText: "ตกลง",
-                    },
-                    function(isConfirm) {
+            function(isConfirm) {
+            });
+        } else {
+            swal({
+                title: "ยืนยันการยกเลิก Order '{{ $ordercode }}'" ,
+                type: "warning",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: 'ยกเลิก',
+                showCancelButton: true,
+            },
+            function(isConfirm) {
+                if (isConfirm) {
+                    // Void Order
+                    $.ajax({
+                        url: '{{ route('orders.void') }}',
+                        method: 'post',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            ordercode: ordercode,
+                            voidreason: $("#voidreason").val()
+                        },
+                        success: function (response) {
+                            if (response.status == 'success') {
+                                swal({
+                                    title: "ยกเลิก Order '"+ordercode+"' เรียบร้อย",
+                                    type: "success",
+                                    confirmButtonText: "ตกลง",
+                                },
+                                function(isConfirm) {
+                                    location.reload();
+                                });
+                            }
+                        },
+                        complete: function () {
+                            
+                        }
                     });
                 }
-            },
-            complete: function () {
-            }
-        });
+            });
+        }
     }
 
 
@@ -518,15 +574,28 @@
                         html += '</div>';
                         if(response.data[i].payment_status == 1) {
                             html += '<div class="expanel-footer text-end">';
-                            html += '<a class="btn btn-sm btn-dark my-2 ms-2" data-bs-effect="effect-scale" href="javascript:void(0)" onclick="openModalPaymentEdit('+`'`+response.data[i].code+`'`+')">แก้ไข</a>';
-                            html += '<button class="btn btn-sm btn-danger my-2 ms-2" onclick="canclePayment('+`'`+response.data[i].code+`'`+')">ยกเลิกบันทึกชำระเงิน</button>';
+                            if ('{{ session()->get('session_role') }}' == 'A') {
+                                html += '<button class="btn btn-sm btn-primary my-2 ms-2" onclick="disapprovePayment('+`'`+response.data[i].code+`'`+')">ไม่อนุมัติ</button>';
+                                html += '<button class="btn btn-sm btn-primary my-2 ms-2" onclick="approvePayment('+`'`+response.data[i].code+`'`+')">อนุมัติ</button>';
+                                html += '<button class="btn btn-sm btn-danger my-2 ms-2" onclick="canclePayment('+`'`+response.data[i].code+`'`+')">ยกเลิก Payment</button>';
+                            } else {
+                                html += '<a class="btn btn-sm btn-dark my-2 ms-2" data-bs-effect="effect-scale" href="javascript:void(0)" onclick="openModalPaymentEdit('+`'`+response.data[i].code+`'`+')">แก้ไข</a>';
+                                html += '<button class="btn btn-sm btn-danger my-2 ms-2" onclick="canclePayment('+`'`+response.data[i].code+`'`+')">ยกเลิก Payment</button>';
+                            }
                             html += '</div>';
                         }
                         if(response.data[i].payment_status == 2) {
                             html += '<div class="expanel-footer text-end">';
-                            html += '<button class="btn btn-sm btn-success my-2 ms-2" onclick="resendPayment('+`'`+response.data[i].code+`'`+')"><i class="fa fa-rotate-right"></i> ส่งตรวจสอบอีกครั้ง</button>';
-                            html += '<a class="btn btn-sm btn-dark my-2 ms-2" data-bs-effect="effect-scale" href="javascript:void(0)" onclick="openModalPaymentEdit('+`'`+response.data[i].code+`'`+')">แก้ไข</a>';
-                            html += '<button class="btn btn-sm btn-danger my-2 ms-2" onclick="canclePayment('+`'`+response.data[i].code+`'`+')">ยกเลิกบันทึกชำระเงิน</button>';
+                            if ('{{ session()->get('session_role') }}' != 'A') {
+                                html += '<button class="btn btn-sm btn-success my-2 ms-2" onclick="resendPayment('+`'`+response.data[i].code+`'`+')"><i class="fa fa-rotate-right"></i> ส่งตรวจสอบอีกครั้ง</button>';
+                                html += '<a class="btn btn-sm btn-dark my-2 ms-2" data-bs-effect="effect-scale" href="javascript:void(0)" onclick="openModalPaymentEdit('+`'`+response.data[i].code+`'`+')">แก้ไข</a>';
+                            }                           
+                            html += '<button class="btn btn-sm btn-danger my-2 ms-2" onclick="canclePayment('+`'`+response.data[i].code+`'`+')">ยกเลิก Payment</button>';
+                            html += '</div>';
+                        }
+                        if(response.data[i].payment_status == 3 && '{{ session()->get('session_role') }}' == 'A') {
+                            html += '<div class="expanel-footer text-end">';
+                            html += '<button class="btn btn-sm btn-danger my-2 ms-2" onclick="canclePayment('+`'`+response.data[i].code+`'`+')">ยกเลิก Payment</button>';
                             html += '</div>';
                         }
                         html += '</div>';
@@ -540,6 +609,85 @@
         });
     }
 
+    function disapprovePayment(paymentcode) {
+        var operator = "{{ session()->get('session_empcode') }}";
+        swal({
+            title: "ยืนยันไม่อนุมัติการชำระเงิน",
+            text: "หลังจากกดยืนยันแล้ว ระบบจะส่งข้อมูลการชำระเงินนี้กลับไปแก้ไข",
+            type: "warning",
+            confirmButtonText: "ยืนยันไม่อนุมัติการชำระเงิน",
+            cancelButtonText: 'ยกเลิก',
+            showCancelButton: true,
+            },
+            function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: '{{ route('payment.disapprove') }}',
+                    method: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        payment_code: paymentcode,
+                        operator: operator,
+                    },
+                    success: function (response) {
+                        if(response.status == "success") {
+                            swal({
+                                title: "ไม่อนุมัติการชำระเงินเรียบร้อย ("+paymentcode+")",
+                                type: "success",
+                                confirmButtonText: "ตกลง",
+                            },
+                            function(isConfirm) {
+                                setPaymentList();
+                            });
+                        }
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+        });
+    }
+
+    function approvePayment(paymentcode) {
+        var approver = "{{ session()->get('session_empcode') }}";
+        swal({
+            title: "ยืนยันอนุมัติการชำระเงิน",
+            text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง หลังจากกดยืนยันแล้ว ระบบจะทำการบันทึกข้อมูล",
+            type: "warning",
+            confirmButtonText: "ยืนยันอนุมัติการชำระเงิน",
+            cancelButtonText: 'ยกเลิก',
+            showCancelButton: true,
+            },
+            function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: '{{ route('payment.approve') }}',
+                    method: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        payment_code: paymentcode,
+                        approver: approver,
+                    },
+                    success: function (response) {
+                        if(response.status == "success") {
+                            swal({
+                                title: "อนุมัติการชำระเงินเรียบร้อย ("+paymentcode+")",
+                                type: "success",
+                                confirmButtonText: "ตกลง",
+                            },
+                            function(isConfirm) {
+                                setPaymentList();
+                            });
+                        }
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+        });
+    }
+
+    
 
     function savePayment() {
         var order_code = "{{ $res->code }}";

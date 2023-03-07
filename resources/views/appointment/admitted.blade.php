@@ -60,7 +60,7 @@
 
 
 @section('detail_button')
-<button class="btn btn-info my-2 ms-2" onclick="updateAPT(7, 'ยืนยันนัดรักษาครั้งต่อไป')" id="btn_apt_next">นัดรักษาครั้งต่อไป</button>
+<button class="btn btn-info my-2 ms-2" onclick="updateAPT(8, 'ยืนยันนัดรักษาครั้งต่อไป')" id="btn_apt_next">นัดรักษาครั้งต่อไป</button>
 <button class="btn btn-success my-2 ms-2" onclick="updateAPT(3, 'ยืนยันเข้ารับการรักษา')" id="btn_apt_send">เข้ารับการรักษาและส่งให้ OR</button>
 <button class="btn btn-warning my-2 ms-2" onclick="updateAPT(1, 'ยืนยันการส่งบันทึกใบนัดกลับไปให้ Sale')" id="btn_apt_recall">ส่งกลับ</button>
 @endsection
@@ -109,6 +109,13 @@
                 $('#disptext_emp').show();
                 $('#btn_apt_next').hide();
                 $('#btn_apt_send').hide();
+            }
+            if ($('#tmp_status').val() == 8) {
+                $('#space_emp').hide();
+                $('#disptext_emp').show();
+                $('#btn_apt_next').hide();
+                $('#btn_apt_send').hide();
+                $('#space_nextapt').hide();
             }
         }, 150)
     });

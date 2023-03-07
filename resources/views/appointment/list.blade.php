@@ -399,7 +399,7 @@
         $("#dtlapt_modal").modal('show');
     }
 
-    $("#dtlapt_modal").on('show.bs.modal', function(){
+    $("#dtlapt_modal").on('show.bs.modal', function() {
         $.ajax({
             url: '{{ route('appointment.getaptdetail') }}',
             method: 'post',
@@ -475,6 +475,7 @@
                     if (res.status == 5) { var badgestatus = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก (O)</span>'; }
                     if (res.status == 6) { var badgestatus = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอหมอดำเนินการ</span>'; }
                     if (res.status == 7) { var badgestatus = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">เข้ารับการรักษาแล้ว</span>'; }
+                    if (res.status == 8) { var badgestatus = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">นัดรักษาครั้งต่อไป</span>'; }
                     if (res.status == 90) { var badgestatus = '<span class="badge bg-success-transparent rounded-pill text-primary p-2 px-3">นัดรักษาครั้งต่อไป</span>'; }
                     $('#disp_status').html(badgestatus);
                     $('#tmp_status').val(res.status);
@@ -571,6 +572,15 @@
                 $('#disptext_opd').show();
                 $('#disptext_nextapt').show();
                 break;
+            case 8:
+                $('#space_note').hide();
+                $('#space_emp').hide();
+                $('#space_opd').hide();
+                $('#space_nextapt').hide();
+                $('#disptext_emp').show();
+                $('#disptext_opd').show();
+                $('#disptext_nextapt').show();
+                break;
         }
     }
 
@@ -659,6 +669,17 @@
                             chknextapt: (checkBox.checked == true ? 1 : null),
                             or_1: $('#empor1 :selected').val(),
                             or_2: ($('#empor2 :selected').val() == 0 ? '' : $('#empor2 :selected').val()),
+                            opd: $('#opd').val(),
+                            param : param
+                        }
+                        break;
+                    case 8:
+                        var checkBox = document.getElementById("chknextapt");  
+                        arrdata = {
+                            _token: "{{ csrf_token() }}",
+                            aptcode : mAptCode,
+                            note : $('#note').val(),
+                            chknextapt: (checkBox.checked == true ? 1 : null),
                             opd: $('#opd').val(),
                             param : param
                         }

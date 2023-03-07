@@ -168,10 +168,15 @@
                                         class="angle fe fe-chevron-right"></i></a>
                                 <ul class="slide-menu">
 
-                                    @if ( session()->get('session_role') == 'S' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
+                                    @if ( session()->get('session_role') == 'S' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' || session()->get('session_role') == 'A' )
                                         <li><a href="/orders" class="slide-item"> จัดการคำสั่งซื้อ</a></li>
+                                    @endif
+
+
+                                    @if ( session()->get('session_role') == 'S' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
                                         <li><a href="/orders/new" class="slide-item"> คำสั่งซื้อใหม่</a></li>
                                     @endif
+                                    
 
                                     @if ( session()->get('session_role') == 'A' || session()->get('session_role') == 'AD' || session()->get('session_role') == 'SU' )
                                         <li><a href="/checkpayment" class="slide-item"> ตรวจสอบการชำระเงิน</a></li>

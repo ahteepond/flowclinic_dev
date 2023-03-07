@@ -295,6 +295,7 @@ class AppointmentController extends Controller
                     if ($status == 5) { $res_o = '<span class="badge bg-primary-transparent rounded-pill text-primary p-2 px-3">บันทึก (O)</span>'; }
                     if ($status == 6) { $res_o = '<span class="badge bg-warning-transparent rounded-pill text-warning p-2 px-3">รอหมอดำเนินการ</span>'; }
                     if ($status == 7) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">เข้ารับการรักษาแล้ว</span>'; }
+                    if ($status == 8) { $res_o = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">นัดรักษาครั้งต่อไป</span>'; }
                     if ($status == 90) { $res_o = '<span class="badge bg-success-transparent rounded-pill text-primary p-2 px-3">นัดรักษาครั้งต่อไป</span>'; }
                     return $res_o;
                 })
@@ -462,6 +463,27 @@ class AppointmentController extends Controller
                     'nextapt_flag' => $reqchknextapt,
                     'or_1' => $reqor1,
                     'or_2' => $reqor2,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+                //Add OPD
+                $ordercode = DB::table('appointment')
+                ->where('code', $request->aptcode)
+                ->first();
+                $arr_opd = array(
+                    'appointment_code' => $request->aptcode,
+                    'order_code' => $ordercode->order_code,
+                    'emp_session' => session()->get('session_empcode'),
+                    'note' => $reqopd,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                );
+                DB::table('opd')->insertOrIgnore($arr_opd);
+                break;
+            case 8:
+                //Update Appointment
+                $arr_apt = array(
+                    'status' => $reqstatus,
+                    'nextapt_flag' => $reqchknextapt,
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 );
                 //Add OPD

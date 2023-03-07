@@ -228,6 +228,7 @@ class OrdersController extends Controller
     public function void(Request $request) {
         $arr_data = array(
             "status_order" => 0,
+            "void_reason" => $request->voidreason,
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         );
         $update = DB::table('orders')

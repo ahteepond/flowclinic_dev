@@ -117,14 +117,15 @@
                                     @case(0)
                                         @break
                                     @case(1)
-                                        <button class="btn btn-dark my-2 ms-2" onclick="canclePayment('{{ $res->code }}')">ยกเลิก</button>
+                                        <button class="btn btn-danger my-2 ms-2" onclick="canclePayment('{{ $res->code }}')"><i class="fa fa-times me-2"></i> ยกเลิก Payment</button>
                                         <button class="btn btn-primary my-2 ms-2" onclick="disapprovePayment('{{ $res->code }}')">ไม่อนุมัติ</button>
                                         <button class="btn btn-primary my-2 ms-2"  onclick="approvePayment('{{ $res->code }}')">อนุมัติ</button>
                                         @break
                                     @case(2)
-                                        <button class="btn btn-danger my-2 ms-2" onclick="canclePayment('{{ $res->code }}')">ยกเลิก</button>
+                                        <button class="btn btn-danger my-2 ms-2" onclick="canclePayment('{{ $res->code }}')"><i class="fa fa-times me-2"></i> ยกเลิก Payment</button>
                                         @break
                                     @case(3)
+                                        <button class="btn btn-danger my-2 ms-2" onclick="canclePayment('{{ $res->code }}')"><i class="fa fa-times me-2"></i> ยกเลิก Payment</button>
                                         @break
                                 @endswitch
                             </div>
