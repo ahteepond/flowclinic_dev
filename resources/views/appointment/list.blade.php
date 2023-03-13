@@ -63,19 +63,22 @@
                                                     <input class="form-control fc-datepicker" name="appointment_date" id="appointment_date" placeholder="กรุณาระบุวันที่นัดหมาย..." type="text">
                                                 </div>
                                             </div>
+
+
                                             <div class="form-group col-auto">
-                                                
                                                 <label class="form-label">สถานะใบนัดหมาย</label>
                                                 <select name="appointment_status" id="appointment_status" class="form-control form-select">
                                                     @foreach ( $aptstatus as $status )
-                                                        <option value="{{ $status->status }}">{{ $status->status_text }}</option>
+                                                        <option {{ $status->status == $status_param ? 'selected' : '' }} value="{{ $status->status }}">{{ $status->status_text }}</option>
                                                     @endforeach
-                                                    <option value="" selected>ทั้งหมด</option>
+                                                    <option value="">ทั้งหมด</option>
                                                 </select>
                                             </div>
+                                            
+
                                             <div class="form-group col-auto">
                                                 <label class="form-label">หมอ</label>
-                                                <select class="form-control select2-show-search form-select" id="empdoctor"></select>
+                                                <select class="form-control select2-show-search form-select" id="empdoctorsearch"></select>
                                             </div>
                                             <div class="col-auto">
                                                 <button type="button"onclick="clearFillter()" class="btn btn-outline-dark mb-4 ms-2"><i class="fa fa-refresh me-2"></i>ล้าง</button>
@@ -112,7 +115,7 @@
                         <p class="mb-3 fs-18">เลขที่ใบนัด <b><span class="text-primary fw-semibold clear_dtl_t" id="dtl_appointment_code"></span></b></p>
                     </div>
                     <div class="col-md text-end" id="disp_status"></div>
-                    <input type="text" style="display:none;" id="tmp_status"> {{--  //////// --}}
+                    <input type="text" style="" id="tmp_status"> {{--  //////// --}}
                     <div class="col-12">
                         <div class="expanel expanel-default">
                             <div class="expanel-body pt-5">
@@ -216,39 +219,18 @@
                         <p class="fs-14 mb-0"><span class="fw-semibold">ประเภทบริการ : </span><span class="clear_dtl_t" id="dtl_service_type"></span></p>
                     </div>
                 </div>
-                <div class="row mt-6" id="disptext_emp">
-                    <div class="col-md-12">
-                        <p class="h4 fw-semibold">ผู้ดำเนินการรักษา</p>
-                        <hr class="my-1">
-                    </div>
-                    <div class="col-md">
-                        <p class="fs-14 mb-0"><span class="fw-semibold">หมอ : </span><span class="" id="disp_doc"></span></p>
-                    </div>
-                    <div class="col-md">
-                        <p class="fs-14 mb-0"><span class="fw-semibold">OR คนที่ 1 : </span><span class="" id="disp_or1"></span></p>
-                        <p class="fs-14 mb-0"><span class="fw-semibold">OR คนที่ 2 : </span><span class="" id="disp_or2"></span></p>
-                    </div>
-                </div>
-                <div class="row mt-6" id="disptext_nextapt">
-                    <div class="col-md-12">
-                        <p class="h3 fw-semibold text-primary"><i class="fa fa fa-bell text-warning"></i> นัดรักษาครั้งต่อไป</p>
-                        <hr class="my-1">
-                    </div>
-                </div>
-                <div class="row mt-6" id="disptext_opd">
-                    <div class="col-md-12">
-                        <p class="h4 fw-semibold">บันทึกประวัติ OPD</p>
-                        <hr class="my-1">
-                    </div>
-                    <div class="col-md-auto" id="btn_viewopd">
-                        
-                    </div>
-                </div>
+                
+                
+                
+                {{-- checklist.blade.php --}}
+                {{-- admitted.blade.php --}}
+                {{-- waittingadmit.blade.php --}}
+                @yield('detail_appointment')
 
-                @yield('detail_waittingadmit')
-                @yield('detail_admitted')
 
-                <div class="row mt-6" id="space_note">
+
+                {{-- // space_note --}}
+                <div class="row mt-6" id="space_note" style="display:none;">
                     <div class="col-12"><p class="h4 fw-semibold">บันทึก</p></div>
                     <hr class="my-1">
                     <div class="col-md-12">
@@ -261,7 +243,8 @@
                     </div>
                 </div>
 
-                <div class="row mt-6" id="disp_note_cancel">
+                {{-- // disp_note_cancel --}}
+                <div class="row mt-6" id="disp_note_cancel" style="display:none;">
                     <div class="col-12"><p class="h4 fw-semibold text-danger">เหตุผลที่ยกเลิก</p></div>
                     <hr class="my-1">
                     <div class="col-md-12">
@@ -269,6 +252,7 @@
                     </div>
                 </div>
 
+                
                 <div class="row mt-6">
                     <div class="col-12"><p class="h4 fw-semibold">ประวัติการบันทึก</p></div>
                     <hr class="my-2">
@@ -281,7 +265,6 @@
                 <div class="row mt-6">
                     <div class="col-md-12 text-center">
                         @yield('detail_button')
-                        <button class="btn btn-danger my-2 ms-2" onclick="cancelAPT()" id="btn_apt_cancle">ยกเลิกนัด</button>
                         <button class="btn btn-outline-primary my-2 ms-2" data-bs-dismiss="modal">ปิด</button>
                     </div>
                 </div>
@@ -344,7 +327,7 @@
                 d.orderno = $('#order_no').val(),
                 d.date = $('#appointment_date').val(),
                 d.status = $('#appointment_status :selected').val(),
-                d.doctor = $('#empdoctor :selected').val()
+                d.doctor = $('#empdoctorsearch :selected').val()
             },
         },
         columns: [
@@ -391,8 +374,29 @@
         $('#tmpcancle_aptno').val('');
         $('#note_cancel').val('');
         clearDetail();
+        setHideBtnAndSpace();
         searchTable();
     });
+
+    function setHideBtnAndSpace() {
+        //Button Display
+        $('#btn_apt_savedraf').hide();
+        $('#btn_apt_send').hide();
+        $('#btn_apt_next').hide();
+        $('#btn_apt_cancle').hide();
+        $('#btn_apt_recall').hide();
+        $( "#chknextapt" ).prop( "checked", false );
+        //Space Display
+        $('#disptext_emp').hide();
+        $('#disptext_nextapt').hide();
+        $('#disptext_opd').hide();
+        $('#space_emp').hide();
+        $('#space_emp_doctor').hide();
+        $('#space_emp_or').hide();
+        $('#space_note').hide();
+        $('#space_nextapt').hide();
+        $('#space_opd').hide();
+    }
 
     function detail(aptcode) {
         mAptCode = aptcode;
@@ -400,6 +404,9 @@
     }
 
     $("#dtlapt_modal").on('show.bs.modal', function() {
+        // เรียกข้อมูล Dropdown หมอและ OR
+        getEmpList();
+
         $.ajax({
             url: '{{ route('appointment.getaptdetail') }}',
             method: 'post',
@@ -408,6 +415,7 @@
                 aptcode : mAptCode
             },
             success: function (response) {
+                console.log('master');
                 if(response.status == "success") {
                     var res = response.param;
                     $('#dtl_appointment_code').html(res.code);
@@ -433,6 +441,7 @@
                     var btn_viewopd = '<button type="button" class="btn btn-secondary mb-3 btn-block" onclick="gotoOPD(`'+res.cust_code+'`)">รายละเอียด OPD</button>';
                     $('#btn_viewopd').html(btn_viewopd);
                     
+                    // Set ชื่อหมอและ OR
                     setTimeout(() => { 
                         $('#empdoctor').val(res.doctor);
                         $('#empdoctor').trigger('change');
@@ -461,11 +470,9 @@
                     }
                     $('#historynote').html(hnote);
 
-                    if (res.status == 6 || res.status == 7) {
-                        $('#disp_doc').html(res.doctor+' - '+response.empdoc.emp_fname_th+' '+response.empdoc.emp_lname_th);
-                        $('#disp_or1').html(res.or_1 ? (res.or_1+' - '+response.empor1.emp_fname_th+' '+response.empor1.emp_lname_th) : ' - ');
-                        $('#disp_or2').html(res.or_2 ? (res.or_2+' - '+response.empor2.emp_fname_th+' '+response.empor2.emp_lname_th) : ' - ');
-                    }
+                    $('#disp_doc').html(res.doctor ? (res.doctor+' - '+response.empdoc.emp_fname_th+' '+response.empdoc.emp_lname_th) : ' - ');
+                    $('#disp_or1').html(res.or_1 ? (res.or_1+' - '+response.empor1.emp_fname_th+' '+response.empor1.emp_lname_th) : ' - ');
+                    $('#disp_or2').html(res.or_2 ? (res.or_2+' - '+response.empor2.emp_fname_th+' '+response.empor2.emp_lname_th) : ' - ');
                     
                     if (res.status == 0) { var badgestatus = '<span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">ยกเลิก</span>'; }
                     if (res.status == 1) { var badgestatus = '<span class="badge bg-info-transparent rounded-pill text-info p-2 px-3">รอการแก้ไข (S)</span>'; }
@@ -479,7 +486,11 @@
                     if (res.status == 90) { var badgestatus = '<span class="badge bg-success-transparent rounded-pill text-primary p-2 px-3">นัดรักษาครั้งต่อไป</span>'; }
                     $('#disp_status').html(badgestatus);
                     $('#tmp_status').val(res.status);
-                    dispBtnAPTDetail(res.status);
+
+                    // Set default button
+                    // dispBtnAPTDetail(res.status);
+
+                    
                     if(res.nextapt_flag == 1) {
                         $('#disptext_nextapt').show();
                     } else {
@@ -488,6 +499,7 @@
                 }
             },
             complete: function () {
+                setShowBtnAndSpace();
             }
         });
     });
@@ -499,6 +511,8 @@
         return age;
     }
 
+
+    // *************************************
     function dispBtnAPTDetail(status) {
         // 1 | Set button display first
         $('#btn_apt_savedraf').hide();
@@ -775,6 +789,53 @@
         window.open(url, "_blank");
     }
 
+    function getEmpList() {
+        $.ajax({
+            url: '{{ route('appointment.waittingadmit.getemplist') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                prefix: 'D'
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    var html = '<option value="" selected disabled>กรุณาเลือกหมอ...</option>';
+                    for (var i = 0; i < response.data.length; i++) {
+                        html += '<option value="'+response.data[i].emp_code+'">'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
+                    }
+                    $('#empdoctor').html(html);
+                }
+            },
+            complete: function () {
+            }
+        });
+        $.ajax({
+            url: '{{ route('appointment.waittingadmit.getemplist') }}',
+            method: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                prefix: 'O'
+            },
+            success: function (response) {
+                if(response.status == "success") {
+                    var html = '<option value="" selected disabled>กรุณาเลือก OR คนที่ 1...</option>';
+                    for (var i = 0; i < response.data.length; i++) {
+                        html += '<option value="'+response.data[i].emp_code+'" >'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
+                    }
+                    $('#empor1').html(html);
+                    var html2 = '<option value="" selected disabled>กรุณาเลือก OR คนที่ 2...</option>';
+                    html2 += '<option value="0">ไม่ระบุ</option>';
+                    for (var i = 0; i < response.data.length; i++) {
+                        html2 += '<option value="'+response.data[i].emp_code+'" >'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
+                    }
+                    $('#empor2').html(html2);
+                }
+            },
+            complete: function () {
+            }
+        });
+    }
+
     function getEmpDoctorList() {
         $.ajax({
             url: '{{ route('appointment.waittingadmit.getemplist') }}',
@@ -789,7 +850,7 @@
                     for (var i = 0; i < response.data.length; i++) {
                         html += '<option value="'+response.data[i].emp_code+'" >'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
                     }
-                    $('#empdoctor').html(html);
+                    $('#empdoctorsearch').html(html);
                 }
             },
             complete: function () {

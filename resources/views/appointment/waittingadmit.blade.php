@@ -1,6 +1,8 @@
 @extends('appointment.list')
 @section('title','รอรับการรักษา') {{-- Title --}}
 
+@php $status_param = 3; @endphp
+
 @section('all_list')
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
@@ -30,20 +32,52 @@
 @endsection
 
 
-@section('detail_waittingadmit')
-<style>
-    .select2-container { margin-bottom: 10px; }
-</style>
-<div class="row mt-6" id="space_emp">
-    <div class="col-12"><p class="h4 fw-semibold">เลือกหมอและOR</p></div>
+@section('detail_appointment')
+{{-- // disptext_emp --}}
+<div class="row mt-6" id="disptext_emp" style="display:none;">
+    <div class="col-md-12">
+        <p class="h4 fw-semibold">ผู้ดำเนินการรักษา</p>
+        <hr class="my-1">
+    </div>
+    <div class="col-md">
+        <p class="fs-14 mb-0"><span class="fw-semibold">หมอ : </span><span class="" id="disp_doc"></span></p>
+    </div>
+    <div class="col-md">
+        <p class="fs-14 mb-0"><span class="fw-semibold">OR คนที่ 1 : </span><span class="" id="disp_or1"></span></p>
+        <p class="fs-14 mb-0"><span class="fw-semibold">OR คนที่ 2 : </span><span class="" id="disp_or2"></span></p>
+    </div>
+</div>
+
+{{-- // disptext_nextapt --}}
+<div class="row mt-6" id="disptext_nextapt" style="display:none;">
+    <div class="col-md-12">
+        <p class="h3 fw-semibold text-primary"><i class="fa fa fa-bell text-warning"></i> นัดรักษาครั้งต่อไป</p>
+        <hr class="my-1">
+    </div>
+</div>
+
+{{-- // disptext_opd --}}
+<div class="row mt-6" id="disptext_opd" style="display:none;">
+    <div class="col-md-12">
+        <p class="h4 fw-semibold">บันทึกประวัติ OPD</p>
+        <hr class="my-1">
+    </div>
+    <div class="col-md-auto" id="btn_viewopd">
+        
+    </div>
+</div>
+
+{{-- // space_emp --}}
+<div class="row mt-6" id="space_emp" style="display:none;">
+    <div class="col-12"><p class="h4 fw-semibold">เลือกหมอและ OR</p></div>
     <hr class="my-1">
-    <div class="col-md-6">
+    <div class="col-md-6" id="space_emp_doctor" style="display:none;">
         <div class="form-group">
             <label class="form-label">หมอ :</label>
             <select class="form-control select2-show-search form-select" id="empdoctor" disabled></select>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" id="space_emp_or" style="display:none;">
         <div class="form-group">
             <label class="form-label">OR :</label>
             <select class="form-control select2-show-search form-select mb-2" id="empor1"></select>
@@ -51,12 +85,11 @@
         </div>
     </div>
 </div>
-@endsection
 
 
 
-@section('detail_admitted')
-<div class="row mt-6" id="space_nextapt" style="display: none;">
+{{-- // space_nextapt --}}
+<div class="row mt-6" id="space_nextapt" style="display:none;">
     <div class="col-12">
         <div class="form-group m-0"> 
             <div class="custom-controls-stacked"> 
@@ -69,54 +102,108 @@
     </div>
     <hr class="my-1">
 </div>
+
+
+
+{{-- // space_opd --}}
+<div class="row mt-6" id="space_opd" style="display:none;">
+    <div class="col-12"><p class="h4 fw-semibold">OPD</p></div>
+    <hr class="my-1">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="form-floating floating-label1">
+                <textarea class="form-control clear_dtl_i" placeholder="Comments" id="opd" style="height: 140px"></textarea>
+                <label for="note"><i class="fa fa-sticky-note-o me-2 text-azure"></i>บันทึก OPD</label>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+
+
+@section('detail_admitted')
+<
 @endsection
 
 
 @section('detail_button')
-<button class="btn btn-success my-2 ms-2" onclick="preUpdateAPT(7, 'ยืนยันเข้ารับการรักษาแล้ว')" id="btn_apt_next">เข้ารับการรักษาแล้ว</button>
-<button class="btn btn-warning my-2 ms-2" onclick="updateAPT(6, 'ยืนยันการส่งบันทึกใบนัดกลับไปให้ Doctor')" id="btn_apt_recall">ส่งกลับ</button>
+<button class="btn btn-success my-2 ms-2" onclick="preUpdateAPT(7, 'ยืนยันเข้ารับการรักษาแล้ว')" id="btn_apt_next"  style="display: none;">เข้ารับการรักษาแล้ว</button>
+<button class="btn btn-warning my-2 ms-2" onclick="updateAPT(6, 'ยืนยันการส่งบันทึกใบนัดกลับไปให้ Doctor')" id="btn_apt_recall"  style="display: none;">ส่งกลับ</button>
 @endsection
 
 
 @section('js_detail')
 <script>
-    $("#dtlapt_modal").on('show.bs.modal', function(){
-        setTimeout(() => { 
-            
-            if ($('#tmp_status').val() == 1) {
-                $('#btn_apt_send').hide();
-                $('#btn_apt_cancle').hide();
-                $('#space_emp').hide();
-                $('#space_note').hide();
-            }
-            if ($('#tmp_status').val() == 2) {
-                $('#btn_apt_send').hide();
-                $('#btn_apt_savedraf').hide();
-                $('#btn_apt_next').hide();
-                $('#btn_apt_cancle').hide();
-                $('#space_note').hide();
-                $('#space_nextapt').hide();
-                $('#space_opd').hide();
-                $('#space_note').hide();
-                $('#space_emp').hide();
-            }
-            if ($('#tmp_status').val() == 6) {
-                $('#btn_apt_send').hide();
-                $('#btn_apt_recall').hide();
-                $('#space_emp').hide();
-                $('#space_note').hide();
+    
+    function setShowBtnAndSpace() {
+        switch ($('#tmp_status').val()) {
+            case '0':
+                //Button Display
+
+                //Space Display
                 $('#disptext_emp').show();
-                $('#btn_apt_next').hide();
-            }
-            if ($('#tmp_status').val() == 7) {
-                $('#space_emp').hide();
+                $('#disp_note_cancel').show();
+            break;
+            case '1':
+                //Button Display
+
+                //Space Display
                 $('#disptext_emp').show();
-                $('#btn_apt_next').hide();
-                $('#btn_apt_send').hide();
-            }
-        }, 150)
-        getEmpList();
-    });
+            break;
+            case '2':
+                //Button Display
+
+                //Space Display
+                $('#disptext_emp').show();
+            break;
+            case '3':
+                //Button Display
+                $('#btn_apt_next').show();
+                $('#btn_apt_recall').show();
+                //Space Display
+                $('#space_emp').show();
+                $('#space_emp_doctor').show();
+                $('#space_emp_or').show();
+                $('#space_note').show();
+                $('#disptext_opd').show();
+            break;
+            case '4':
+                //Button Display
+
+                //Space Display
+                $('#disptext_emp').show();
+                $('#disptext_opd').show();
+            break;
+            case '5':
+                //Button Display
+
+                //Space Display
+                $('#disptext_emp').show();
+                $('#disptext_opd').show();
+            break;
+            case '6':
+                //Button Display
+                
+                //Space Display
+                $('#disptext_emp').show();
+            break;
+            case '7':
+                //Button Display
+                
+                //Space Display
+                $('#disptext_emp').show();
+                $('#disptext_opd').show();
+            break;
+            case '8':
+                //Button Display
+                
+                //Space Display
+                $('#disptext_emp').show();
+                $('#disptext_opd').show();
+            break;
+        }
+    }
 
     function preUpdateAPT(status, alert) {
         if (checkEmpSelected() != false) {
@@ -161,56 +248,7 @@
             }
         }
     }
-
-
-    function getEmpList() {
-        $.ajax({
-            url: '{{ route('appointment.waittingadmit.getemplist') }}',
-            method: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                prefix: 'D'
-            },
-            success: function (response) {
-                if(response.status == "success") {
-                    var html = '<option value="" selected disabled>กรุณาเลือกหมอ...</option>';
-                    for (var i = 0; i < response.data.length; i++) {
-                        html += '<option value="'+response.data[i].emp_code+'" >'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
-                    }
-                    $('#empdoctor').html(html);
-                }
-            },
-            complete: function () {
-            }
-        });
-        $.ajax({
-            url: '{{ route('appointment.waittingadmit.getemplist') }}',
-            method: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                prefix: 'O'
-            },
-            success: function (response) {
-                if(response.status == "success") {
-                    var html = '<option value="" selected disabled>กรุณาเลือก OR คนที่ 1...</option>';
-                    for (var i = 0; i < response.data.length; i++) {
-                        html += '<option value="'+response.data[i].emp_code+'" >'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
-                    }
-                    $('#empor1').html(html);
-                    var html2 = '<option value="" selected disabled>กรุณาเลือก OR คนที่ 2...</option>';
-                    html2 += '<option value="0">ไม่ระบุ</option>';
-                    for (var i = 0; i < response.data.length; i++) {
-                        html2 += '<option value="'+response.data[i].emp_code+'" >'+response.data[i].emp_code+' - '+response.data[i].emp_fname_th+' '+response.data[i].emp_lname_th+'</option>';
-                    }
-                    $('#empor2').html(html2);
-                }
-            },
-            complete: function () {
-            }
-        });
-    }
     
-
     
 </script>
 @endsection

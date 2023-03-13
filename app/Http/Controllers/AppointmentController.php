@@ -205,7 +205,8 @@ class AppointmentController extends Controller
         ->first();
 
         $aptstatus = DB::table('appointment_status')
-        // ->where('role','like','%|'.$empdtl->emp_prefix.'|%')
+        ->where('active', 1)
+        ->orderBy('seq', 'asc')
         ->get();
 
         return view('appointment.checklist', compact('aptstatus'));
@@ -218,7 +219,8 @@ class AppointmentController extends Controller
         ->first();
 
         $aptstatus = DB::table('appointment_status')
-        // ->where('role','like','%|'.$empdtl->emp_prefix.'|%')
+        ->where('active', 1)
+        ->orderBy('seq', 'asc')
         ->get();
 
         return view('appointment.waittingadmit', compact('aptstatus'));
@@ -231,7 +233,8 @@ class AppointmentController extends Controller
         ->first();
 
         $aptstatus = DB::table('appointment_status')
-        // ->where('role','like','%|'.$empdtl->emp_prefix.'|%')
+        ->where('active', 1)
+        ->orderBy('seq', 'asc')
         ->get();
 
         return view('appointment.admitted', compact('aptstatus'));
