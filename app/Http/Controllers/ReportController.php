@@ -347,6 +347,12 @@ class ReportController extends Controller
                 ->addColumn('cust_name', function($row){
                     return $row->cust_fname.' '.$row->cust_lname;
                 })
+                ->addColumn('price_paid', function($row){
+                    return number_format($row->price_paid, 2);
+                })
+                ->addColumn('price_balance', function($row){
+                    return number_format($row->price_balance, 2);
+                })
                 ->addColumn('price_nettotal', function($row){
                     return number_format($row->price_nettotal, 2);
                 })

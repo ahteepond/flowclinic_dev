@@ -87,19 +87,6 @@
                                         <button class="login100-form-btn btn-primary" type="submit" id="btn_loginform"><i class="mdi mdi-key me-2"></i> เข้าสู่ระบบ</button>
                                     </div>
                                     <small id="text-alert" class="text-danger mb-0" style="display: none;"></small>
-                                    <label class="login-social-icon"><span>For unit test</span></label>
-                                    <h5 class="mb-0"><b>Username</b></h5>
-                                    <ul class="mb-3 ms-5 list-style-1">
-                                        <li>Sale = S00003</li>
-                                        <li>Accountant = A00005</li>
-                                        <li>OR = O00006</li>
-                                        <li>Doctor = D00010</li>
-                                        <li>Superuser = SU00001</li>
-                                        </ul>
-                                    <h5 class="mb-0"><b>Password</b></h5>
-                                    <ul class="ms-5 list-style-1">
-                                        <li>Flowclinic1234</li>
-                                    </ul>
                                 </div>
                             </div>
 
