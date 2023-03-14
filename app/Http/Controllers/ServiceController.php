@@ -181,7 +181,7 @@ class ServiceController extends Controller
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         );
         $update = DB::table('service')
-            ->insert($arr_data);
+            ->insertOrIgnore($arr_data);
         return response()->json([ 'status' => 'success', 'result' => true, 'param' => $update ]);
     }
 
