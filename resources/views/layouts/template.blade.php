@@ -60,7 +60,7 @@
                             <img src="{{asset('assets/images/brand/logo-flowclinic-color.png')}}" class="header-brand-img light-logo1"
                                 alt="logo">
                         </a>
-                        <span class="me-5">( DEV )</span>
+                        <span class="me-5">( UAT )</span>
                         <!-- LOGO -->
                         <div class="d-flex order-lg-2 ms-auto header-right-icons">
                             <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button"

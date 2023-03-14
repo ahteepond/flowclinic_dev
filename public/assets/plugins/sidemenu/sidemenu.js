@@ -31,11 +31,11 @@
             // }
 
             const arrUrl = pageUrl.split("/");
-            console.log(position);
-            console.log(arrUrl);
+            // console.log(position);
+            // console.log(arrUrl);
             if (position.length == 2) {
                 if(position[1] == arrUrl[1]) {
-                    console.log('a1---------------');
+                    // console.log('a1---------------');
                     $(this).addClass("active");
                     $(this).parent().addClass("is-expanded");
                     $(this).parent().parent().prev().addClass("active");
@@ -49,7 +49,7 @@
                 }
             } else if (position.length > 2) {
                 if (position[1] == arrUrl[1] && position[2] == arrUrl[2] ) {
-                    console.log('a2---------------');
+                    // console.log('a2---------------');
                     $(this).addClass("active");
                     $(this).parent().addClass("is-expanded");
                     $(this).parent().parent().prev().addClass("active");
@@ -63,8 +63,8 @@
                 }
             }  else if (position.length != arrUrl.length) {
                 if (position[1] == arrUrl[1] && position[2] != arrUrl[2]) {
-                    console.log('a3---------------');
-                    console.log($(this).html());
+                    // console.log('a3---------------');
+                    // console.log($(this).html());
                     $(this).addClass("active");
                     $(this).parent().addClass("is-expanded");
                     $(this).parent().parent().prev().addClass("active");
