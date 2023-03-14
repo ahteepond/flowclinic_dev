@@ -141,7 +141,7 @@
 
     function detail(paymentcode) {
         var url = "{{ route('checkpayment.view', '')}}"+"/"+paymentcode;
-        location.href = url;
+        window.open(url, "_blank");
     }
 
     function gotoOrderCode(ordercode) {

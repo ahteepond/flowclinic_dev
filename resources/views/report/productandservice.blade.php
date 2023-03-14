@@ -47,18 +47,15 @@
                                                     <option value="0">Inactive</option>
                                                 </select>
                                             </div>
-                                            {{-- <div class="form-group col-auto">
+                                            <div class="form-group col-auto">
                                                 <label class="form-label">ประเภทบริการ</label>
-                                                <input type="text" class="form-control" id="servicetype">
+                                                <select name="servicetype" id="servicetype" class="form-control form-select" data-bs-placeholder="เลือกประเภทบริการ">
+                                                    <option value="A" selected>ทั้งหมด</option>
+                                                    @foreach($service_type as $st)
+                                                    <option value="{{ $st->id }}">{{ $st->name_th }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                            <div class="form-group col-auto">
-                                                <label class="form-label">บริการหลัก</label>
-                                                <input type="text" class="form-control" id="servicemaster">
-                                            </div>
-                                            <div class="form-group col-auto">
-                                                <label class="form-label">บริการย่อย</label>
-                                                <input type="text" class="form-control" id="service">
-                                            </div> --}}
                                             <div class="col-auto">
                                                 <button type="button"onclick="searchTable()" class="btn btn-outline-primary mb-4 btn-block"><i class="fa fa-search me-2"></i>ค้นหา</button>
                                             </div>
@@ -136,10 +133,8 @@
             type: "GET",
             url: "{{ route('report.productandservice.search') }}",
             data: function( d ) {
-                d.active = $('#status :selected').val()
-                // d.servicetype = $('#servicetype ').val(),
-                // d.servicemaster = $('#servicemaster ').val(),
-                // d.service = $('#service ').val()
+                d.active = $('#status :selected').val(),
+                d.servicetype = $('#servicetype :selected').val()
             },
         },
         columns: [
@@ -149,6 +144,7 @@
             { title: "บริการหลัก", data: 'servicemaster_name', name: 'servicemaster_name' },
             { title: "ประเภทบริการ", data: 'servicetype_name', name: 'servicetype_name' },
             { title: "คำอธิบาย", data: 'service_description', name: 'service_description' },
+            { title: "สถานะใช้งาน", data: 'active', name: 'active' },
         ],
         dom: '<"row"<"col-6"l><"col-6"f>><"row"<"col-6"B><"col-6">>rtip',
         buttons: [
