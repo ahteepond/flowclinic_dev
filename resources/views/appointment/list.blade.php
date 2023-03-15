@@ -115,7 +115,7 @@
                         <p class="mb-3 fs-18">เลขที่ใบนัด <b><span class="text-primary fw-semibold clear_dtl_t" id="dtl_appointment_code"></span></b></p>
                     </div>
                     <div class="col-md text-end" id="disp_status"></div>
-                    <input type="text" style="" id="tmp_status"> {{--  //////// --}}
+                    <input type="text" style="display: none;" id="tmp_status"> {{--  //////// --}}
                     <div class="col-12">
                         <div class="expanel expanel-default">
                             <div class="expanel-body pt-5">
@@ -680,10 +680,8 @@
                             _token: "{{ csrf_token() }}",
                             aptcode : mAptCode,
                             note : $('#note').val(),
-                            chknextapt: (checkBox.checked == true ? 1 : null),
                             or_1: $('#empor1 :selected').val(),
                             or_2: ($('#empor2 :selected').val() == 0 ? '' : $('#empor2 :selected').val()),
-                            opd: $('#opd').val(),
                             param : param
                         }
                         break;

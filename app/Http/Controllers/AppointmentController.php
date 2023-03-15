@@ -468,19 +468,6 @@ class AppointmentController extends Controller
                     'or_2' => $reqor2,
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 );
-                //Add OPD
-                $ordercode = DB::table('appointment')
-                ->where('code', $request->aptcode)
-                ->first();
-                $arr_opd = array(
-                    'appointment_code' => $request->aptcode,
-                    'order_code' => $ordercode->order_code,
-                    'emp_session' => session()->get('session_empcode'),
-                    'note' => $reqopd,
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-                );
-                DB::table('opd')->insertOrIgnore($arr_opd);
                 break;
             case 8:
                 //Update Appointment
