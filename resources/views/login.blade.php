@@ -55,7 +55,7 @@
                 <!-- CONTAINER OPEN -->
                 <div class="col col-login mx-auto">
                     <div class="text-center">
-                        <img src="{{asset('assets/images/brand/logo-flowclinic-white.png')}}" class="header-brand-img" alt="">
+                        <img src="{{asset('assets/images/brand/logo-flowclinic-white-lg.png')}}" class="header-brand-img" alt="" style="height: 150px;">
                     </div>
                 </div>
 
